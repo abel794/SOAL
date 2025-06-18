@@ -4,6 +4,7 @@ const EncabezadoRegistro = () => {
   return (
     <div className="text-center my-4">
       <h2>Creación de Usuarios</h2>
+      <br />
       <h4>Secretaría - Instituto Renato Descartes</h4>
       <hr />
     </div>
