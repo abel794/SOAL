@@ -94,6 +94,22 @@ router.get('/count/grado/:nombreGrado', async (req, res) => {
 });
 
 
+router.post('/registrar', (req, res) => {
+    const { nombre, apellido, correo, telefono, sexo, fecha_nacimiento, id_tipo_documento, numero_documento, ciudad_expedicion, eps } = req.body;
+
+    const sql = 'INSERT INTO estudiante (nombre, apellido, correo, telefono, sexo, fecha_nacimiento, id_tipo_documento, numero_documento, ciudad_expedicion, eps) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    
+    connection.query(sql, [nombre, apellido, correo, telefono, sexo, fecha_nacimiento, id_tipo_documento, numero_documento, ciudad_expedicion, eps], (err, result) => {
+        if (err) {
+            console.error('Error al insertar estudiante:', err);
+            res.status(500).json({ error: 'Error en el servidor' });
+        } else {
+            res.status(200).json({ mensaje: 'Estudiante registrado con éxito' });
+        }
+    });
+});
+
+
 
 
 
