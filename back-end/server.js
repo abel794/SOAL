@@ -1,18 +1,22 @@
-const express=require('express')
-const cors = require ('cors')
+const express = require('express');
+const cors = require('cors');
+const app = express();
 
-const app = require('app')
+const estudianteRoutes = require('./routes/estudiante.routes');
+const citaRoutes = require('./routes/cita.routes');
+const observacionRoutes = require('./routes/observacion.routes');
 
-const PORT =3001
 
 app.use(cors());
+app.use(express.json());
 
-app.use(express.json())
+app.use('/api/estudiante', estudianteRoutes); // ✅ Solo una vez
+app.use('/api/citas', citaRoutes); // Para que funcione /api/citas/total
+app.use('/api', observacionRoutes);// Ahora funciona /api/observaciones/total y /api/observaciones/criticos
 
-app.get('/api/saludo',(req,res) =>{
-    res.json({mensaje :'hola desde el servidor'})
-})
 
-app.liste(PORT, () =>{
-    console.log(`servidor corriendo en http://localhost:${PORT}`)
-})
+
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
