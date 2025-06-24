@@ -1,0 +1,32 @@
+.formulario-container {
+  padding: 40px;
+  background-color: #f9fafb;
+  border-radius: 10px;
+}
+
+.selector-usuario {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.selector-usuario input[type="radio"] {
+  display: none;
+}
+
+.selector-usuario label {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.selector-usuario label:hover,
+.selector-usuario input[type="radio"]:checked + label {
+  border-color: #4f46e5;
+  background-color: #eef2ff;
+}

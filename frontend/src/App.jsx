@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import './App.css';
+
+// Componentes principales
 import Sidebar from './componentes/Sidebar';
 import UserHeader from './componentes/UserHeader';
 import DashboardCards from './componentes/DashboardCards';
 import TarjetasPorcentajes from './componentes/TarjetasPorcentajes';
 import TablaObservaciones from './componentes/TablaObservaciones';
 import BuscarEstudiante from './componentes/BuscarEstudiante';
-import RegistrarObservacion from './componentes/registrarObservacion'; // ✅ Corrección aquí
+import RegistrarObservacion from './componentes/registrarObservacion';
+
+// Vista completa de Matricular Estudiante
+import FormularioUsuario from './componentes/Secretaria/FormularioUsuarios';
 
 function App() {
   const [abierto, setAbierto] = useState(true);
@@ -19,6 +24,7 @@ function App() {
     switch (vista) {
       case 'Buscar estudiante':
         return <BuscarEstudiante />;
+
       case 'Registrar observación':
         return (
           <RegistrarObservacion
@@ -26,6 +32,10 @@ function App() {
             setEstudianteSeleccionado={setEstudianteSeleccionado}
           />
         );
+
+      case 'Matricular estudiante':
+        return <FormularioUsuario />;
+
       default:
         return (
           <>
@@ -49,6 +59,4 @@ function App() {
       </div>
     </div>
   );
-}
-
-export default App;
+}export default App;

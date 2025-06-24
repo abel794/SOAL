@@ -1,0 +1,101 @@
+.cuenta-formulario {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.lado-izquierdo {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.campo input,
+.campo select {
+  padding: 10px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.input-icono {
+  position: relative;
+}
+
+.input-icono input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.input-icono .icono {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.lado-derecho {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lado-derecho label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.subida-foto {
+  width: 140px;
+  height: 140px;
+  border: 2px dashed #bcbcbc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #bcbcbc;
+  position: relative;
+  overflow: hidden;
+  padding: 10px;
+  transition: border-color 0.2s ease;
+  white-space: pre-line; /* permite saltos de línea */
+}
+
+.subida-foto:hover {
+  border-color: #7a5ef8;
+}
+
+.subida-foto input[type="file"] {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+}
+
+.subida-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
