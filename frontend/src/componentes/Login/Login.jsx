@@ -23,7 +23,7 @@ const Login = ({ setAutenticado, setMostrarOlvidaste }) => {
     <div className="fondo-login">
       <form className="formulario-login" onSubmit={manejarEnvio}>
         <img src={logo} alt="Logo" className="logo-login" />
-        <h2>¡Conectemos! <span>📡</span></h2>
+        <h2>¡Ingresar! <span>🎓</span></h2>
         <p>Entra tu cuenta</p>
 
         <CampoTexto
