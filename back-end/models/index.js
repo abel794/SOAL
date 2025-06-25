@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 // 1. Conexión a la base de datos
-const sequelize = new Sequelize('soal', 'root', '', {
+const sequelize = new Sequelize('SOAL1', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
   logging: false,
@@ -51,6 +51,16 @@ const {
   CategoriaObservacion,
 } = models;
 
+// Observacion → Estudiante
+Observacion.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
+
+// HistorialObservacion → Observacion
+HistorialObservacion.belongsTo(Observacion, { foreignKey: 'id_observacion' });
+
+// Observacion → CategoriaObservacion
+Observacion.belongsTo(CategoriaObservacion, { foreignKey: 'id_categoria' });
+
+
 // Usuario 1:1 con cada rol
 Usuario.hasOne(Estudiante, { foreignKey: 'id_usuario' });
 Estudiante.belongsTo(Usuario, { foreignKey: 'id_usuario' });
@@ -85,6 +95,9 @@ Observacion.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
 // Usuario - Observacion
 Usuario.hasMany(Observacion, { foreignKey: 'id_usuario' });
 Observacion.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+
+Observacion.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
+Observacion.belongsTo(CategoriaObservacion, { foreignKey: 'id_categoria' });
 
 // Observacion - Historial
 Observacion.hasMany(HistorialObservacion, { foreignKey: 'id_observacion' });

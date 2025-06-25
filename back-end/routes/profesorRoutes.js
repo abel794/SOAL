@@ -2,8 +2,11 @@ const express = require('express');
 const router = express.Router();
 const profesorController = require('../controllers/profesorController');
 
-// 🔍 Buscar profesor por nombre
-router.get('/buscar', profesorController.buscarPorNombre);
+// 🔍 Buscar profesor por nombre (?nombre=Jose)
+router.get('/', profesorController.buscarPorNombre);
+
+// 📋 Obtener todos los profesores
+router.get('/todos', profesorController.obtenerTodos);
 
 // 📋 Obtener grados asignados a un profesor
 router.get('/:id/grados', profesorController.gradosAsignados);
@@ -12,7 +15,6 @@ router.get('/:id/grados', profesorController.gradosAsignados);
 router.post('/asignar-grado', profesorController.asignarGrado);
 
 // 📚 CRUD básico
-router.get('/', profesorController.obtenerTodos);
 router.get('/:id', profesorController.obtenerPorId);
 router.post('/', profesorController.crear);
 router.put('/:id', profesorController.actualizar);

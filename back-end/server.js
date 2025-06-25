@@ -21,11 +21,16 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const gradoRoutes = require('./routes/gradoRoutes');
 const historialObservacionRoutes = require('./routes/historialObservacionRoutes');
 const profesorGradoRoutes = require('./routes/profesorGradoRoutes');
+const rutasAutenticacion = require('./routes/rutasAutenticacion');
 
+
+app.use('/api/autenticacion', rutasAutenticacion);
 // Usar rutas
 app.use('/api/estudiantes', estudianteRoutes);
 app.use('/api/citas', citaRoutes);
-app.use('/api/observaciones', observacionRoutes);
+
+app.use('/api/observacion', observacionRoutes); // ✅ Esta es la correcta para /total y /criticos
+
 app.use('/api/profesores', profesorRoutes);
 app.use('/api/asistencias', asistenciaRoutes);
 app.use('/api/categorias', categoriaObservacionRoutes);

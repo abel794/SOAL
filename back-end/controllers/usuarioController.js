@@ -33,6 +33,7 @@ const usuarioController = {
       const nuevo = await Usuario.create(req.body);
       res.status(201).json(nuevo);
     } catch (error) {
+      console.error("el error es: ",error)
       res.status(400).json({ error: 'Error al crear el usuario', detalle: error.message });
     }
   },
@@ -51,6 +52,7 @@ const usuarioController = {
         res.json({ mensaje: 'Usuario actualizado correctamente' });
       }
     } catch (error) {
+      console.error("el error es: ",error)
       res.status(400).json({ error: 'Error al actualizar el usuario' });
     }
   },
@@ -69,6 +71,7 @@ const usuarioController = {
         res.json({ mensaje: 'Usuario eliminado correctamente' });
       }
     } catch (error) {
+      console.error("el error es: ",error)
       res.status(500).json({ error: 'Error al eliminar el usuario' });
     }
   },
@@ -89,6 +92,7 @@ const usuarioController = {
         res.json(usuarios);
       }
     } catch (error) {
+      console.error("el error es:",error)
       res.status(500).json({ error: 'Error al buscar usuarios' });
     }
   },

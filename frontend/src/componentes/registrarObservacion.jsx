@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 
 function RegistrarObservacion() {
@@ -6,16 +6,34 @@ function RegistrarObservacion() {
   const [estudiante, setEstudiante] = useState(null);
   const [mensaje, setMensaje] = useState('');
   const [observacion, setObservacion] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [idCategoria, setIdCategoria] = useState('');
+  const [gravedad, setGravedad] = useState('Leve');
 
-  // Buscar estudiante por nombre
+  // 🔄 Cargar categorías desde la base de datos
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/categorias');
+        const data = await res.json();
+        setCategorias(data);
+      } catch (error) {
+        console.error('Error al cargar categorías:', error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
+  // 🔍 Buscar estudiante por nombre
   const manejarBusqueda = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/estudiante/nombre/${nombreBuscado}`);
+      const res = await fetch(`http://localhost:3001/api/estudiantes/buscar?termino=${nombreBuscado}`);
       const data = await res.json();
 
       if (res.ok && data.length > 0) {
-        setEstudiante(data[0]); // Tomamos el primer estudiante encontrado
-        setMensaje(`✅ Estudiante encontrado: ${data[0].nombre_estudiante}`);
+        setEstudiante(data[0]);
+        setMensaje(`✅ Estudiante encontrado: ${data[0].nombre}`);
       } else {
         setEstudiante(null);
         setMensaje('❌ Estudiante no encontrado.');
@@ -26,26 +44,42 @@ function RegistrarObservacion() {
     }
   };
 
-  // Enviar la observación
+  // 📝 Enviar observación al backend
   const manejarRegistro = async (e) => {
     e.preventDefault();
 
-    if (!estudiante) {
-      alert('⚠️ Debes buscar y seleccionar un estudiante primero.');
+    if (!estudiante || !idCategoria || observacion.trim() === '') {
+      alert('⚠️ Completa todos los campos antes de enviar.');
       return;
     }
 
-    if (observacion.trim() === '') {
-      alert('⚠️ Escribe una observación.');
-      return;
+    try {
+      const res = await fetch('http://localhost:3001/api/observacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id_usuario: 19, // 🔁 Simulado, debes tomarlo de sesión
+          id_estudiante: estudiante.id_estudiante,
+          id_categoria: idCategoria,
+          descripcion: observacion,
+          gravedad: gravedad,
+          fecha: new Date().toISOString().slice(0, 10),
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert(`✅ Observación registrada para ${estudiante.nombre}`);
+        setObservacion('');
+        setIdCategoria('');
+        setGravedad('Leve');
+      } else {
+        alert(`❌ Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('❌ Error al registrar:', error);
+      alert('❌ Error de conexión al servidor.');
     }
-
-    // Aquí deberías enviar la observación a tu backend
-    console.log(`Observación registrada para ${estudiante.nombre_estudiante}: ${observacion}`);
-
-    // Reiniciar formulario
-    setObservacion('');
-    alert(`✅ Observación registrada para ${estudiante.nombre_estudiante}`);
   };
 
   return (
@@ -54,11 +88,10 @@ function RegistrarObservacion() {
       <h3>Instituto Renato Descartes</h3>
       <div className="linea mb-3"></div>
 
-      {/* Barra de búsqueda */}
       <div>
         <input
           type="text"
-          placeholder="Escribe el nombre del estudiante"
+          placeholder="Buscar estudiante por nombre"
           value={nombreBuscado}
           onChange={(e) => setNombreBuscado(e.target.value)}
           style={{ padding: '8px', width: '60%', marginRight: '10px' }}
@@ -68,24 +101,55 @@ function RegistrarObservacion() {
         </button>
       </div>
 
-      {/* Mensaje de estado */}
       {mensaje && <p className="mt-3 fw-bold">{mensaje}</p>}
 
-      {/* Formulario de observación */}
       {estudiante && (
-        <form onSubmit={manejarRegistro} style={{ marginTop: '25px' }}>
-          <p><strong>Estudiante:</strong> {estudiante.nombre_estudiante}</p>
-          <p><strong>Grado:</strong> {estudiante.nombre_grado}</p>
+        <form onSubmit={manejarRegistro} className="mt-4">
+          <p><strong>Estudiante:</strong> {estudiante.nombre}</p>
 
+          {/* 🔽 Categoría */}
+          <div className="mb-3">
+            <label><strong>Categoría:</strong></label>
+            <select
+              value={idCategoria}
+              onChange={(e) => setIdCategoria(e.target.value)}
+              className="form-select"
+              required
+            >
+              <option value="">Seleccione una categoría</option>
+              {categorias.map((cat) => (
+                <option key={cat.id_categoria} value={cat.id_categoria}>
+                  {cat.nombre_categoria}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 🔽 Gravedad */}
+          <div className="mb-3">
+            <label><strong>Gravedad:</strong></label>
+            <select
+              value={gravedad}
+              onChange={(e) => setGravedad(e.target.value)}
+              className="form-select"
+            >
+              <option value="Leve">Leve</option>
+              <option value="Moderado">Moderado</option>
+              <option value="Grave">Grave</option>
+            </select>
+          </div>
+
+          {/* 📝 Observación */}
           <textarea
             placeholder="Escribe la observación..."
             value={observacion}
             onChange={(e) => setObservacion(e.target.value)}
-            style={{ width: '100%', padding: '10px', minHeight: '100px' }}
+            className="form-control"
+            style={{ minHeight: '100px' }}
             required
           />
 
-          <button type="submit" style={{ marginTop: '10px', padding: '8px 15px' }}>
+          <button type="submit" className="btn btn-primary mt-3">
             Registrar observación
           </button>
         </form>
@@ -95,4 +159,5 @@ function RegistrarObservacion() {
 }
 
 export default RegistrarObservacion;
+
 

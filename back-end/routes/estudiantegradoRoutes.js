@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/estudiantegradoController');
 
+
+
 // Asignar estudiante a grado
 router.post('/', controller.asignar);
 

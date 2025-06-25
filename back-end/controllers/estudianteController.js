@@ -16,22 +16,33 @@ const estudianteController = {
       res.status(500).json({ error: 'Error al obtener estudiantes' });
     }
   },
-
-  // Obtener un estudiante por ID
-  async obtenerPorId(req, res) {
-    const id = req.params.id;
+  // ✅ Devuelve solo el total de estudiantes
+  async obtenerTotalestudiantes(req, res) {
     try {
-      const estudiante = await Estudiante.findByPk(id);
-      if (estudiante) {
-        res.json(estudiante);
-      } else {
-        console.error(error)
-        res.status(404).json({ error: 'Estudiante no encontrado' });
-      }
+      const total = await Estudiante.count(); // Cuenta cuántos registros hay en la tabla
+      res.json({ total }); // Devuelve un objeto: { total: 240 }
     } catch (error) {
-      res.status(500).json({ error: 'Error al buscar el estudiante' });
+      console.error('Error al contar estudiantes:', error);
+      res.status(500).json({ error: 'Error al obtener total de estudiantes' });
     }
   },
+
+
+  // Obtener un estudiante por ID
+async obtenerPorId(req, res) {
+  const id = req.params.id;
+  try {
+    const estudiante = await Estudiante.findByPk(id);
+    if (estudiante) {
+      res.json(estudiante);
+    } else {
+      res.status(404).json({ error: 'Estudiante no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al buscar el estudiante:', error);
+    res.status(500).json({ error: 'Error al buscar el estudiante' });
+  }
+},
 
   // Crear un nuevo estudiante
   async crear(req, res) {

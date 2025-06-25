@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
+import ResumenObservaciones from './componentes/ResumenObservaciones';
 import Sidebar from './componentes/Sidebar';
 import UserHeader from './componentes/UserHeader';
 import DashboardCards from './componentes/DashboardCards';
 import TarjetasPorcentajes from './componentes/TarjetasPorcentajes';
 import TablaObservaciones from './componentes/TablaObservaciones';
 import BuscarEstudiante from './componentes/BuscarEstudiante';
-import RegistrarObservacion from './componentes/registrarObservacion'; // ✅ Corrección aquí
+import RegistrarObservacion from './componentes/registrarObservacion';
+import HistorialObservaciones from './componentes/historialObservaciones'; // ✅ Corrige nombre
 
 function App() {
   const [abierto, setAbierto] = useState(true);
@@ -19,6 +21,7 @@ function App() {
     switch (vista) {
       case 'Buscar estudiante':
         return <BuscarEstudiante />;
+
       case 'Registrar observación':
         return (
           <RegistrarObservacion
@@ -26,6 +29,12 @@ function App() {
             setEstudianteSeleccionado={setEstudianteSeleccionado}
           />
         );
+
+      case 'Historial de Observaciones':
+        return (
+          <HistorialObservaciones nombre={estudianteSeleccionado} />
+        );
+
       default:
         return (
           <>
@@ -34,7 +43,7 @@ function App() {
             <h3>Instituto Renato Descartes</h3>
             <div className="linea"></div>
             <DashboardCards />
-            <TarjetasPorcentajes />
+            <ResumenObservaciones />
             <TablaObservaciones />
           </>
         );

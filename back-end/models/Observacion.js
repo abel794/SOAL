@@ -32,6 +32,11 @@ module.exports = (sequelize) => {
       type: DataTypes.DATEONLY,
       allowNull: true,
     },
+    gravedad: {
+      type: DataTypes.ENUM('Leve', 'Moderado', 'Grave'),
+      allowNull: true,
+    },
+
   }, {
     tableName: 'observacion',
     timestamps: false,

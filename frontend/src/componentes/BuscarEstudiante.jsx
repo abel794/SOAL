@@ -8,21 +8,20 @@ function BuscarEstudiante() {
 
   const buscar = async () => {
     try {
-      let url = 'http://localhost:3001/api/estudiante';
-
+      let url = 'http://localhost:3001/api/estudiantes/buscar';
       if (nombre.trim() !== '') {
-        url += `/nombre/${nombre}`;
+        url += `?termino=${encodeURIComponent(nombre)}`;
       }
 
       const res = await fetch(url);
       const data = await res.json();
 
-      if (res.ok && data.length > 0) {
+      if (res.ok && Array.isArray(data) && data.length > 0) {
         setEstudiantes(data);
         setMensaje(`✅ ${data.length} estudiante(s) encontrado(s)`);
       } else {
         setEstudiantes([]);
-        setMensaje(`❌ No se encontraron estudiantes`);
+        setMensaje('❌ No se encontraron estudiantes');
       }
     } catch (error) {
       console.error('Error al buscar:', error);
@@ -39,7 +38,7 @@ function BuscarEstudiante() {
       <div>
         <input
           type="text"
-          placeholder="Buscar por nombre (o dejar vacío para ver todos)"
+          placeholder="Buscar por nombre o documento"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           style={{ padding: '8px', width: '60%', marginRight: '10px' }}
@@ -56,14 +55,16 @@ function BuscarEstudiante() {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Grado</th>
+              <th>Número de documento</th>
+              {/* <th>Grado</th> <-- solo si tienes relación cargada con Grado */ }
             </tr>
           </thead>
           <tbody>
             {estudiantes.map((est) => (
               <tr key={est.id_estudiante}>
-                <td>{est.nombre_estudiante}</td>
-                <td>{est.nombre_grado}</td>
+                <td>{est.nombre}</td>
+                <td>{est.numero_documento}</td>
+                {/* <td>{est.Grado?.nombre_grado ?? 'No asignado'}</td> */}
               </tr>
             ))}
           </tbody>
@@ -74,3 +75,4 @@ function BuscarEstudiante() {
 }
 
 export default BuscarEstudiante;
+

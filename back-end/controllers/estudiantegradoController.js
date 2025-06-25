@@ -43,24 +43,49 @@ const estudiantegradoController = {
       res.status(500).json({ error: 'Error al obtener estudiantes del grado' });
     }
   },
+  // Contar estudiantes por grado
+async contarPorGrado(req, res) {
+      const nombreGrado = req.params.nombre;
+      try {
+        const grado = await Grado.findOne({ where: { nombre_grado: nombreGrado } });
+        if (!grado) return res.status(404).json({ error: 'Grado no encontrado' });
+
+        const total = await Estudiantegrado.count({
+          where: { id_grado: grado.id_grado }
+        });
+
+        res.json({ total_estudiantes: total });
+      } catch (error) {
+        console.error('Error al contar estudiantes por grado:', error);
+        res.status(500).json({ error: 'Error al contar estudiantes por grado' });
+      }
+    },
 
   // ✅ Eliminar asignación
-  async eliminar(req, res) {
-    const { id_estudiante, id_grado } = req.body;
-    try {
-      const filas = await Estudiantegrado.destroy({
-        where: { id_estudiante, id_grado }
-      });
+  // ✅ Eliminar asignación
+async eliminar(req, res) {
+  const { id_estudiante, id_grado } = req.params;
 
-      if (filas === 0) {
-        res.status(404).json({ error: 'Asignación no encontrada' });
-      } else {
-        res.json({ mensaje: 'Asignación eliminada correctamente' });
+  try {
+    const eliminado = await Estudiantegrado.destroy({
+      where: {
+        id_estudiante,
+        id_grado
       }
-    } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar asignación' });
+    });
+
+    if (eliminado === 0) {
+      return res.status(404).json({ mensaje: 'Asignación no encontrada' });
     }
-  },
+
+    res.json({ mensaje: 'Asignación eliminada correctamente' });
+  } catch (error) {
+    console.error('❌ Error al eliminar asignación:', error);
+    res.status(500).json({ error: 'Error interno al eliminar asignación' });
+  }
+},
+
+
 
   // ✅ Listar todas las asignaciones
   async listar(req, res) {

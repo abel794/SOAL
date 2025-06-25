@@ -1,14 +1,57 @@
 const db = require('../models');
-const { Observacion, CategoriaObservacion } = db;
+const { Observacion,Estudiante, CategoriaObservacion,Usuario } = db;
 const { Op } = require('sequelize');
 
 const observacionController = {
+
+  
+  // 📋 Obtener observaciones con detalles de estudiante y categoría
+  async listarConDetalles(req, res) {
+    try {
+      const observaciones = await Observacion.findAll({
+        include: [
+          {
+            model: Estudiante,
+            attributes: ['nombre'],
+          },
+          {
+            model: CategoriaObservacion,
+            attributes: ['nombre_categoria'],
+          },
+          {
+            model: Usuario,
+            attributes: ['nombre_usuario'], // Puedes agregar más si necesitas
+          }
+        ],
+        attributes: ['descripcion', 'fecha', 'gravedad'],
+      });
+
+      const resultado = observaciones.map(obs => ({
+        estudiante: obs.Estudiante.nombre,
+        tipo: obs.CategoriaObservacion.nombre_categoria,
+        profesor: obs.Usuario.nombre_usuario,
+        fecha: obs.fecha,
+        gravedad: obs.gravedad,
+        observacion: obs.descripcion
+      }));
+
+      res.json(resultado);
+    } catch (error) {
+      console.error('❌ Error al obtener observaciones detalladas:', error);
+      res.status(500).json({ error: 'Error al obtener observaciones' });
+    }
+  },
+
+  // 👇 (mantén aquí tus otros métodos como crear, contar, etc.)
+
+
   // Obtener todas las observaciones
   async obtenerTodas(req, res) {
     try {
       const observaciones = await Observacion.findAll();
       res.json(observaciones);
     } catch (error) {
+      console.error(error)
       res.status(500).json({ error: 'Error al obtener observaciones' });
     }
   },
