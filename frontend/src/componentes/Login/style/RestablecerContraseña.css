@@ -1,0 +1,119 @@
+.pagina-restablecer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #5faaff, #6fc3ff);  
+  padding: 1rem;
+}
+
+.contenedor-formulario {
+  display: flex;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.formulario {
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  width: 180px;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #ffffff;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:disabled {
+  background-color: #b5b5ff;
+  cursor: not-allowed;
+}
+
+.mensaje-verde {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.mensaje-rojo {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.info, .login-link {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 1rem;
+}
+
+.info a, .login-link a {
+  color: #6c63ff;
+  text-decoration: none;
+}
+
+.exito {
+  text-align: center;
+}
+
+.exito img {
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+.exito h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.exito button {
+  background-color: #6c63ff;
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.reenviar {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-decoration: underline;
+}

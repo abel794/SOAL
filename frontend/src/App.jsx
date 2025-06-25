@@ -9,11 +9,15 @@ import TarjetasPorcentajes from './componentes/TarjetasPorcentajes';
 import TablaObservaciones from './componentes/TablaObservaciones';
 import BuscarEstudiante from './componentes/BuscarEstudiante';
 import RegistrarObservacion from './componentes/registrarObservacion';
-
-// Vista completa de Matricular Estudiante
 import FormularioUsuario from './componentes/Secretaria/FormularioUsuarios';
 
+// Autenticación
+import Login from './componentes/Login/Login';
+import OlvidasteContrasena from './componentes/Login/RestablecerContraseña';
+
 function App() {
+  const [autenticado, setAutenticado] = useState(false);
+  const [mostrarOlvidaste, setMostrarOlvidaste] = useState(false);
   const [abierto, setAbierto] = useState(true);
   const [vista, setVista] = useState('Dashboard');
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
@@ -24,19 +28,16 @@ function App() {
     switch (vista) {
       case 'Buscar estudiante':
         return <BuscarEstudiante />;
-
-      case 'Registrar observación':
+    case 'Registrar observación':
         return (
           <RegistrarObservacion
             setVista={setVista}
             setEstudianteSeleccionado={setEstudianteSeleccionado}
           />
-        );
-
+      );
       case 'Matricular estudiante':
         return <FormularioUsuario />;
-
-      default:
+    default:
         return (
           <>
             <UserHeader />
@@ -51,12 +52,30 @@ function App() {
     }
   };
 
+  // Pantallas previas al login
+  if (!autenticado) {
+    return mostrarOlvidaste ? (
+      <OlvidasteContrasena volverAlLogin={() => setMostrarOlvidaste(false)} />
+    ) : (
+      <Login
+        setAutenticado={setAutenticado}
+        setMostrarOlvidaste={setMostrarOlvidaste}
+      />
+    );
+  }
+
+  // Vista principal del sistema (ya autenticado)
   return (
     <div className="d-flex">
       <Sidebar abierto={abierto} toggleMenu={toggleMenu} setVista={setVista} />
-      <div className="contenido-principal" style={{ marginLeft: abierto ? '250px' : '60px' }}>
+      <div
+        className="contenido-principal"
+        style={{ marginLeft: abierto ? '250px' : '60px' }}
+      >
         {renderContenido()}
       </div>
     </div>
   );
-}export default App;
+}
+
+export default App;
