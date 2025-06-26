@@ -124,6 +124,48 @@ const observacionController = {
       res.status(500).json({ error: 'Error al contar observaciones' });
     }
   },
+  // 📊 Contar observaciones por gravedad (Leve, Moderado, Grave)
+async contarPorGravedad(req, res) {
+  try {
+    const total = await Observacion.count();
+
+    const leves = await Observacion.count({ where: { gravedad: 'Leve' } });
+    const moderadas = await Observacion.count({ where: { gravedad: 'Moderado' } });
+    const graves = await Observacion.count({ where: { gravedad: 'Grave' } });
+
+    res.json({
+      total,
+      leve: ((leves / total) * 100).toFixed(1),
+      moderado: ((moderadas / total) * 100).toFixed(1),
+      grave: ((graves / total) * 100).toFixed(1)
+    });
+  } catch (error) {
+    console.error('❌ Error al contar por gravedad:', error);
+    res.status(500).json({ error: 'Error al contar observaciones por gravedad' });
+  }
+},
+// 📊 Contar observaciones por tipo (categoría)
+async contarPorTipo(req, res) {
+  try {
+    const categorias = await CategoriaObservacion.findAll();
+
+    const resultados = {};
+
+    for (const categoria of categorias) {
+      const cantidad = await Observacion.count({
+        where: { id_categoria: categoria.id_categoria }
+      });
+      resultados[categoria.nombre_categoria] = cantidad;
+    }
+
+    res.json(resultados);
+  } catch (error) {
+    console.error('❌ Error al contar observaciones por tipo:', error);
+    res.status(500).json({ error: 'Error al contar observaciones por tipo' });
+  }
+},
+
+
 
   // Total de observaciones críticas
   async contarCriticos(req, res) {

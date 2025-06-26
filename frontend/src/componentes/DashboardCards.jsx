@@ -7,7 +7,7 @@ function DashboardCards() {
   const [criticos, setCriticos] = useState(null);
   const [citas, setCitas] = useState(null);
 
-  const nombreGrado = 'Segundo';
+  const nombreGrado = 'Tercero';
 
   useEffect(() => {
     // 🎓 Total de estudiantes asignados al grado

@@ -3,6 +3,8 @@ const router = express.Router();
 const observacionController = require('../controllers/observacionController');
 
 // Rutas específicas primero
+router.get('/por-tipo', observacionController.contarPorTipo);
+router.get('/por-gravedad', observacionController.contarPorGravedad);
 router.get('/detalladas', observacionController.listarConDetalles);
 router.get('/total', observacionController.contarObservaciones);
 router.get('/criticos', observacionController.contarCriticos);

@@ -9,6 +9,7 @@ import TablaObservaciones from './componentes/TablaObservaciones';
 import BuscarEstudiante from './componentes/BuscarEstudiante';
 import RegistrarObservacion from './componentes/registrarObservacion';
 import HistorialObservaciones from './componentes/historialObservaciones'; // ✅ Corrige nombre
+import Agendar_cita_con_acudiente from './componentes/Agendar_cita_con_acudiente'
 
 function App() {
   const [abierto, setAbierto] = useState(true);
@@ -34,6 +35,12 @@ function App() {
         return (
           <HistorialObservaciones nombre={estudianteSeleccionado} />
         );
+
+      case 'Agendar cita con acudiente':
+        return (
+          <Agendar_cita_con_acudiente nombre={estudianteSeleccionado} />
+        );
+
 
       default:
         return (
