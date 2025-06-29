@@ -4,6 +4,7 @@ import SelectorTipoUsuario from "./SelectorTipoUsuario";
 import FormularioDatosEstudiantes from "./FormularioDatosEstudiantes";
 import FormularioCuentaEstudiante from "./FormularioCuentaEstudiante";
 import BotonesFormulario from "./BotonesFormulario";
+import FormularioPermisos from "./FormularioPermisos";
 import Paso from "./Paso";
 
 const FormularioUsuarios = () => {
@@ -47,8 +48,8 @@ const FormularioUsuarios = () => {
         datosEstudiante={datosEstudiante}
         setDatosEstudiante={setDatosEstudiante} />
       )}
-        {/* Si hay un paso 3, puedes agregarlo así: */}
-        {/* {pasoActual === 3 && <FormularioPermisos />} */}
+        
+        {pasoActual === 3 && <FormularioPermisos />} 
 
       <BotonesFormulario
         pasoActual={pasoActual}
