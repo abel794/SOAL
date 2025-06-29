@@ -30,3 +30,12 @@
   border-color: #4f46e5;
   background-color: #eef2ff;
 }
+.formulario-permisos {
+  margin-top: 20px;
+}
+
+.titulo-permisos {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
