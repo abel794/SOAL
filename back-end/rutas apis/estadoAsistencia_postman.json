@@ -1,0 +1,140 @@
+{
+  "info": {
+    "name": "EstadoAsistencia API",
+    "_postman_id": "7a4a94c9-2b4d-4f9f-98a3-9a9b256a5a23",
+    "description": "Colección para probar estadoAsistenciaRoutes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Estado de Asistencia",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Presente\",\n  \"descripcion\": \"Estado de asistencia presente\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", ""]
+        }
+      }
+    },
+    {
+      "name": "Obtener todos los estados de asistencia",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", ""]
+        }
+      }
+    },
+    {
+      "name": "Buscar estado de asistencia por nombre",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/buscar?nombre=Presente",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", "buscar"],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "Presente"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Contar estados de asistencia",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/contar/total",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", "contar", "total"]
+        }
+      }
+    },
+    {
+      "name": "Obtener estado de asistencia por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", "1"]
+        }
+      }
+    },
+    {
+      "name": "Obtener asistencias por estado de asistencia",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/1/asistencias",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", "1", "asistencias"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar estado de asistencia por ID",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Ausente\",\n  \"descripcion\": \"Estado de asistencia ausente\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar estado de asistencia por ID",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAsistencia/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAsistencia", "1"]
+        }
+      }
+    }
+  ]
+}

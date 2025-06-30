@@ -1,135 +1,230 @@
-const db = require('../models');
-const Estudiante = db.Estudiante;
-const Grado = db.Grado;
-const Estudiantegrado = db.Estudiantegrado;
+const {
+  Estudiante,
+  Persona,
+  Usuario,
+  Eps,
+  EstadoAcademico,
+  Acudiente,
+  RelacionAcudiente,
+  Estudiantegrado,
+  Grado
+} = require('../models');
 const { Op } = require('sequelize');
 
-const estudianteController = {
-  // Obtener todos los estudiantes
-  async obtenerTodos(req, res) {
+module.exports = {
+  // ✅ 1. Listar todos los estudiantes con sus relaciones completas
+  async listarTodos(req, res) {
     try {
-      const estudiantes = await Estudiante.findAll();
-      //console.log(estudiantes)
+      const estudiantes = await Estudiante.findAll({
+        include: [
+          { model: Persona, as: 'persona' },
+          { model: Usuario, as: 'usuario' },
+          { model: Eps, as: 'eps' },
+          { model: EstadoAcademico, as: 'estadoAcademico' },
+          {
+            model: Acudiente,
+            as: 'acudiente',
+            include: [
+              { model: Persona, as: 'persona' },
+              { model: RelacionAcudiente, as: 'relacion' }
+            ]
+          }
+        ]
+      });
+
       res.json(estudiantes);
     } catch (error) {
-      console.error(error);
+      console.error('Error al listar estudiantes:', error);
       res.status(500).json({ error: 'Error al obtener estudiantes' });
     }
   },
-  // ✅ Devuelve solo el total de estudiantes
-  async obtenerTotalestudiantes(req, res) {
-    try {
-      const total = await Estudiante.count(); // Cuenta cuántos registros hay en la tabla
-      res.json({ total }); // Devuelve un objeto: { total: 240 }
-    } catch (error) {
-      console.error('Error al contar estudiantes:', error);
-      res.status(500).json({ error: 'Error al obtener total de estudiantes' });
-    }
-  },
 
-
-  // Obtener un estudiante por ID
-async obtenerPorId(req, res) {
-  const id = req.params.id;
+  // ✅ 2. Buscar estudiante por nombre, apellido o documento
+ // ✅ 2. Buscar estudiante por nombre, apellido o documento
+async buscar(req, res) {
   try {
-    const estudiante = await Estudiante.findByPk(id);
-    if (estudiante) {
-      res.json(estudiante);
-    } else {
-      res.status(404).json({ error: 'Estudiante no encontrado' });
+    const { filtro } = req.query;
+
+    if (!filtro) {
+      return res.status(400).json({ error: 'Debe enviar un nombre o documento para buscar' });
     }
+
+    const estudiantes = await Estudiante.findAll({
+      include: [
+        {
+          model: Persona,
+          as: 'persona',
+          where: {
+            [Op.or]: [
+              { nombre: { [Op.like]: `%${filtro}%` } },
+              { apellido: { [Op.like]: `%${filtro}%` } },
+              { numero_documento: { [Op.like]: `%${filtro}%` } }
+            ]
+          },
+          required: true // importante para aplicar el where de Persona
+        },
+        { model: Usuario, as: 'usuario' },
+        { model: Eps, as: 'eps' },
+        { model: EstadoAcademico, as: 'estadoAcademico' },
+        {
+          model: Acudiente,
+          as: 'acudiente',
+          include: [
+            { model: Persona, as: 'persona' },
+            { model: RelacionAcudiente, as: 'relacion' }
+          ]
+        }
+      ]
+    });
+
+    res.json(estudiantes);
   } catch (error) {
-    console.error('Error al buscar el estudiante:', error);
-    res.status(500).json({ error: 'Error al buscar el estudiante' });
+    console.error('Error al buscar estudiante:', error);
+    res.status(500).json({ error: 'Error al buscar estudiante' });
   }
 },
 
-  // Crear un nuevo estudiante
+
+  // ✅ 3. Contar cuántos estudiantes hay
+  async contar(req, res) {
+    try {
+      const { id_estado_academico } = req.query;
+
+      const condicion = {};
+      if (id_estado_academico) {
+        condicion.id_estado_academico = id_estado_academico;
+      }
+
+      const total = await Estudiante.count({ where: condicion });
+      res.json({ total });
+    } catch (error) {
+      console.error('Error al contar estudiantes:', error);
+      res.status(500).json({ error: 'Error al contar estudiantes' });
+    }
+  },
+
+  // ✅ 4. Crear un estudiante
   async crear(req, res) {
     try {
-      const nuevo = await Estudiante.create(req.body);
+      const {
+        numero_documento,
+        id_usuario,
+        id_eps,
+        id_estado_academico,
+        id_acudiente
+      } = req.body;
+
+      const nuevo = await Estudiante.create({
+        numero_documento,
+        id_usuario,
+        id_eps,
+        id_estado_academico,
+        id_acudiente
+      });
+
       res.status(201).json(nuevo);
     } catch (error) {
-      res.status(400).json({ error: 'Error al crear el estudiante', detalle: error.message });
+      console.error('Error al crear estudiante:', error);
+      res.status(500).json({ error: 'Error al crear estudiante' });
     }
   },
 
-  // Actualizar estudiante
+  // ✅ 5. Actualizar estudiante por id
   async actualizar(req, res) {
-    const id = req.params.id;
     try {
-      const [filasActualizadas] = await Estudiante.update(req.body, {
-        where: { id_estudiante: id }
-      });
-      if (filasActualizadas === 0) {
-        res.status(404).json({ error: 'Estudiante no encontrado o sin cambios' });
-      } else {
-        res.json({ mensaje: 'Estudiante actualizado correctamente' });
+      const { id } = req.params;
+      const datos = req.body;
+
+      const estudiante = await Estudiante.findByPk(id);
+      if (!estudiante) {
+        return res.status(404).json({ error: 'Estudiante no encontrado' });
       }
+
+      await estudiante.update(datos);
+      res.json(estudiante);
     } catch (error) {
-      res.status(400).json({ error: 'Error al actualizar el estudiante' });
+      console.error('Error al actualizar estudiante:', error);
+      res.status(500).json({ error: 'Error al actualizar estudiante' });
     }
   },
 
-  // Eliminar estudiante
+  // ✅ 6. Eliminar estudiante por id
   async eliminar(req, res) {
-    const id = req.params.id;
     try {
-      const filasEliminadas = await Estudiante.destroy({
-        where: { id_estudiante: id }
-      });
-      if (filasEliminadas === 0) {
-        res.status(404).json({ error: 'Estudiante no encontrado' });
-      } else {
-        res.json({ mensaje: 'Estudiante eliminado correctamente' });
+      const { id } = req.params;
+      const estudiante = await Estudiante.findByPk(id);
+
+      if (!estudiante) {
+        return res.status(404).json({ error: 'Estudiante no encontrado' });
       }
+
+      await estudiante.destroy();
+      res.json({ mensaje: 'Estudiante eliminado correctamente' });
     } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar el estudiante' });
+      console.error('Error al eliminar estudiante:', error);
+      res.status(500).json({ error: 'Error al eliminar estudiante' });
     }
   },
 
-  // Buscar por nombre, número de documento o grado
-  async buscar(req, res) {
-    const { termino } = req.query;
+  // ✅ Obtener estudiante por ID
+async obtenerPorId(req, res) {
+  try {
+    const { id } = req.params;
 
-    try {
-      const estudiantes = await Estudiante.findAll({
-        where: {
-          [Op.or]: [
-            { nombre: { [Op.like]: `%${termino}%` } },
-            { numero_documento: { [Op.like]: `%${termino}%` } }
+    const estudiante = await Estudiante.findByPk(id, {
+      include: [
+        { model: Persona, as: 'persona' },
+        { model: Usuario, as: 'usuario' },
+        { model: Eps, as: 'eps' },
+        { model: EstadoAcademico, as: 'estadoAcademico' },
+        {
+          model: Acudiente,
+          as: 'acudiente',
+          include: [
+            { model: Persona, as: 'persona' },
+            { model: RelacionAcudiente, as: 'relacion' }
           ]
         }
-      });
+      ]
+    });
 
-      if (estudiantes.length === 0) {
-        res.status(404).json({ mensaje: 'No se encontraron coincidencias' });
-      } else {
-        res.json(estudiantes);
-      }
-    } catch (error) {
-      res.status(500).json({ error: 'Error al buscar estudiantes' });
+    if (!estudiante) {
+      return res.status(404).json({ error: 'Estudiante no encontrado' });
     }
-  },
 
-  // Contar estudiantes por grado
+    res.json(estudiante);
+  } catch (error) {
+    console.error('Error al obtener estudiante por ID:', error);
+    res.status(500).json({ error: 'Error al obtener estudiante' });
+  }
+},
+
+
+  // ✅ 7. Contar estudiantes por nombre de grado
   async contarPorGrado(req, res) {
-    const nombreGrado = req.params.nombre;
     try {
-      const grado = await Grado.findOne({ where: { nombre_grado: nombreGrado } });
-      if (!grado) return res.status(404).json({ error: 'Grado no encontrado' });
+      const { nombre } = req.params;
 
-      const total = await Estudiantegrado.count({
-        where: { id_grado: grado.id_grado }
+      const estudiantes = await Estudiante.findAll({
+        include: [
+          {
+            model: Estudiantegrado,
+            as: 'grados',
+            include: [
+              {
+                model: Grado,
+                as: 'grado',
+                where: { nombre_grado: nombre }
+              }
+            ]
+          }
+        ]
       });
 
-
-      res.json({ total_estudiantes: total });
+      res.json({ total: estudiantes.length });
     } catch (error) {
-      console.error('Error al contar estudiantes por grado:', error);
+      console.error('Error al contar por grado:', error);
       res.status(500).json({ error: 'Error al contar estudiantes por grado' });
     }
   }
 };
-
-module.exports = estudianteController;

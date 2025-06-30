@@ -14,7 +14,7 @@ function RegistrarObservacion() {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/categorias');
+        const res = await fetch('http://localhost:3000/api/categorias');
         const data = await res.json();
         setCategorias(data);
       } catch (error) {
@@ -28,7 +28,7 @@ function RegistrarObservacion() {
   // 🔍 Buscar estudiante por nombre
   const manejarBusqueda = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/estudiantes/buscar?termino=${nombreBuscado}`);
+      const res = await fetch(`http://localhost:3000/api/estudiantes/buscar?termino=${nombreBuscado}`);
       const data = await res.json();
 
       if (res.ok && data.length > 0) {
@@ -54,7 +54,7 @@ function RegistrarObservacion() {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/api/observacion', {
+      const res = await fetch('http://localhost:3000/api/observacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

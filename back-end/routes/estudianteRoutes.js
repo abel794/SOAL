@@ -1,21 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/estudianteController');
-const estudianteController = require('../controllers/estudianteController');
 
-// ✅ Primero las rutas más específicas
-router.get('/total', estudianteController.obtenerTotalestudiantes);
-router.get('/buscar/termino', controller.buscar);
-router.get('/count/grado/:nombre', controller.contarPorGrado);
-router.get('/buscar', controller.buscar); // se usaría como /api/estudiantes/buscar?termino=Juan
+// Listar todos los estudiantes con relaciones
+router.get('/', controller.listarTodos);
 
+// Buscar por nombre o documento (query: ?filtro=nombre)
+router.get('/buscar', controller.buscar);
 
+// Contar estudiantes (opcional: ?id_estado_academico=1)
+router.get('/total', controller.contar);
 
-// Luego las rutas generales
-router.get('/', controller.obtenerTodos);
+// Obtener un estudiante por ID ← ✅ ESTA ES LA RUTA NUEVA
 router.get('/:id', controller.obtenerPorId);
+
+// Crear un nuevo estudiante
 router.post('/', controller.crear);
+
+// Actualizar estudiante por ID
 router.put('/:id', controller.actualizar);
+
+// Eliminar estudiante por ID
 router.delete('/:id', controller.eliminar);
 
 module.exports = router;

@@ -10,7 +10,7 @@ function ResumenObservaciones() {
     async function cargarDatos() {
       try {
         // Cargar porcentajes de gravedad
-        const resGravedad = await fetch('http://localhost:3001/api/observacion/por-gravedad');
+        const resGravedad = await fetch('http://localhost:3000/api/observacion/por-gravedad');
         const gravedad = await resGravedad.json();
         setDatosGravedad({
           Leve: parseFloat(gravedad.leve),
@@ -19,7 +19,7 @@ function ResumenObservaciones() {
         });
 
         // Cargar conteo por tipo de observación
-        const resTipo = await fetch('http://localhost:3001/api/observacion/por-tipo');
+        const resTipo = await fetch('http://localhost:3000/api/observacion/por-tipo');
         const tipo = await resTipo.json();
         setDatosTipo(tipo);
 

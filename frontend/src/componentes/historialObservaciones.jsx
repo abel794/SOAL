@@ -8,7 +8,7 @@ function HistorialObservaciones() {
 
   const manejarBusqueda = async () => {
   try {
-    const res = await fetch(`http://localhost:3001/api/historial/buscar?nombre=${nombreBuscado}`);
+    const res = await fetch(`http://localhost:3000/api/historial/buscar?nombre=${nombreBuscado}`);
     const data = await res.json();
 
     if (res.ok && data.length > 0) {

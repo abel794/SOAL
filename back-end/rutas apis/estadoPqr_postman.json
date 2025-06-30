@@ -1,0 +1,114 @@
+{
+  "info": {
+    "_postman_id": "e8f3c1f1-estadoPqr-collection",
+    "name": "EstadoPQR API",
+    "description": "Colección para probar las rutas del módulo estado PQR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Estado PQR",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Abierto\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr"]
+        }
+      }
+    },
+    {
+      "name": "Obtener todos los estados PQR",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr"]
+        }
+      }
+    },
+    {
+      "name": "Buscar estado PQR por nombre",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/buscar?nombre=Abierto",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr", "buscar"],
+          "query": [
+            { "key": "nombre", "value": "Abierto" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Contar estados PQR",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/contar/total",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr", "contar", "total"]
+        }
+      }
+    },
+    {
+      "name": "Obtener estado PQR por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar estado PQR",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Cerrado\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar estado PQR",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-pqr/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-pqr", "1"]
+        }
+      }
+    }
+  ]
+}

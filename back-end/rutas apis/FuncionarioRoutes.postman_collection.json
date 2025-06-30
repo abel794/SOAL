@@ -1,0 +1,148 @@
+{
+  "info": {
+    "_postman_id": "funcionario-routes-soal",
+    "name": "Funcionario Routes SOAL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔍 Buscar por nombre",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/buscar?nombre=Juan",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "buscar"],
+          "query": [{ "key": "nombre", "value": "Juan" }]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar por cargo",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/contar?cargo=Profesor",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "contar"],
+          "query": [{ "key": "cargo", "value": "docente" }]
+        }
+      }
+    },
+    {
+      "name": "🎓 Filtrar por escolaridad",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/escolaridad?id_escolaridad=1",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "escolaridad"],
+          "query": [{ "key": "id_escolaridad", "value": "1" }]
+        }
+      }
+    },
+    {
+      "name": "📋 Obtener todos (con relaciones)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/todos",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "todos"]
+        }
+      }
+    },
+    {
+      "name": "📚 Obtener grados asignados",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/1/grados",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "1", "grados"]
+        }
+      }
+    },
+    {
+      "name": "➕ Asignar grado a funcionario",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_funcionario\": 1,\n  \"id_grado\": 3,\n  \"rol\": \"docente\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/asignar-grado",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "asignar-grado"]
+        }
+      }
+    },
+    {
+      "name": "📄 Obtener funcionario por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/1",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "➕ Crear funcionario",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_documento\": \"11223344\",\n  \"id_usuario\": 4,\n  \"cargo\": \"orientador\",\n  \"id_escolaridad\": 2\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios"]
+        }
+      }
+    },
+    {
+      "name": "✏️ Actualizar funcionario",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cargo\": \"coordinador\",\n  \"id_escolaridad\": 3\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/1",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "🗑️ Eliminar funcionario",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionarios/1",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionarios", "1"]
+        }
+      }
+    }
+  ]
+}

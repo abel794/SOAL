@@ -1,19 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const observacionController = require('../controllers/observacionController');
+const controller = require('../controllers/observacionController');
 
-// Rutas específicas primero
-router.get('/por-tipo', observacionController.contarPorTipo);
-router.get('/por-gravedad', observacionController.contarPorGravedad);
-router.get('/detalladas', observacionController.listarConDetalles);
-router.get('/total', observacionController.contarObservaciones);
-router.get('/criticos', observacionController.contarCriticos);
+// 📊 Totales y porcentajes
+router.get('/contar', controller.contarObservaciones); // Total general
+router.get('/contar/categoria', controller.contarPorCategoriaConPorcentaje); // Por porcentaje
+router.get('/contar/gravedad', controller.contarPorGravedad); // Por gravedad
+router.get('/contar/tipo', controller.contarPorTipo); // Por tipo de observación
+router.get('/contar/criticas', controller.contarCriticos); // Solo disciplinarias
 
-// CRUD de observaciones
-router.get('/', observacionController.obtenerTodas);
-router.post('/', observacionController.crear);
-router.put('/:id', observacionController.actualizar);
-router.delete('/:id', observacionController.eliminar);
-router.get('/:id', observacionController.obtenerPorId); // al final
+// 📋 Listado general con detalles
+router.get('/detalles', controller.listarConDetalles);
+
+// 🔍 Buscar por ID
+router.get('/:id', controller.obtenerPorId);
+
+// ➕ Crear observación y notificación
+router.post('/', controller.crear);
+
+// ✏️ Actualizar (con registro en historial)
+router.put('/:id', controller.actualizar);
+
+// 🗑️ Eliminar observación
+router.delete('/:id', controller.eliminar);
 
 module.exports = router;
+

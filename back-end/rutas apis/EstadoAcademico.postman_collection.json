@@ -1,0 +1,140 @@
+{
+  "info": {
+    "name": "EstadoAcademico API",
+    "_postman_id": "e4f1a3d9-3a67-4f94-8f7d-fd802d7d2f13",
+    "description": "Colección para probar estadoAcademicoRoutes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Estado Académico",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Aprobado\",\n  \"descripcion\": \"Estado académico aprobado\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", ""]
+        }
+      }
+    },
+    {
+      "name": "Obtener todos los estados académicos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", ""]
+        }
+      }
+    },
+    {
+      "name": "Buscar estado por nombre",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/buscar?nombre=Aprobado",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", "buscar"],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "Aprobado"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Contar estados académicos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/contar/total",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", "contar", "total"]
+        }
+      }
+    },
+    {
+      "name": "Obtener estado por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", "1"]
+        }
+      }
+    },
+    {
+      "name": "Obtener estudiantes por estado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/1/estudiantes",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", "1", "estudiantes"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar estado por ID",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Pendiente\",\n  \"descripcion\": \"Estado académico pendiente\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar estado por ID",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/estadoAcademico/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estadoAcademico", "1"]
+        }
+      }
+    }
+  ]
+}

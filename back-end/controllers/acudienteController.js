@@ -1,31 +1,41 @@
+// Importamos los modelos y herramientas necesarias
 const db = require('../models');
-const Acudiente = db.Acudiente;
-const Estudiante = db.Estudiante;
 const { Op } = require('sequelize');
 
+// Desestructuramos los modelos necesarios
+const Acudiente = db.Acudiente;
+const Estudiante = db.Estudiante;
+
+// Controlador de Acudiente
 const acudienteController = {
-  // ✅ Obtener todos los acudientes
+
+  // ✅ Obtener todos los acudientes con relaciones
   async obtenerTodos(req, res) {
     try {
-      const lista = await Acudiente.findAll();
+      const lista = await Acudiente.findAll({
+        include: ['persona', 'usuario', 'relacion', 'estudiantes'] // Relacionado según el modelo
+      });
       res.json(lista);
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener los acudientes' });
+      res.status(500).json({ error: 'Error al obtener los acudientes', detalle: error.message });
     }
   },
 
-  // ✅ Obtener un acudiente por ID
+  // ✅ Obtener un acudiente por ID con relaciones
   async obtenerPorId(req, res) {
     const id = req.params.id;
     try {
-      const acudiente = await Acudiente.findByPk(id);
-      if (acudiente) {
-        res.json(acudiente);
-      } else {
-        res.status(404).json({ error: 'Acudiente no encontrado' });
+      const acudiente = await Acudiente.findByPk(id, {
+        include: ['persona', 'usuario', 'relacion', 'estudiantes']
+      });
+
+      if (!acudiente) {
+        return res.status(404).json({ error: 'Acudiente no encontrado' });
       }
+
+      res.json(acudiente);
     } catch (error) {
-      res.status(500).json({ error: 'Error al buscar acudiente' });
+      res.status(500).json({ error: 'Error al buscar acudiente', detalle: error.message });
     }
   },
 
@@ -53,25 +63,25 @@ const acudienteController = {
         res.json({ mensaje: 'Acudiente actualizado correctamente' });
       }
     } catch (error) {
-      res.status(400).json({ error: 'Error al actualizar el acudiente' });
+      res.status(400).json({ error: 'Error al actualizar el acudiente', detalle: error.message });
     }
   },
 
-  // ✅ Eliminar un acudiente
+  // ✅ Eliminar un acudiente por ID
   async eliminar(req, res) {
     const id = req.params.id;
     try {
-      const filas = await Acudiente.destroy({
+      const eliminado = await Acudiente.destroy({
         where: { id_acudiente: id }
       });
 
-      if (filas === 0) {
+      if (eliminado === 0) {
         res.status(404).json({ error: 'Acudiente no encontrado' });
       } else {
         res.json({ mensaje: 'Acudiente eliminado correctamente' });
       }
     } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar el acudiente' });
+      res.status(500).json({ error: 'Error al eliminar el acudiente', detalle: error.message });
     }
   },
 
@@ -81,7 +91,8 @@ const acudienteController = {
     try {
       const acudiente = await Acudiente.findByPk(id, {
         include: {
-          model: Estudiante
+          model: Estudiante,
+          as: 'estudiantes' // Asegúrate que coincide con el alias en el modelo
         }
       });
 
@@ -89,31 +100,40 @@ const acudienteController = {
         return res.status(404).json({ error: 'Acudiente no encontrado' });
       }
 
-      res.json(acudiente);
+      res.json(acudiente.estudiantes);
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener estudiantes del acudiente' });
+      res.status(500).json({ error: 'Error al obtener estudiantes del acudiente', detalle: error.message });
     }
   },
 
-  // 🔍 Buscar acudientes por nombre
+  // 🔍 Buscar acudientes por nombre (usa relación con persona)
   async buscarPorNombre(req, res) {
     const { nombre } = req.query;
     try {
       const resultados = await Acudiente.findAll({
-        where: {
-          nombre: { [Op.like]: `%${nombre}%` }
-        }
+        include: [
+          {
+            association: 'persona',
+            where: {
+              nombre: { [Op.like]: `%${nombre}%` } // Filtra por nombre en la tabla persona
+            }
+          },
+          'usuario',
+          'relacion'
+        ]
       });
 
       if (resultados.length === 0) {
-        res.status(404).json({ mensaje: 'No se encontraron coincidencias' });
-      } else {
-        res.json(resultados);
+        return res.status(404).json({ mensaje: 'No se encontraron coincidencias' });
       }
+
+      res.json(resultados);
     } catch (error) {
-      res.status(500).json({ error: 'Error al buscar acudientes' });
+      res.status(500).json({ error: 'Error al buscar acudientes', detalle: error.message });
     }
   }
+
 };
 
+// Exportamos el controlador
 module.exports = acudienteController;

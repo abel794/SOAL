@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 // 1. Conexión a la base de datos
 const sequelize = new Sequelize('SOAL1', 'root', '', {
@@ -9,125 +9,156 @@ const sequelize = new Sequelize('SOAL1', 'root', '', {
 
 // 2. Importación de modelos
 const models = {
-  Coordinador: require('./Coordinador')(sequelize, Sequelize.DataTypes),
-  Usuario: require('./Usuario')(sequelize, Sequelize.DataTypes),
-  Estudiante: require('./Estudiante')(sequelize, Sequelize.DataTypes),
-  Grado: require('./Grado')(sequelize, Sequelize.DataTypes),
-  Estudiantegrado: require('./Estudiantegrado')(sequelize, Sequelize.DataTypes),
-  Profesor: require('./Profesor')(sequelize, Sequelize.DataTypes),
-  Secretaria: require('./Secretaria')(sequelize, Sequelize.DataTypes),
-  Acudiente: require('./Acudiente')(sequelize, Sequelize.DataTypes),
-  Observacion: require('./Observacion')(sequelize, Sequelize.DataTypes),
-  CategoriaObservacion: require('./CategoriaObservacion')(sequelize, Sequelize.DataTypes),
-  Cita: require('./Cita')(sequelize, Sequelize.DataTypes),
-  Asistencia: require('./Asistencia')(sequelize, Sequelize.DataTypes),
-  HistorialObservacion: require('./HistorialObservacion')(sequelize, Sequelize.DataTypes),
-  ProfesorGrado: require('./ProfesorGrado')(sequelize, Sequelize.DataTypes),
+  Acudiente: require('./Acudiente')(sequelize, DataTypes),
+  Asistencia: require('./Asistencia')(sequelize, DataTypes),
+  Canal_notificacion: require('./Canal_notificacion')(sequelize, DataTypes),
+  CategoriaObservacion: require('./CategoriaObservacion')(sequelize, DataTypes),
+  Cita: require('./Cita')(sequelize, DataTypes),
+  EstadoAcademico: require('./Estado_academico')(sequelize, DataTypes),
+  EstadoAsistencia: require('./Estado_asistencia')(sequelize, DataTypes),
+  EstadoNotificacion: require('./EstadoNotificacion')(sequelize, DataTypes),
+  EstadoPqr: require('./EstadoPqr')(sequelize, DataTypes),
+  EstadoUsuario: require('./EstadoUsuario')(sequelize, DataTypes),
+  Estudiante: require('./Estudiante')(sequelize, DataTypes),
+  EstudianteGrado: require('./EstudianteGrado')(sequelize, DataTypes),
+  Eps: require('./Eps')(sequelize, DataTypes),
+  Funcionario: require('./funcionario')(sequelize, DataTypes),
+  FuncionarioGrado: require('./FuncionarioGrado')(sequelize, DataTypes),
+  Grado: require('./grado')(sequelize, DataTypes),
+  GravedadObservacion: require('./GravedadObservacion')(sequelize, DataTypes),
+  HistorialObservacion: require('./HistorialObservacion')(sequelize, DataTypes),
+  Justificacion: require('./justificacion')(sequelize, DataTypes),
+  NivelEscolaridad: require('./NivelEscolaridad')(sequelize, DataTypes),
+  Notificacion: require('./Notificacion')(sequelize, DataTypes),
+  Observacion: require('./Observacion')(sequelize, DataTypes),
+  Pqr: require('./Pqr')(sequelize, DataTypes),
+  Persona: require('./Persona')(sequelize, DataTypes),
+  RelacionAcudiente: require('./RelacionAcudiente')(sequelize, DataTypes),
+  Sexo: require('./Sexo')(sequelize, DataTypes),
+  TipoDocumento: require('./TipoDocumento')(sequelize, DataTypes),
+  TipoPqr: require('./TipoPqr')(sequelize, DataTypes),
+  TipoUsuario: require('./TipoUsuario')(sequelize, DataTypes),
+  Usuario: require('./Usuario')(sequelize, DataTypes),
+  // AuditoriaObservacion: require('./AuditoriaObservacion')(sequelize, DataTypes),
 };
 
-// 3. Ejecutar asociaciones si existen en los modelos
+
+// 3. Asociaciones internas de los modelos
 Object.values(models).forEach((model) => {
-  if (model.associate) {
-    model.associate(models);
-  }
+  if (model.associate) model.associate(models);
 });
 
-// 4. Declaración de relaciones adicionales
+// 4. Relaciones adicionales si no están en associate
 
-const {
-  Usuario,
-  Estudiante,
-  Grado,
-  Estudiantegrado,
-  Profesor,
-  Secretaria,
-  Coordinador,
-  Acudiente,
-  Observacion,
-  Cita,
-  Asistencia,
-  HistorialObservacion,
-  ProfesorGrado,
-  CategoriaObservacion,
-} = models;
+// Persona 1:1 con Funcionario, Estudiante y Acudiente
+models.Persona.hasOne(models.Funcionario, { foreignKey: 'numero_documento' });
+models.Persona.hasOne(models.Acudiente, { foreignKey: 'numero_documento' });
+models.Persona.hasOne(models.Estudiante, { foreignKey: 'numero_documento' });
 
-// Observacion → Estudiante
-Observacion.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
+models.Funcionario.belongsTo(models.Persona, { foreignKey: 'numero_documento' });
+models.Acudiente.belongsTo(models.Persona, { foreignKey: 'numero_documento' });
+models.Estudiante.belongsTo(models.Persona, { foreignKey: 'numero_documento' });
 
-// HistorialObservacion → Observacion
-HistorialObservacion.belongsTo(Observacion, { foreignKey: 'id_observacion' });
+// Usuario 1:1 Funcionario/Estudiante/Acudiente
+models.Usuario.hasOne(models.Funcionario, { foreignKey: 'id_usuario' });
+models.Usuario.hasOne(models.Estudiante, { foreignKey: 'id_usuario' });
+models.Usuario.hasOne(models.Acudiente, { foreignKey: 'id_usuario' });
 
-// Observacion → CategoriaObservacion
-Observacion.belongsTo(CategoriaObservacion, { foreignKey: 'id_categoria' });
+models.Funcionario.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
+models.Estudiante.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
+models.Acudiente.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
 
+// Usuario pertenece a Persona
+models.Usuario.belongsTo(models.Persona, {
+  foreignKey: 'numero_documento',
+  targetKey: 'numero_documento',
+});
 
-// Usuario 1:1 con cada rol
-Usuario.hasOne(Estudiante, { foreignKey: 'id_usuario' });
-Estudiante.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+// Funcionario <-> Grado (Muchos a Muchos)
+models.Funcionario.belongsToMany(models.Grado, {
+  through: models.FuncionarioGrado,
+  foreignKey: 'id_funcionario',
+  otherKey: 'id_grado',
+  as: 'grados',
+});
+models.Grado.belongsToMany(models.Funcionario, {
+  through: models.FuncionarioGrado,
+  foreignKey: 'id_grado',
+  otherKey: 'id_funcionario',
+  as: 'funcionarios',
+});
 
-Usuario.hasOne(Profesor, { foreignKey: 'id_usuario' });
-Profesor.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+// Relaciones de Observación
+models.Estudiante.hasMany(models.Observacion, { foreignKey: 'id_estudiante' });
+models.Observacion.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
 
-Usuario.hasOne(Secretaria, { foreignKey: 'id_usuario' });
-Secretaria.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+models.Funcionario.hasMany(models.Observacion, { foreignKey: 'id_funcionario' });
+models.Observacion.belongsTo(models.Funcionario, { foreignKey: 'id_funcionario' });
 
-Usuario.hasOne(Acudiente, { foreignKey: 'id_usuario' });
-Acudiente.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+models.CategoriaObservacion.hasMany(models.Observacion, { foreignKey: 'id_categoria' });
+models.Observacion.belongsTo(models.CategoriaObservacion, { foreignKey: 'id_categoria' });
 
-// Estudiante-Grado (Muchos a Muchos)
-Grado.hasMany(Estudiantegrado, { foreignKey: 'id_grado' });
-Estudiantegrado.belongsTo(Grado, { foreignKey: 'id_grado' });
+models.HistorialObservacion.belongsTo(models.Observacion, { foreignKey: 'id_observacion' });
+models.Observacion.hasMany(models.HistorialObservacion, { foreignKey: 'id_observacion' });
 
-Estudiante.hasMany(Estudiantegrado, { foreignKey: 'id_estudiante' });
-Estudiantegrado.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
+// Estudiante <-> Grado (Muchos a muchos)
+models.Estudiante.hasMany(models.EstudianteGrado, { foreignKey: 'id_estudiante' });
+models.EstudianteGrado.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
 
-// Profesor-Grado (Muchos a Muchos)
-Grado.hasMany(ProfesorGrado, { foreignKey: 'id_grado' });
-ProfesorGrado.belongsTo(Grado, { foreignKey: 'id_grado' });
+models.Grado.hasMany(models.EstudianteGrado, { foreignKey: 'id_grado' });
+models.EstudianteGrado.belongsTo(models.Grado, { foreignKey: 'id_grado' });
 
-Profesor.hasMany(ProfesorGrado, { foreignKey: 'id_profesor' });
-ProfesorGrado.belongsTo(Profesor, { foreignKey: 'id_profesor' });
-
-// Estudiante - Observacion
-Estudiante.hasMany(Observacion, { foreignKey: 'id_estudiante' });
-Observacion.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
-
-// Usuario - Observacion
-Usuario.hasMany(Observacion, { foreignKey: 'id_usuario' });
-Observacion.belongsTo(Usuario, { foreignKey: 'id_usuario' });
-
-Observacion.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
-Observacion.belongsTo(CategoriaObservacion, { foreignKey: 'id_categoria' });
-
-// Observacion - Historial
-Observacion.hasMany(HistorialObservacion, { foreignKey: 'id_observacion' });
-HistorialObservacion.belongsTo(Observacion, { foreignKey: 'id_observacion' });
-
-// Estudiante - Cita
-Estudiante.hasMany(Cita, { foreignKey: 'id_estudiante' });
-Cita.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
-
-// Acudiente - Cita
-Acudiente.hasMany(Cita, { foreignKey: 'id_acudiente' });
-Cita.belongsTo(Acudiente, { foreignKey: 'id_acudiente' });
+// Acudiente -> Estudiante (1:N)
+models.Acudiente.hasMany(models.Estudiante, { foreignKey: 'id_acudiente' });
+models.Estudiante.belongsTo(models.Acudiente, { foreignKey: 'id_acudiente' });
 
 // Asistencia
-Estudiante.hasMany(Asistencia, { foreignKey: 'id_estudiante' });
-Asistencia.belongsTo(Estudiante, { foreignKey: 'id_estudiante' });
+models.Funcionario.hasMany(models.Asistencia, { foreignKey: 'id_funcionario' });
+models.Asistencia.belongsTo(models.Funcionario, { foreignKey: 'id_funcionario' });
 
-Profesor.hasMany(Asistencia, { foreignKey: 'id_profesor' });
-Asistencia.belongsTo(Profesor, { foreignKey: 'id_profesor' });
+models.Estudiante.hasMany(models.Asistencia, { foreignKey: 'id_estudiante' });
+models.Asistencia.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
 
-// Acudiente - Estudiante (1:N)
-Acudiente.hasMany(Estudiante, { foreignKey: 'id_acudiente' });
-Estudiante.belongsTo(Acudiente, { foreignKey: 'id_acudiente' });
+// Citas
+models.Acudiente.hasMany(models.Cita, { foreignKey: 'id_acudiente' });
+models.Cita.belongsTo(models.Acudiente, { foreignKey: 'id_acudiente' });
 
-// Categoría - Observación
-CategoriaObservacion.hasMany(Observacion, { foreignKey: 'id_categoria' });
-Observacion.belongsTo(CategoriaObservacion, { foreignKey: 'id_categoria' });
+models.Estudiante.hasMany(models.Cita, { foreignKey: 'id_estudiante' });
+models.Cita.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
 
-// 5. Exportación final
+// PQR
+models.Acudiente.hasMany(models.Pqr, { foreignKey: 'id_acudiente' });
+models.Pqr.belongsTo(models.Acudiente, { foreignKey: 'id_acudiente' });
+
+models.Estudiante.hasMany(models.Pqr, { foreignKey: 'id_estudiante' });
+models.Pqr.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
+
+models.TipoPqr.hasMany(models.Pqr, { foreignKey: 'id_tipo_pqr' });
+models.Pqr.belongsTo(models.TipoPqr, { foreignKey: 'id_tipo_pqr' });
+
+models.EstadoPqr.hasMany(models.Pqr, { foreignKey: 'id_estado_pqr' });
+models.Pqr.belongsTo(models.EstadoPqr, { foreignKey: 'id_estado_pqr' });
+
+// Relación Acudiente - Relación
+models.RelacionAcudiente.hasMany(models.Acudiente, { foreignKey: 'id_relacion' });
+models.Acudiente.belongsTo(models.RelacionAcudiente, { foreignKey: 'id_relacion' });
+
+// Sexo y TipoDocumento
+models.Sexo.hasMany(models.Persona, { foreignKey: 'id_sexo' });
+models.Persona.belongsTo(models.Sexo, { foreignKey: 'id_sexo' });
+
+models.TipoDocumento.hasMany(models.Persona, { foreignKey: 'id_tipo_documento' });
+models.Persona.belongsTo(models.TipoDocumento, { foreignKey: 'id_tipo_documento' });
+
+// Usuario -> EstadoUsuario / TipoUsuario
+models.EstadoUsuario.hasMany(models.Usuario, { foreignKey: 'id_estado_usuario' });
+models.Usuario.belongsTo(models.EstadoUsuario, { foreignKey: 'id_estado_usuario' });
+
+models.TipoUsuario.hasMany(models.Usuario, { foreignKey: 'id_tipo_usuario' });
+models.Usuario.belongsTo(models.TipoUsuario, { foreignKey: 'id_tipo_usuario' });
+
+// 5. Exportar sequelize + todos los modelos
 module.exports = {
   sequelize,
-  ...models
+  ...models,
 };

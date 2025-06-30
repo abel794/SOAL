@@ -1,20 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/categoriaObservacionController');
+const categoriaObservacionController = require('../controllers/categoriaObservacionController');
 
 // Obtener todas las categorías
-router.get('/', controller.obtenerTodas);
+router.get('/', categoriaObservacionController.obtenerTodas);
+
+// Buscar categorías por nombre (query param ?nombre=)
+router.get('/buscar', categoriaObservacionController.buscarPorNombre);
+
+// Contar todas las categorías
+router.get('/contar/todas', categoriaObservacionController.contarCategorias);
 
 // Obtener una categoría por ID
-router.get('/:id', controller.obtenerPorId);
+router.get('/:id', categoriaObservacionController.obtenerPorId);
 
-// Crear una nueva categoría
-router.post('/', controller.crear);
+// Crear nueva categoría
+router.post('/', categoriaObservacionController.crear);
 
-// Actualizar una categoría existente
-router.put('/:id', controller.actualizar);
+// Actualizar una categoría por ID
+router.put('/:id', categoriaObservacionController.actualizar);
 
-// Eliminar una categoría
-router.delete('/:id', controller.eliminar);
+// Eliminar una categoría por ID
+router.delete('/:id', categoriaObservacionController.eliminar);
 
 module.exports = router;

@@ -3,22 +3,31 @@ import React, { useEffect, useState } from 'react';
 function TablaObservaciones() {
   const [observaciones, setObservaciones] = useState([]);
 
-  // Cargar datos desde la API
+  // 🔄 Cargar datos desde la API
   useEffect(() => {
     async function cargar() {
       try {
-        const res = await fetch('http://localhost:3001/api/observacion/detalladas');
+        const res = await fetch('http://localhost:3000/api/observacion/detalladas');
         const data = await res.json();
-        setObservaciones(data);
+
+        console.log('Observaciones recibidas:', data);
+
+        // ✅ Verificar si data es un array antes de setear
+        if (Array.isArray(data)) {
+          setObservaciones(data);
+        } else {
+          setObservaciones([]); // evita error si llega un objeto tipo {mensaje: "..."}
+        }
       } catch (error) {
         console.error('❌ Error al cargar observaciones:', error);
+        setObservaciones([]); // si hay error, setear vacío
       }
     }
 
     cargar();
   }, []);
 
-  // Función para renderizar estrellas según gravedad textual
+  // ⭐ Convertir gravedad textual a cantidad de estrellas
   const gravedadAEstrellas = (gravedad) => {
     switch (gravedad) {
       case 'Leve': return 1;
@@ -37,6 +46,7 @@ function TablaObservaciones() {
   return (
     <div className="tabla-container mt-4">
       <h3 className="mb-3 text-primary">📋 Observaciones Detalladas</h3>
+
       <table className="tabla">
         <thead>
           <tr>
@@ -49,16 +59,24 @@ function TablaObservaciones() {
           </tr>
         </thead>
         <tbody>
-          {observaciones.map((obs, i) => (
-            <tr key={i}>
-              <td>{obs.estudiante}</td>
-              <td>{obs.tipo}</td>
-              <td>{obs.profesor}</td>
-              <td>{obs.fecha}</td>
-              <td>{renderEstrellas(gravedadAEstrellas(obs.gravedad))}</td>
-              <td>{obs.observacion}</td>
+          {Array.isArray(observaciones) && observaciones.length > 0 ? (
+            observaciones.map((obs, i) => (
+              <tr key={i}>
+                <td>{obs.estudiante}</td>
+                <td>{obs.tipo}</td>
+                <td>{obs.profesor}</td>
+                <td>{obs.fecha}</td>
+                <td>{renderEstrellas(gravedadAEstrellas(obs.gravedad))}</td>
+                <td>{obs.observacion}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center text-muted">
+                No hay observaciones registradas.
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

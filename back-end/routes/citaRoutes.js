@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/citaController');
+const citaController = require('../controllers/citaController');
 
-// 🟢 Obtener el total de citas (debe ir primero para evitar conflicto con rutas dinámicas)
-router.get('/total', controller.contarCitas);
+// Crear nueva cita
+router.post('/', citaController.crearCita);
 
-// 🔵 Crear una nueva cita
-router.post('/', controller.crearCita);
+// Obtener todas las citas
+router.get('/', citaController.obtenerCitas);
 
-// 🔵 Obtener todas las citas
-router.get('/', controller.obtenerCitas);
+// Contar total de citas
+router.get('/contar', citaController.contarCitas);
+
+// Buscar por número de documento del estudiante o acudiente
+router.get('/buscar/documento', citaController.buscarPorDocumento);
+
+// Buscar por nombre del estudiante o acudiente
+router.get('/buscar/nombre', citaController.buscarPorNombre);
 
 module.exports = router;

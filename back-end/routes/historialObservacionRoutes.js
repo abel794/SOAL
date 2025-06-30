@@ -3,18 +3,24 @@ const router = express.Router();
 const controller = require('../controllers/historialObservacionController');
 
 // 🔍 Buscar historial por nombre de estudiante
-router.get('/buscar', controller.historialPorNombreEstudiante);
+router.get('/buscar/estudiante', controller.historialPorNombreEstudiante);
 
-// 🔍 Obtener historial por estudiante
-router.get('/estudiante/:id_estudiante', controller.obtenerPorEstudiante);
+// 🔍 Buscar historial por nombre del profesor
+router.get('/buscar/profesor', controller.buscarPorNombreProfesor);
 
-// 📄 Obtener historial por observación
+// 🔍 Buscar historial por rango de fechas (?desde=...&hasta=...)
+router.get('/buscar/fechas', controller.buscarPorFecha);
+
+// 📄 Obtener historial por observación específica
 router.get('/observacion/:id', controller.historialPorObservacion);
 
-// 📄 Obtener todos los historiales
-router.get('/', controller.obtenerTodos);
+// 📄 Obtener historial por estudiante
+router.get('/estudiante/:id_estudiante', controller.obtenerPorEstudiante);
 
-// 📄 Obtener historial por ID (¡Debe ir después!)
+// 📋 Obtener todos los historiales
+router.get('/', controller.listarTodos);
+
+// 📄 Obtener historial por ID individual
 router.get('/:id', controller.obtenerPorId);
 
 // ➕ Crear nuevo historial
@@ -24,4 +30,3 @@ router.post('/', controller.crear);
 router.delete('/:id', controller.eliminar);
 
 module.exports = router;
-

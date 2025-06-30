@@ -8,7 +8,7 @@ function BuscarEstudiante() {
 
   const buscar = async () => {
     try {
-      let url = 'http://localhost:3001/api/estudiantes/buscar';
+      let url = 'http://localhost:3000/api/estudiantes/buscar';
       if (nombre.trim() !== '') {
         url += `?termino=${encodeURIComponent(nombre)}`;
       }

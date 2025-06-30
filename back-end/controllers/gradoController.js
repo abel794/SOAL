@@ -1,82 +1,45 @@
 const db = require('../models');
 const Grado = db.Grado;
-const Estudiantegrado = db.Estudiantegrado;
+const EstudianteGrado = db.EstudianteGrado;
+const FuncionarioGrado = db.FuncionarioGrado;
 const { Op } = require('sequelize');
 
 const gradoController = {
-  // ✅ Obtener todos los grados
-  async obtenerTodos(req, res) {
+
+  // ✅ Listar todos los grados
+  async listarTodos(req, res) {
     try {
       const grados = await Grado.findAll();
       res.json(grados);
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener grados' });
+      console.error("Error al listar grados:", error);
+      res.status(500).json({ error: 'Error al obtener grados', detalle: error.message });
     }
   },
+  // ✅ Obtener grado por ID
+async obtenerPorId(req, res) {
+  const { id } = req.params;
 
-  // ✅ Obtener un grado por ID
-  async obtenerPorId(req, res) {
-    const id = req.params.id;
-    try {
-      const grado = await Grado.findByPk(id);
-      if (!grado) {
-        return res.status(404).json({ error: 'Grado no encontrado' });
-      }
-      res.json(grado);
-    } catch (error) {
-      res.status(500).json({ error: 'Error al obtener el grado' });
+  try {
+    const grado = await Grado.findByPk(id);
+    if (!grado) {
+      return res.status(404).json({ error: 'Grado no encontrado' });
     }
-  },
 
-  // ✅ Crear un nuevo grado
-  async crear(req, res) {
-    try {
-      const nuevo = await Grado.create(req.body);
-      res.status(201).json(nuevo);
-    } catch (error) {
-      res.status(400).json({ error: 'Error al crear el grado', detalle: error.message });
-    }
-  },
+    res.json(grado);
+  } catch (error) {
+    console.error("Error al obtener grado por ID:", error);
+    res.status(500).json({ error: 'Error al obtener grado', detalle: error.message });
+  }
+},
 
-  // ✅ Actualizar un grado
-  async actualizar(req, res) {
-    const id = req.params.id;
-    try {
-      const [filas] = await Grado.update(req.body, {
-        where: { id_grado: id }
-      });
 
-      if (filas === 0) {
-        res.status(404).json({ error: 'Grado no encontrado o sin cambios' });
-      } else {
-        res.json({ mensaje: 'Grado actualizado correctamente' });
-      }
-    } catch (error) {
-      res.status(400).json({ error: 'Error al actualizar el grado' });
-    }
-  },
-
-  // ✅ Eliminar un grado
-  async eliminar(req, res) {
-    const id = req.params.id;
-    try {
-      const filas = await Grado.destroy({
-        where: { id_grado: id }
-      });
-
-      if (filas === 0) {
-        res.status(404).json({ error: 'Grado no encontrado' });
-      } else {
-        res.json({ mensaje: 'Grado eliminado correctamente' });
-      }
-    } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar el grado' });
-    }
-  },
-
-  // 🔍 Buscar por nombre de grado
+  // ✅ Buscar grado por nombre
   async buscarPorNombre(req, res) {
     const { nombre } = req.query;
+
+    if (!nombre) return res.status(400).json({ error: 'Debe enviar el parámetro "nombre"' });
+
     try {
       const grados = await Grado.findAll({
         where: {
@@ -84,28 +47,94 @@ const gradoController = {
         }
       });
 
-      if (grados.length === 0) {
-        res.status(404).json({ mensaje: 'No se encontraron grados' });
-      } else {
-        res.json(grados);
-      }
+      res.json(grados);
     } catch (error) {
-      res.status(500).json({ error: 'Error al buscar grados' });
+      console.error("Error al buscar grados:", error);
+      res.status(500).json({ error: 'Error al buscar grados', detalle: error.message });
     }
   },
 
-  // ✅ Contar estudiantes en un grado específico
-  async contarEstudiantes(req, res) {
-    const id_grado = req.params.id;
+  // ✅ Crear nuevo grado
+  async crear(req, res) {
     try {
-      const total = await Estudiantegrado.count({
-        where: { id_grado }
-      });
-      res.json({ totalEstudiantes: total });
+      const nuevo = await Grado.create(req.body);
+      res.status(201).json(nuevo);
     } catch (error) {
-      res.status(500).json({ error: 'Error al contar estudiantes del grado' });
+      console.error("Error al crear grado:", error);
+      res.status(400).json({ error: 'Error al crear grado', detalle: error.message });
+    }
+  },
+
+  // ✅ Actualizar grado
+  async actualizar(req, res) {
+    const { id } = req.params;
+    try {
+      const [actualizado] = await Grado.update(req.body, {
+        where: { id_grado: id }
+      });
+
+      if (actualizado === 0) {
+        return res.status(404).json({ error: 'Grado no encontrado o sin cambios' });
+      }
+
+      res.json({ mensaje: 'Grado actualizado correctamente' });
+    } catch (error) {
+      console.error("Error al actualizar grado:", error);
+      res.status(400).json({ error: 'Error al actualizar grado', detalle: error.message });
+    }
+  },
+
+  // ✅ Eliminar grado
+  async eliminar(req, res) {
+    const { id } = req.params;
+    try {
+      const eliminado = await Grado.destroy({
+        where: { id_grado: id }
+      });
+
+      if (eliminado === 0) {
+        return res.status(404).json({ error: 'Grado no encontrado' });
+      }
+
+      res.json({ mensaje: 'Grado eliminado correctamente' });
+    } catch (error) {
+      console.error("Error al eliminar grado:", error);
+      res.status(500).json({ error: 'Error al eliminar grado', detalle: error.message });
+    }
+  },
+
+  // ✅ Contar estudiantes en un grado
+  async contarEstudiantes(req, res) {
+    const { id_grado } = req.query;
+
+    if (!id_grado) return res.status(400).json({ error: 'Debe enviar id_grado' });
+
+    try {
+      const total = await EstudianteGrado.count({ where: { id_grado } });
+      res.json({ id_grado, total_estudiantes: total });
+    } catch (error) {
+      console.error("Error al contar estudiantes:", error);
+      res.status(500).json({ error: 'Error al contar estudiantes', detalle: error.message });
+    }
+  },
+
+  // ✅ Ver funcionarios asignados a un grado
+  async funcionariosAsignados(req, res) {
+    const { id } = req.params;
+
+    try {
+      const funcionarios = await FuncionarioGrado.findAll({
+        where: { id_grado: id },
+        include: ['funcionario']
+      });
+
+      res.json(funcionarios);
+    } catch (error) {
+      console.error("Error al listar funcionarios asignados:", error);
+      res.status(500).json({ error: 'Error al obtener funcionarios', detalle: error.message });
     }
   }
+
 };
 
 module.exports = gradoController;

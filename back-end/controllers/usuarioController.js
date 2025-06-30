@@ -18,9 +18,7 @@ const usuarioController = {
     const id = req.params.id;
     try {
       const usuario = await Usuario.findByPk(id);
-      if (!usuario) {
-        return res.status(404).json({ error: 'Usuario no encontrado' });
-      }
+      if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
       res.json(usuario);
     } catch (error) {
       res.status(500).json({ error: 'Error al obtener el usuario' });
@@ -33,7 +31,7 @@ const usuarioController = {
       const nuevo = await Usuario.create(req.body);
       res.status(201).json(nuevo);
     } catch (error) {
-      console.error("el error es: ",error)
+      console.error("el error es: ", error);
       res.status(400).json({ error: 'Error al crear el usuario', detalle: error.message });
     }
   },
@@ -52,7 +50,6 @@ const usuarioController = {
         res.json({ mensaje: 'Usuario actualizado correctamente' });
       }
     } catch (error) {
-      console.error("el error es: ",error)
       res.status(400).json({ error: 'Error al actualizar el usuario' });
     }
   },
@@ -61,9 +58,7 @@ const usuarioController = {
   async eliminar(req, res) {
     const id = req.params.id;
     try {
-      const filas = await Usuario.destroy({
-        where: { id_usuario: id }
-      });
+      const filas = await Usuario.destroy({ where: { id_usuario: id } });
 
       if (filas === 0) {
         res.status(404).json({ error: 'Usuario no encontrado' });
@@ -71,7 +66,6 @@ const usuarioController = {
         res.json({ mensaje: 'Usuario eliminado correctamente' });
       }
     } catch (error) {
-      console.error("el error es: ",error)
       res.status(500).json({ error: 'Error al eliminar el usuario' });
     }
   },
@@ -82,7 +76,7 @@ const usuarioController = {
     try {
       const usuarios = await Usuario.findAll({
         where: {
-          nombre_usuario: { [Op.like]: `%${nombre_usuario}%` }
+          username: { [Op.like]: `%${nombre_usuario}%` }
         }
       });
 
@@ -92,17 +86,16 @@ const usuarioController = {
         res.json(usuarios);
       }
     } catch (error) {
-      console.error("el error es:",error)
       res.status(500).json({ error: 'Error al buscar usuarios' });
     }
   },
 
-  // ✅ Activar usuario
+  // ✅ Activar por ID (id_estado_usuario = 1)
   async activar(req, res) {
     const id = req.params.id;
     try {
       const [filas] = await Usuario.update(
-        { estado: 'Activo' },
+        { id_estado_usuario: 1 },
         { where: { id_usuario: id } }
       );
 
@@ -116,12 +109,12 @@ const usuarioController = {
     }
   },
 
-  // ✅ Inactivar usuario
+  // ✅ Inactivar por ID (id_estado_usuario = 2)
   async inactivar(req, res) {
     const id = req.params.id;
     try {
       const [filas] = await Usuario.update(
-        { estado: 'Inactivo' },
+        { id_estado_usuario: 2 },
         { where: { id_usuario: id } }
       );
 
@@ -139,7 +132,7 @@ const usuarioController = {
   async activarTodos(req, res) {
     try {
       await Usuario.update(
-        { estado: 'Activo' },
+        { id_estado_usuario: 1 },
         { where: {} }
       );
       res.json({ mensaje: 'Todos los usuarios fueron activados' });
@@ -152,14 +145,36 @@ const usuarioController = {
   async inactivarTodos(req, res) {
     try {
       await Usuario.update(
-        { estado: 'Inactivo' },
+        { id_estado_usuario: 2 },
         { where: {} }
       );
       res.json({ mensaje: 'Todos los usuarios fueron inactivados' });
     } catch (error) {
       res.status(500).json({ error: 'Error al inactivar todos los usuarios' });
     }
+  },
+
+  // ✅ Activar o inactivar por número de documento
+  async cambiarEstadoPorDocumento(req, res) {
+    const { numero_documento } = req.params;
+    const { id_estado_usuario } = req.body;
+
+    try {
+      const usuario = await Usuario.findOne({ where: { numero_documento } });
+
+      if (!usuario) {
+        return res.status(404).json({ error: 'Usuario no encontrado con ese documento' });
+      }
+
+      usuario.id_estado_usuario = id_estado_usuario;
+      await usuario.save();
+
+      res.json({ mensaje: `Estado actualizado a ${id_estado_usuario}` });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al cambiar el estado del usuario' });
+    }
   }
 };
 
 module.exports = usuarioController;
+

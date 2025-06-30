@@ -1,73 +1,132 @@
 const db = require('../models');
-const { HistorialObservacion, Observacion, Estudiante } = db;
+const Historial = db.HistorialObservacion;
+const Observacion = db.Observacion;
+const Funcionario = db.Funcionario;
+const Persona = db.Persona;
 const { Op } = require('sequelize');
 
-
 const historialController = {
-  // ✅ Obtener todos los historiales
-  async obtenerTodos(req, res) {
-    try {
-      const historial = await HistorialObservacion.findAll({
-        include: {
-          model: Observacion,
-          attributes: ['descripcion', 'fecha_observacion']
-        }
-      });
-      res.json(historial);
-    } catch (error) {
-      res.status(500).json({ error: 'Error al obtener el historial' });
-    }
-  },
 
-  // ✅ Obtener historial por ID
-  async obtenerPorId(req, res) {
-    const id = req.params.id;
-    try {
-      const registro = await HistorialObservacion.findByPk(id, {
-        include: Observacion
-      });
-      if (!registro) {
-        return res.status(404).json({ error: 'Registro no encontrado' });
-      }
-      res.json(registro);
-    } catch (error) {
-      res.status(500).json({ error: 'Error al buscar el historial' });
-    }
-  },
-
-  // ✅ Crear nuevo registro de historial
+  // ✅ Crear historial de una modificación
   async crear(req, res) {
-    const { id_estudiante, id_profesor, id_observacion, fecha } = req.body;
-
-    if (!id_estudiante || !id_profesor || !id_observacion || !fecha) {
-      return res.status(400).json({
-        error: 'Todos los campos son obligatorios: id_estudiante, id_profesor, id_observacion y fecha.'
-      });
-    }
-
     try {
-      const nuevo = await HistorialObservacion.create({
-        id_estudiante,
-        id_profesor,
+      const { id_observacion, descripcion_modificacion } = req.body;
+
+      if (!id_observacion) {
+        return res.status(400).json({ error: 'El campo id_observacion es obligatorio.' });
+      }
+
+      const nuevo = await Historial.create({
         id_observacion,
-        fecha
+        descripcion_modificacion,
+        fecha_modificacion: new Date()
       });
 
       res.status(201).json(nuevo);
     } catch (error) {
-      res.status(400).json({
-        error: 'Error al crear el historial',
-        detalle: error.message
-      });
+      console.error("Error al crear historial:", error);
+      res.status(500).json({ error: 'Error al registrar historial', detalle: error.message });
     }
   },
 
-  // ✅ Obtener historial por observación
-  async historialPorObservacion(req, res) {
-    const id_observacion = req.params.id;
+  // 🔍 Obtener historial por ID del estudiante
+  async obtenerPorEstudiante(req, res) {
+    const { id_estudiante } = req.params;
+
     try {
-      const historial = await HistorialObservacion.findAll({
-        where: { id_observacion }
+      const historiales = await Historial.findAll({
+        include: {
+          model: Observacion,
+          as: 'observacion',
+          where: { id_estudiante }
+        },
+        order: [['fecha_modificacion', 'DESC']]
+      });
+
+      if (historiales.length === 0) {
+        return res.status(404).json({ mensaje: 'No hay historial para este estudiante' });
+      }
+
+      res.json(historiales);
+    } catch (error) {
+      console.error("Error al obtener historial por estudiante:", error);
+      res.status(500).json({ error: 'Error al consultar historial por estudiante', detalle: error.message });
+    }
+  },
+
+  // 🔍 Buscar historial por nombre del estudiante
+  async historialPorNombreEstudiante(req, res) {
+    const { nombre } = req.query;
+
+    try {
+      const historiales = await Historial.findAll({
+        include: {
+          model: Observacion,
+          as: 'observacion',
+          include: {
+            model: Funcionario,
+            as: 'funcionario',
+            include: {
+              model: Persona,
+              as: 'persona',
+              where: {
+                [Op.or]: [
+                  { primer_nombre: { [Op.like]: `%${nombre}%` } },
+                  { primer_apellido: { [Op.like]: `%${nombre}%` } }
+                ]
+              },
+              attributes: ['primer_nombre', 'primer_apellido']
+            }
+          }
+        },
+        order: [['fecha_modificacion', 'DESC']]
+      });
+
+      if (historiales.length === 0) {
+        return res.status(404).json({ mensaje: 'No se encontraron coincidencias con el nombre del estudiante' });
+      }
+
+      res.json(historiales);
+    } catch (error) {
+      console.error("Error al buscar por nombre del estudiante:", error);
+      res.status(500).json({ error: 'Error al buscar historial por estudiante', detalle: error.message });
+    }
+  },
+
+  // ✅ Listar todos los historiales
+  async listarTodos(req, res) {
+    try {
+      const historiales = await Historial.findAll({
+        include: {
+          model: Observacion,
+          as: 'observacion',
+          include: {
+            model: Funcionario,
+            as: 'funcionario',
+            include: {
+              model: Persona,
+              as: 'persona',
+              attributes: ['primer_nombre', 'primer_apellido']
+            }
+          }
+        },
+        order: [['fecha_modificacion', 'DESC']]
+      });
+      res.json(historiales);
+    } catch (error) {
+      console.error("Error al listar historial:", error);
+      res.status(500).json({ error: 'Error al obtener historial', detalle: error.message });
+    }
+  },
+
+  // ✅ Ver historial por observación específica
+  async historialPorObservacion(req, res) {
+    const { id } = req.params;
+
+    try {
+      const historial = await Historial.findAll({
+        where: { id_observacion: id },
+        order: [['fecha_modificacion', 'DESC']]
       });
 
       if (historial.length === 0) {
@@ -76,95 +135,116 @@ const historialController = {
 
       res.json(historial);
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener historial por observación' });
+      console.error("Error al consultar historial:", error);
+      res.status(500).json({ error: 'Error al consultar historial', detalle: error.message });
     }
   },
 
-  // ✅ Obtener historial por estudiante
-  async obtenerPorEstudiante(req, res) {
-    const { id_estudiante } = req.params;
+  // 🔍 Buscar historial por rango de fecha
+  async buscarPorFecha(req, res) {
+    const { desde, hasta } = req.query;
+
     try {
-      const historial = await HistorialObservacion.findAll({
-        include: [
-          {
-            model: Observacion,
-            attributes: ['descripcion', 'fecha', 'gravedad'],
-            where: { id_estudiante },
-            include: [
-              {
-                model: Estudiante,
-                attributes: ['nombre']
-              }
-            ]
+      const historiales = await Historial.findAll({
+        where: {
+          fecha_modificacion: {
+            [Op.between]: [new Date(desde), new Date(hasta)]
           }
-        ],
+        },
+        include: {
+          model: Observacion,
+          as: 'observacion'
+        },
         order: [['fecha_modificacion', 'DESC']]
       });
 
-      res.json(historial);
+      res.json(historiales);
     } catch (error) {
-      console.error('❌ Error al obtener historial:', error);
-      res.status(500).json({ error: 'Error al obtener historial del estudiante' });
+      console.error("Error al buscar por fecha:", error);
+      res.status(500).json({ error: 'Error en búsqueda por fechas', detalle: error.message });
     }
   },
 
-  async historialPorNombreEstudiante(req, res) {
+  // 🔍 Buscar historial por nombre del profesor
+  async buscarPorNombreProfesor(req, res) {
     const { nombre } = req.query;
 
-    if (!nombre) {
-      return res.status(400).json({ error: 'Debes proporcionar un nombre' });
-    }
-
     try {
-      const historial = await HistorialObservacion.findAll({
-        include: [
-          {
-            model: Observacion,
-            where: {},
-            include: [
-              {
-                model: Estudiante,
-                attributes: ['nombre'],
-                where: {
-                  nombre: { [Op.like]: `%${nombre}%` } // Búsqueda flexible
-                }
-              }
-            ]
+      const historiales = await Historial.findAll({
+        include: {
+          model: Observacion,
+          as: 'observacion',
+          include: {
+            model: Funcionario,
+            as: 'funcionario',
+            include: {
+              model: Persona,
+              as: 'persona',
+              where: {
+                [Op.or]: [
+                  { primer_nombre: { [Op.like]: `%${nombre}%` } },
+                  { primer_apellido: { [Op.like]: `%${nombre}%` } }
+                ]
+              },
+              attributes: ['primer_nombre', 'primer_apellido']
+            }
           }
-        ],
+        },
         order: [['fecha_modificacion', 'DESC']]
       });
 
-      if (historial.length === 0) {
-        return res.status(404).json({ mensaje: 'No hay historial para ese nombre' });
+      if (historiales.length === 0) {
+        return res.status(404).json({ mensaje: 'No se encontraron coincidencias con el nombre del profesor' });
+      }
+
+      res.json(historiales);
+    } catch (error) {
+      console.error("Error al buscar por nombre de profesor:", error);
+      res.status(500).json({ error: 'Error al buscar historial por profesor', detalle: error.message });
+    }
+  },
+
+  // 🔍 Obtener historial por ID
+  async obtenerPorId(req, res) {
+    const { id } = req.params;
+
+    try {
+      const historial = await Historial.findByPk(id, {
+        include: {
+          model: Observacion,
+          as: 'observacion'
+        }
+      });
+
+      if (!historial) {
+        return res.status(404).json({ error: 'Historial no encontrado' });
       }
 
       res.json(historial);
-      } catch (error) {
-        console.error('❌ Error al obtener historial:', error);
-        res.status(500).json({ error: 'Error al obtener historial del estudiante' });
-      }
-    },
-  
-
-  // ✅ Eliminar historial
-  async eliminar(req, res) {
-    const id = req.params.id;
-    try {
-      const filas = await HistorialObservacion.destroy({
-        where: { id_historial: id }
-      });
-
-      if (filas === 0) {
-        res.status(404).json({ error: 'Registro de historial no encontrado' });
-      } else {
-        res.json({ mensaje: 'Registro eliminado correctamente' });
-      }
     } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar el historial' });
+      console.error("Error al obtener historial por ID:", error);
+      res.status(500).json({ error: 'Error al consultar historial', detalle: error.message });
+    }
+  },
+
+  // ❌ Eliminar historial
+  async eliminar(req, res) {
+    const { id } = req.params;
+
+    try {
+      const eliminado = await Historial.destroy({ where: { id_historial: id } });
+
+      if (eliminado === 0) {
+        return res.status(404).json({ error: 'Historial no encontrado para eliminar' });
+      }
+
+      res.json({ mensaje: 'Historial eliminado correctamente' });
+    } catch (error) {
+      console.error("Error al eliminar historial:", error);
+      res.status(500).json({ error: 'Error al eliminar historial', detalle: error.message });
     }
   }
+
 };
 
 module.exports = historialController;
-
