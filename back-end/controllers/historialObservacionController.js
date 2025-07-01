@@ -71,11 +71,11 @@ const historialController = {
               as: 'persona',
               where: {
                 [Op.or]: [
-                  { primer_nombre: { [Op.like]: `%${nombre}%` } },
-                  { primer_apellido: { [Op.like]: `%${nombre}%` } }
+                  { nombre: { [Op.like]: `%${nombre}%` } },
+                  { apellido: { [Op.like]: `%${nombre}%` } }
                 ]
               },
-              attributes: ['primer_nombre', 'primer_apellido']
+              attributes: ['nombre', 'apellido']
             }
           }
         },
@@ -106,7 +106,7 @@ const historialController = {
             include: {
               model: Persona,
               as: 'persona',
-              attributes: ['primer_nombre', 'primer_apellido']
+              attributes: ['nombre', 'apellido']
             }
           }
         },
@@ -182,11 +182,11 @@ const historialController = {
               as: 'persona',
               where: {
                 [Op.or]: [
-                  { primer_nombre: { [Op.like]: `%${nombre}%` } },
-                  { primer_apellido: { [Op.like]: `%${nombre}%` } }
+                  { nombre: { [Op.like]: `%${nombre}%` } },
+                  { apellido: { [Op.like]: `%${nombre}%` } }
                 ]
               },
-              attributes: ['primer_nombre', 'primer_apellido']
+              attributes: ['nombre', 'apellido']
             }
           }
         },

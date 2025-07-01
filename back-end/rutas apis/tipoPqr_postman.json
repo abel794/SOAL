@@ -1,0 +1,111 @@
+{
+  "info": {
+    "_postman_id": "e9a1f620-1234-4567-abcd-9876543210fe",
+    "name": "TipoPqr API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los tipos de PQR",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-pqr",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-pqr"]
+        }
+      }
+    },
+    {
+      "name": "Obtener un tipo de PQR por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-pqr/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear nuevo tipo de PQR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Queja\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-pqr",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-pqr"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar tipo de PQR",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Reclamo\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-pqr/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar tipo de PQR",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-pqr/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "Contar PQRs por tipo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-pqr/estadistica/pqrs",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-pqr", "estadistica", "pqrs"]
+        }
+      }
+    }
+  ]
+}

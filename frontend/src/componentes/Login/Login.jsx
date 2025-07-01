@@ -7,37 +7,57 @@ import '../Login/style/CampoTexto.css';
 import '../Login/style/Boton.css';
 import logo from '../../assets/image.png';
 
+// Mapeo de tipos de usuario
+const rolesMapping = {
+  1: 'Estudiante',
+  2: 'Acudiente',
+  3: 'Profesor',
+  4: 'Coordinador',
+  5: 'Secretaria',
+  6: 'Administrativo',
+  7: 'Rector',
+  8: 'Orientador'
+};
+
 const Login = () => {
-  const [usuario, setUsuario] = useState('');
-  const [clave, setClave] = useState('');
+  const [username, setUsername] = useState('');
+  const [contrasena, setContrasena] = useState('');
   const navigate = useNavigate();
 
   const manejarEnvio = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3000/api/autenticacion/iniciar-sesion', {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // Enviamos los campos que espera el backend
         body: JSON.stringify({
-          nombre_usuario: usuario,
-          clave: clave
+          username: username,
+          contrasena: contrasena
         }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        const tipo_usuario = data.usuario.rol;
+        // Se asume que el backend devuelve los datos del usuario en data.usuario,
+        // y que el campo "id_tipo_usuario" es un número, ej. 4 para Coordinador.
+        const id_tipo_usuario = data.usuario.id_tipo_usuario;
+        // Convertimos el número a su representación textual usando nuestro mapping.
+        const rol = rolesMapping[id_tipo_usuario];
 
+        // Guardar el usuario en localStorage
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
-        if (tipo_usuario === 'Coordinador' || tipo_usuario === 'Rector' || tipo_usuario === 'Administrativo') {
+        // Redirigir según el rol permitido. Aquí permitimos Coordinador, Rector y Administrativo.
+        if (rol === 'Coordinador' || rol === 'Rector' || rol === 'Administrativo') {
           navigate('/coordinador');
         } else {
-          alert('🔒 Tu rol no tiene acceso a este panel');
+          alert(`🔒 Tu rol (${rol}) no tiene acceso a este panel.`);
         }
       } else {
+        // Si hay error, se muestra el mensaje devuelto por el backend.
         alert(`❌ ${data.error}`);
       }
     } catch (error) {
@@ -57,16 +77,16 @@ const Login = () => {
           etiqueta="Nombre de usuario"
           tipo="text"
           placeholder="ej: juan.perez"
-          valor={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
+          valor={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <CampoTexto
           etiqueta="Contraseña"
           tipo="password"
           placeholder="••••••••"
-          valor={clave}
-          onChange={(e) => setClave(e.target.value)}
+          valor={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
         />
 
         <p className="enlace-texto">¿Olvidaste tu contraseña?</p>
@@ -88,4 +108,3 @@ const Login = () => {
 };
 
 export default Login;
-

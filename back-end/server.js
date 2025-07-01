@@ -46,6 +46,17 @@ const estadoNotificacionRoutes=require('./routes/estadoNotificacionRoutes');
 //const estadoPqrRoutes=require('./routes/estadoPqrRoutes')
 const estadoUsuarioRoutes = require('./routes/estadoUsuarioRoutes');
 const funcionarioGradoRoutes = require('./routes/funcionarioGradoRoutes');
+const gravedadObservacionRoutes = require('./routes/gravedadObservacionRoutes');
+const justificacionesRoutes = require('./routes/justuficacionRoutes');
+const nivelEscolaridadRoutes = require('./routes/nivelEscolaridadRoutes');
+const notificacionRoutes = require('./routes/notificacionRoutes');
+const registroEstudianteRoutes = require('./routes/registrarEstudianteRoute');
+const registroAcudienteRoutes = require('./routes/registrarAcudienteRoutes');
+const registroFuncionarioRoutes = require('./routes/registrarFuncionarioRoutes');
+const authRoutes = require('./routes/authRoutes');
+
+
+
 
 
 // ✅ Enrutamiento
@@ -80,6 +91,17 @@ app.use('/api/estadoNotificacion',estadoNotificacionRoutes);
 //app.use('/api/estadoPqr',estadoPqrRoutes)
 app.use('/api/estado-usuario', estadoUsuarioRoutes);
 app.use('/api/funcionariogrados', funcionarioGradoRoutes);
+app.use('/api/gravedades', gravedadObservacionRoutes);
+app.use('/api/justificaciones', justificacionesRoutes);
+app.use('/api/nivel-escolaridad', nivelEscolaridadRoutes);
+app.use('/api/notificacion', notificacionRoutes); // 👈 Esto es obligatorio
+app.use('/api/observaciones', require('./routes/observacionRoutes'));
+app.use('/api/registro-estudiante', registroEstudianteRoutes);
+app.use('/api/registro-acudiente', registroAcudienteRoutes);
+app.use('/api/registro-funcionario', registroFuncionarioRoutes);
+app.use('/api/auth', authRoutes);
+
+
 
 
 // ✅ Puerto del servidor

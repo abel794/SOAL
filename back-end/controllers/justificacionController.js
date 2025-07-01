@@ -27,7 +27,7 @@ const justificacionController = {
           include: {
             model: Persona,
             as: 'persona',
-            attributes: ['primer_nombre', 'primer_apellido']
+            attributes: ['nombre', 'apellido']
           }
         },
         order: [['fecha', 'DESC']]
@@ -75,7 +75,7 @@ const justificacionController = {
           include: {
             model: Persona,
             as: 'persona',
-            attributes: ['primer_nombre', 'primer_apellido']
+            attributes: ['nombre', 'apellido']
           }
         },
         order: [['fecha', 'DESC']]

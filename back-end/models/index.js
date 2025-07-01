@@ -11,7 +11,7 @@ const sequelize = new Sequelize('SOAL1', 'root', '', {
 const models = {
   Acudiente: require('./Acudiente')(sequelize, DataTypes),
   Asistencia: require('./Asistencia')(sequelize, DataTypes),
-  Canal_notificacion: require('./Canal_notificacion')(sequelize, DataTypes),
+  CanalNotificacion : require('./Canal_notificacion')(sequelize, DataTypes),
   CategoriaObservacion: require('./CategoriaObservacion')(sequelize, DataTypes),
   Cita: require('./Cita')(sequelize, DataTypes),
   EstadoAcademico: require('./Estado_academico')(sequelize, DataTypes),

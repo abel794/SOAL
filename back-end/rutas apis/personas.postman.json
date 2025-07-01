@@ -1,0 +1,104 @@
+{
+  "info": {
+    "name": "API Personas",
+    "description": "Colección para probar las rutas de Persona",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "📄 Listar todas las personas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/personas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "personas"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Buscar personas por nombre o apellido",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/personas/buscar?nombre=Juan",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "personas", "buscar"],
+          "query": [
+            { "key": "nombre", "value": "Juan" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "📄 Obtener persona por documento",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/personas/12345678",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "personas", "12345678"]
+        }
+      }
+    },
+    {
+      "name": "➕ Crear persona",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_documento\": \"12345678\",\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"id_tipo_documento\": 1,\n  \"id_sexo\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/personas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "personas"]
+        }
+      }
+    },
+    {
+      "name": "✏️ Actualizar persona por documento",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan Carlos\",\n  \"apellido\": \"Pérez\",\n  \"id_tipo_documento\": 1,\n  \"id_sexo\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/personas/12345678",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "personas", "12345678"]
+        }
+      }
+    },
+    {
+      "name": "🗑️ Eliminar persona por documento",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/personas/12345678",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "personas", "12345678"]
+        }
+      }
+    }
+  ]
+}

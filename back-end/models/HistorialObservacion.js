@@ -1,40 +1,31 @@
-const { DataTypes } = require('sequelize');
+const { toDefaultValue } = require("sequelize/lib/utils");
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const HistorialObservacion = sequelize.define('HistorialObservacion', {
-    // ID único del historial
     id_historial: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
-
-    // ID de la observación modificada
     id_observacion: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
-
-    // Fecha de la modificación (por defecto la actual)
     fecha_modificacion: {
       type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: DataTypes.NOW,
+      allowNull: false,
+      DefaultValue:DataTypes.NOW,
     },
-
-    // Descripción de qué se modificó
     descripcion_modificacion: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
-    tableName: 'historialobservacion', // Nombre de la tabla
-    timestamps: false,                 // No usa createdAt ni updatedAt
+    tableName: 'historial_observacion',
+    timestamps: false
   });
 
-  // Asociaciones (se definen por fuera del define)
-  HistorialObservacion.associate = (models) => {
-    // Relación muchos-a-uno: muchos historiales pertenecen a una observación
+  HistorialObservacion.associate = function (models) {
     HistorialObservacion.belongsTo(models.Observacion, {
       foreignKey: 'id_observacion',
       as: 'observacion'
@@ -43,4 +34,3 @@ module.exports = (sequelize) => {
 
   return HistorialObservacion;
 };
-

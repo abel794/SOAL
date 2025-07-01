@@ -1,0 +1,212 @@
+{
+  "info": {
+    "name": "API - Historial Observaciones",
+    "_postman_id": "uuid",
+    "description": "Colecci\u00f3n de endpoints para el m\u00f3dulo de Historial Observaciones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Buscar historial por nombre estudiante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/buscar/estudiante",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            "buscar",
+            "estudiante"
+          ],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "Juan"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Buscar historial por nombre profesor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/buscar/profesor",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            "buscar",
+            "profesor"
+          ],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "Pedro"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Buscar historial por fechas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/buscar/fechas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            "buscar",
+            "fechas"
+          ],
+          "query": [
+            {
+              "key": "desde",
+              "value": "2024-01-01"
+            },
+            {
+              "key": "hasta",
+              "value": "2025-01-01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Historial por observaci\u00f3n",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/observacion/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            "observacion",
+            ":id"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Historial por estudiante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/estudiante/:id_estudiante",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            "estudiante",
+            ":id_estudiante"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Listar todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Obtener por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            ":id"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Crear historial",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Eliminar historial",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/historial-observaciones/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "historial-observaciones",
+            ":id"
+          ],
+          "query": []
+        }
+      }
+    }
+  ]
+}

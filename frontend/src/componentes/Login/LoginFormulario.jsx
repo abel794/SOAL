@@ -13,12 +13,12 @@ const LoginFormulario = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3001/api/autenticacion/iniciar-sesion', {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nombre_usuario: correo,
-          clave: clave
+          username: correo,
+          contrasena: clave
         }),
       });
 

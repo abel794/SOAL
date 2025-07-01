@@ -10,7 +10,7 @@ function BuscarEstudiante() {
     try {
       let url = 'http://localhost:3000/api/estudiantes/buscar';
       if (nombre.trim() !== '') {
-        url += `?termino=${encodeURIComponent(nombre)}`;
+        url += `?filtro=${encodeURIComponent(nombre)}`; // usa 'filtro' como en tu backend
       }
 
       const res = await fetch(url);
@@ -55,16 +55,26 @@ function BuscarEstudiante() {
           <thead>
             <tr>
               <th>Nombre</th>
+              <th>Apellido</th>
               <th>Número de documento</th>
-              {/* <th>Grado</th> <-- solo si tienes relación cargada con Grado */ }
+              <th>EPS</th>
+              <th>Estado académico</th>
+              <th>Acudiente</th>
             </tr>
           </thead>
           <tbody>
             {estudiantes.map((est) => (
               <tr key={est.id_estudiante}>
-                <td>{est.nombre}</td>
+                <td>{est.persona?.nombre ?? 'Sin nombre'}</td>
+                <td>{est.persona?.apellido ?? ''}</td>
                 <td>{est.numero_documento}</td>
-                {/* <td>{est.Grado?.nombre_grado ?? 'No asignado'}</td> */}
+                <td>{est.eps?.nombre ?? 'Sin EPS'}</td>
+                <td>{est.estadoAcademico?.nombre ?? 'Sin estado'}</td>
+                <td>
+                  {est.acudiente?.persona?.nombre
+                    ? `${est.acudiente.persona.nombre} (${est.acudiente.relacion?.nombre})`
+                    : 'Sin acudiente'}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -75,4 +85,3 @@ function BuscarEstudiante() {
 }
 
 export default BuscarEstudiante;
-

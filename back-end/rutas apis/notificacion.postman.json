@@ -1,0 +1,52 @@
+{
+  "info": {
+    "name": "API Notificación",
+    "_postman_id": "api-notificacion-coleccion",
+    "description": "Colección de endpoints para la API de notificaciones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "📋 Listar todas las notificaciones",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/notificacion",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "notificacion"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Buscar notificaciones por estado",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/notificacion/estado/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "notificacion", "estado", "1"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar notificaciones por canal",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/notificacion/contar/canal",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "notificacion", "contar", "canal"]
+        }
+      }
+    }
+  ]
+}

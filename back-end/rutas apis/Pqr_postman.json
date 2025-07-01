@@ -1,0 +1,136 @@
+{
+  "info": {
+    "_postman_id": "e4bd13de-b8a5-4c34-90bb-8371c63a912f",
+    "name": "SOAL - PQR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "📌 Crear nuevo PQR",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_acudiente\": 4002,\n  \"descripcion\": \"Solicito revisión del boletín.\",\n  \"id_tipo_pqr\": 1,\n  \"id_estado_pqr\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr"]
+        }
+      }
+    },
+    {
+      "name": "📋 Listar todos los PQR",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Obtener PQR por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "✏️ Actualizar estado del PQR",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_estado_pqr\": 2\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "🗑️ Eliminar PQR por ID",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "1"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Listar por acudiente",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/acudiente/4002",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "acudiente", "4002"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Listar por estado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/estado/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "estado", "1"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar PQR por tipo",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/estadistica/tipo",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "estadistica", "tipo"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar PQR por estado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/pqrs/estadistica/estado",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pqr", "estadistica", "estado"]
+        }
+      }
+    }
+  ]
+}

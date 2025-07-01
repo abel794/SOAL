@@ -104,19 +104,21 @@ async obtenerPorId(req, res) {
   },
 
   // ✅ Contar estudiantes en un grado
-  async contarEstudiantes(req, res) {
-    const { id_grado } = req.query;
+  // ✅ Contar estudiantes en un grado
+async contarEstudiantes(req, res) {
+  const { id } = req.params; // 👈 antes: req.query.id_grado
 
-    if (!id_grado) return res.status(400).json({ error: 'Debe enviar id_grado' });
+  if (!id) return res.status(400).json({ error: 'Debe enviar id del grado' });
 
-    try {
-      const total = await EstudianteGrado.count({ where: { id_grado } });
-      res.json({ id_grado, total_estudiantes: total });
-    } catch (error) {
-      console.error("Error al contar estudiantes:", error);
-      res.status(500).json({ error: 'Error al contar estudiantes', detalle: error.message });
-    }
-  },
+  try {
+    const total = await EstudianteGrado.count({ where: { id_grado: id } });
+    res.json({ id_grado: id, total_estudiantes: total });
+  } catch (error) {
+    console.error("Error al contar estudiantes:", error);
+    res.status(500).json({ error: 'Error al contar estudiantes', detalle: error.message });
+  }
+},
+
 
   // ✅ Ver funcionarios asignados a un grado
   async funcionariosAsignados(req, res) {

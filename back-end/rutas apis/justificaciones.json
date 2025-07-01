@@ -1,0 +1,73 @@
+{
+  "info": {
+    "_postman_id": "e7e7a123-abc1-4567-def2-89012fedc345",
+    "name": "Justificaciones API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "📋 Listar todas las justificaciones",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/justificaciones",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "justificaciones"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Buscar justificaciones por estudiante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/justificaciones/estudiante/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "justificaciones", "estudiante", "1"]
+        }
+      }
+    },
+    {
+      "name": "📅 Buscar por fecha",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/justificaciones/buscar/fecha?desde=2025-06-01&hasta=2025-06-29",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "justificaciones", "buscar", "fecha"],
+          "query": [
+            { "key": "desde", "value": "2025-06-01" },
+            { "key": "hasta", "value": "2025-06-29" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "➕ Crear nueva justificación",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_estudiante\": 1,\n  \"fecha_justificacion\": \"2025-06-30\",\n  \"motivo\": \"Asistencia médica\",\n  \"archivo\": \"justificacion_final_2025_06_30.pdf\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/justificaciones",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "justificaciones"]
+        }
+      }
+    }
+  ]
+}

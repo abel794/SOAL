@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/gravedadController');
+const controller = require('../controllers/gravedadObservacionController');
 
 // ✅ Listar todas las gravedades
 router.get('/', controller.listarTodos);

@@ -1,0 +1,184 @@
+{
+  "info": {
+    "_postman_id": "d2a2b381-cf6a-4c4f-8d3f-9a59a9a2b123",
+    "name": "Usuario API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Buscar usuarios por nombre de usuario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/buscar?nombre=juan",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "buscar"],
+          "query": [
+            { "key": "nombre", "value": "juan" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cambiar estado por número de documento",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"estado\": \"activo\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/cambiar-estado/123456789",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "cambiar-estado", "123456789"]
+        }
+      }
+    },
+    {
+      "name": "Activar todos los usuarios",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/activar-todos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "activar-todos"]
+        }
+      }
+    },
+    {
+      "name": "Inactivar todos los usuarios",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/inactivar-todos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "inactivar-todos"]
+        }
+      }
+    },
+    {
+      "name": "Activar usuario por ID",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/activar/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "activar", "1"]
+        }
+      }
+    },
+    {
+      "name": "Inactivar usuario por ID",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/inactivar/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "inactivar", "1"]
+        }
+      }
+    },
+    {
+      "name": "Obtener todos los usuarios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios"]
+        }
+      }
+    },
+    {
+      "name": "Obtener usuario por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre_usuario\": \"juanperez\",\n  \"contrasena\": \"123456\",\n  \"id_tipo_usuario\": 2\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar usuario",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre_usuario\": \"juanperezupdated\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar usuario",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    }
+  ]
+}

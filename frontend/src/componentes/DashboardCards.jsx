@@ -15,7 +15,7 @@ function DashboardCards() {
       try {
         const res = await fetch('http://localhost:3000/api/grados/3/contar');
         const data = await res.json();
-        setEstudiantesAsignados(data.totalEstudiantes ?? 'Error'); // <- usa fallback si total no existe
+        setEstudiantesAsignados(data.total_estudiantes ?? 'Error'); // <- usa fallback si total no existe
       } catch (error) {
         console.error('❌ Error estudiantes:', error);
         setEstudiantesAsignados('Error');
@@ -25,7 +25,7 @@ function DashboardCards() {
     // 📋 Total de observaciones registradas
     async function fetchObservaciones() {
       try {
-        const res = await fetch('http://localhost:3000/api/observacion/total');
+        const res = await fetch('http://localhost:3000/api/observaciones/contar');
         const data = await res.json();
         setObservaciones(data.totalObservaciones ?? 'Error');
       } catch (error) {
@@ -37,7 +37,7 @@ function DashboardCards() {
     // 🚨 Total de casos críticos
     async function fetchCriticos() {
       try {
-        const res = await fetch('http://localhost:3000/api/observacion/criticos');
+        const res = await fetch('http://localhost:3000/api/observaciones/contar/criticas');
         const data = await res.json();
         setCriticos(data.observacionesCriticas ?? 'Error'); // ✅ nombre correcto
       } catch (error) {
@@ -49,7 +49,7 @@ function DashboardCards() {
     // 📅 Total de citas
     async function fetchCitas() {
       try {
-        const res = await fetch('http://localhost:3000/api/citas/total');
+        const res = await fetch('http://localhost:3000/api/citas/contar');
         const data = await res.json();
         setCitas(data.totalCitas ?? 'Error');
       } catch (error) {

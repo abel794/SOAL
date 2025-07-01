@@ -1,0 +1,160 @@
+{
+  "info": {
+    "_postman_id": "b8944e2c-062f-46f4-9db8-f2261212dbb0",
+    "name": "API Observaciones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "📊 Contar todas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/contar",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "contar"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar por categoría con porcentaje",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/contar/categoria",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "contar", "categoria"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar por gravedad",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/contar/gravedad",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "contar", "gravedad"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar por tipo",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/contar/tipo",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "contar", "tipo"]
+        }
+      }
+    },
+    {
+      "name": "📊 Contar solo críticas",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/contar/criticas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "contar", "criticas"]
+        }
+      }
+    },
+    {
+      "name": "📋 Listar con detalles",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/detalles",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "detalles"]
+        }
+      }
+    },
+    {
+      "name": "🔍 Obtener observación por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "1"]
+        }
+      }
+    },
+    {
+      "name": "➕ Crear observación",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_estudiante\": 1,\n  \"id_funcionario\": 2,\n  \"id_categoria\": 1,\n  \"descripcion\": \"Inasistencia sin justificación\",\n  \"tipo\": \"Disciplinaria\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones"]
+        }
+      }
+    },
+    {
+      "name": "✏️ Actualizar observación",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descripcion\": \"Actualización de observación\",\n  \"tipo\": \"Academica\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "1"]
+        }
+      }
+    },
+    {
+      "name": "🗑️ Eliminar observación",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/observaciones/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "observaciones", "1"]
+        }
+      }
+    }
+  ]
+}

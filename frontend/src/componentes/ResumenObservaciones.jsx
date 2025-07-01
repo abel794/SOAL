@@ -9,20 +9,26 @@ function ResumenObservaciones() {
   useEffect(() => {
     async function cargarDatos() {
       try {
-        // Cargar porcentajes de gravedad
-        const resGravedad = await fetch('http://localhost:3000/api/observacion/por-gravedad');
+        // 🔹 Cargar datos de gravedad (porcentaje)
+        const resGravedad = await fetch('http://localhost:3000/api/observaciones/contar/gravedad');
         const gravedad = await resGravedad.json();
+
         setDatosGravedad({
-          Leve: parseFloat(gravedad.leve),
-          Moderado: parseFloat(gravedad.moderado),
-          Grave: parseFloat(gravedad.grave)
+          Leve: parseFloat(gravedad.porcentajes?.Leve?.replace('%', '') || '0'),
+          Moderado: parseFloat(gravedad.porcentajes?.Moderado?.replace('%', '') || '0'),
+          Grave: parseFloat(gravedad.porcentajes?.Grave?.replace('%', '') || '0'),
         });
 
-        // Cargar conteo por tipo de observación
-        const resTipo = await fetch('http://localhost:3000/api/observacion/por-tipo');
+        // 🔹 Cargar datos por tipo (cantidad)
+        const resTipo = await fetch('http://localhost:3000/api/observaciones/contar/tipo');
         const tipo = await resTipo.json();
-        setDatosTipo(tipo);
 
+        const tipoArray = Object.entries(tipo).map(([nombre, cantidad]) => ({
+          nombre,
+          cantidad
+        }));
+
+        setDatosTipo(tipoArray);
       } catch (error) {
         console.error('❌ Error al cargar datos:', error);
       }
@@ -31,13 +37,14 @@ function ResumenObservaciones() {
     cargarDatos();
   }, []);
 
+  // ⏳ Espera mientras se cargan los datos
   if (!datosGravedad || !datosTipo) {
     return <p className="text-center">Cargando estadísticas de observaciones...</p>;
   }
 
   return (
-    <div className="d-flex flex-wrap justify-content-center gap-4">
-      {/* Tarjeta de tipo de observación (Gráfico de barras) */}
+    <div className="d-flex flex-wrap justify-content-center gap-4 p-3">
+      {/* 🔹 Gráfico de barras: por tipo */}
       <div style={cardStyle}>
         <h5 className="text-primary">Observaciones por tipo</h5>
         <div style={{ width: '100%', height: '250px' }}>
@@ -45,7 +52,7 @@ function ResumenObservaciones() {
         </div>
       </div>
 
-      {/* Tarjeta de gravedad (Gráfico de torta) */}
+      {/* 🔹 Gráfico de torta: por gravedad */}
       <div style={cardStyle}>
         <h5 className="text-primary">Porcentaje por gravedad</h5>
         <div style={{ width: '200px', height: '200px', margin: 'auto' }}>
@@ -56,6 +63,7 @@ function ResumenObservaciones() {
   );
 }
 
+// 💅 Estilo reutilizable para las tarjetas
 const cardStyle = {
   backgroundColor: '#f5f7ff',
   borderRadius: '12px',

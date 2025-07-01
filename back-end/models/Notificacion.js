@@ -39,8 +39,7 @@ module.exports = (sequelize) => {
       as: 'acudiente'
     });
 
-    // ✅ Nombre corregido aquí
-    Notificacion.belongsTo(models.Canal_notificacion, {
+    Notificacion.belongsTo(models.CanalNotificacion, { // ✅ Corregido aquí
       foreignKey: 'id_canal',
       as: 'canal'
     });
