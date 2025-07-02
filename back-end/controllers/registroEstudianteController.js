@@ -1,5 +1,20 @@
 const db = require('../models');
-const { Persona, Usuario, Estudiante, sequelize } = db;
+const {
+  Persona, Usuario, Estudiante, Acudiente,
+  EstudianteGrado, EstudianteAcudiente, sequelize
+} = db;
+
+const bcrypt = require('bcrypt');
+const twilio = require('twilio');
+require('dotenv').config(); // ✅ Carga las variables del archivo .env
+
+// 🔐 Configuración de Twilio desde el archivo .env
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioPhone = process.env.TWILIO_PHONE;
+const twilioClient = twilio(accountSid, authToken);
+
+
 
 const registrarEstudianteCompleto = {
 
