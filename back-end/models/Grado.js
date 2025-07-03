@@ -22,6 +22,12 @@ module.exports = (sequelize) => {
   });
 
   Grado.associate = (models) => {
+
+    Grado.hasMany(models.EstudianteGrado, {
+      foreignKey: 'id_grado',
+      as: 'estudiantesGrado' // Puede usarse si luego necesitas contar por grado directamente
+    });
+
     Grado.hasMany(models.EstudianteGrado, {
       foreignKey: 'id_grado',
       as: 'estudiantes'

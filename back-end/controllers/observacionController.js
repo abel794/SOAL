@@ -39,35 +39,43 @@ const observacionController = {
   },
 
   // ✅ Crear observación + notificación automática
-  async crear(req, res) {
-    const t = await db.sequelize.transaction();
-    try {
-      const nueva = await Observacion.create(req.body, { transaction: t });
+ async crear(req, res) {
+  const t = await db.sequelize.transaction();
+  try {
+    // 🔐 Asignar un funcionario fijo (por ejemplo, el ID 35 de prueba)
+    const idFuncionario = 9;
 
-      const estudiante = await Estudiante.findByPk(req.body.id_estudiante, {
-        include: [{ model: Acudiente, as: 'acudiente' }]
-      });
+    const nueva = await Observacion.create({
+      ...req.body,
+      id_funcionario: idFuncionario // ← Aquí se resuelve el problema
+    }, { transaction: t });
 
-      if (!estudiante || !estudiante.acudiente) {
-        await t.rollback();
-        return res.status(404).json({ error: 'Acudiente no encontrado para el estudiante' });
-      }
+    // 🔍 Buscar estudiante y su acudiente
+    const estudiante = await Estudiante.findByPk(req.body.id_estudiante, {
+      include: [{ model: Acudiente, as: 'acudiente' }]
+    });
 
-      await Notificacion.create({
-        id_acudiente: estudiante.acudiente.id_acudiente,
-        mensaje: 'Se ha registrado una observación para su acudido. Por favor, revísela.',
-        id_canal: 1,
-        id_estado_notificacion: 1
-      }, { transaction: t });
-
-      await t.commit();
-      res.status(201).json(nueva);
-    } catch (error) {
+    if (!estudiante || !estudiante.acudiente) {
       await t.rollback();
-      console.error('❌ Error al crear observación y notificación:', error);
-      res.status(500).json({ error: 'Error al crear observación', detalle: error.message });
+      return res.status(404).json({ error: 'Acudiente no encontrado para el estudiante' });
     }
-  },
+
+    // 📢 Crear notificación
+    await Notificacion.create({
+      id_acudiente: estudiante.acudiente.id_acudiente,
+      mensaje: 'Se ha registrado una observación para su acudido. Por favor, revísela.',
+      id_canal: 1,
+      id_estado_notificacion: 1
+    }, { transaction: t });
+
+    await t.commit();
+    res.status(201).json(nueva);
+  } catch (error) {
+    await t.rollback();
+    console.error('❌ Error al crear observación y notificación:', error);
+    res.status(500).json({ error: 'Error al crear observación', detalle: error.message });
+  }
+},
 
   // ✅ Listar observaciones con todos los detalles
   async listarConDetalles(req, res) {

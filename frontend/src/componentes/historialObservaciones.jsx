@@ -7,23 +7,24 @@ function HistorialObservaciones() {
   const [historial, setHistorial] = useState([]);
 
   const manejarBusqueda = async () => {
-  try {
-    const res = await fetch(`http://localhost:3000/api/historial/buscar?nombre=${nombreBuscado}`);
-    const data = await res.json();
+    try {
+      const res = await fetch(`http://localhost:3000/api/historial/buscar?nombre=${nombreBuscado}`);
+      const data = await res.json();
 
-    if (res.ok && data.length > 0) {
-      setHistorial(data);
-      setMensaje('');
-    } else {
-      setHistorial([]);
-      setMensaje('❌ No se encontró historial para este estudiante.');
+      if (res.ok && data.length > 0) {
+        setHistorial(data);
+        setNombre(nombreBuscado);
+        setMensaje('');
+      } else {
+        setHistorial([]);
+        setNombre(nombreBuscado);
+        setMensaje('❌ No se encontró historial para este estudiante.');
+      }
+    } catch (error) {
+      console.error('⚠️ Error en la búsqueda:', error);
+      setMensaje('⚠️ Error al conectar con el servidor.');
     }
-  } catch (error) {
-    console.error('⚠️ Error en la búsqueda:', error);
-    setMensaje('⚠️ Error al conectar con el servidor.');
-  }
-};
-
+  };
 
   return (
     <div className="p-3">
@@ -64,9 +65,9 @@ function HistorialObservaciones() {
               <tr key={i}>
                 <td>{item.fecha_modificacion?.split('T')[0]}</td>
                 <td>{item.descripcion_modificacion}</td>
-                <td>{item.Observacion?.descripcion}</td>
-                <td>{item.Observacion?.gravedad}</td>
-                <td>{item.Observacion?.fecha}</td>
+                <td>{item.observacion?.descripcion ?? 'N/A'}</td>
+                <td>{item.observacion?.gravedad?.nombre ?? 'Sin gravedad'}</td>
+                <td>{item.observacion?.fecha ?? 'N/A'}</td>
               </tr>
             ))}
           </tbody>
@@ -77,4 +78,3 @@ function HistorialObservaciones() {
 }
 
 export default HistorialObservaciones;
-

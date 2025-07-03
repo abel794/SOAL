@@ -10,13 +10,13 @@ function RegistrarObservacion() {
   const [idCategoria, setIdCategoria] = useState('');
   const [gravedad, setGravedad] = useState('Leve');
 
-  // 🔄 Cargar categorías desde la base de datos
+  // 🔄 Cargar categorías
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
         const res = await fetch('http://localhost:3000/api/categorias');
         const data = await res.json();
-        setCategorias(data);
+        setCategorias(data.categorias); // ← Usamos el array dentro de la respuesta
       } catch (error) {
         console.error('Error al cargar categorías:', error);
       }
@@ -25,15 +25,20 @@ function RegistrarObservacion() {
     fetchCategorias();
   }, []);
 
-  // 🔍 Buscar estudiante por nombre
+  // 🔍 Buscar estudiante por nombre o documento
   const manejarBusqueda = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/estudiantes/buscar?termino=${nombreBuscado}`);
+      let url = 'http://localhost:3000/api/estudiantes/buscar';
+      if (nombreBuscado.trim() !== '') {
+        url += `?filtro=${encodeURIComponent(nombreBuscado)}`;
+      }
+
+      const res = await fetch(url);
       const data = await res.json();
 
-      if (res.ok && data.length > 0) {
+      if (res.ok && Array.isArray(data) && data.length > 0) {
         setEstudiante(data[0]);
-        setMensaje(`✅ Estudiante encontrado: ${data[0].nombre}`);
+        setMensaje(`✅ Estudiante encontrado: ${data[0].persona?.nombre || data[0].nombre}`);
       } else {
         setEstudiante(null);
         setMensaje('❌ Estudiante no encontrado.');
@@ -44,7 +49,7 @@ function RegistrarObservacion() {
     }
   };
 
-  // 📝 Enviar observación al backend
+  // 📝 Enviar observación
   const manejarRegistro = async (e) => {
     e.preventDefault();
 
@@ -53,23 +58,30 @@ function RegistrarObservacion() {
       return;
     }
 
+    // Convertir gravedad a ID numérico
+    const gravedadMap = {
+      'Leve': 1,
+      'Moderado': 2,
+      'Grave': 3
+    };
+    const idGravedad = gravedadMap[gravedad];
+
     try {
       const res = await fetch('http://localhost:3000/api/observacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id_usuario: 19, // 🔁 Simulado, debes tomarlo de sesión
           id_estudiante: estudiante.id_estudiante,
           id_categoria: idCategoria,
           descripcion: observacion,
-          gravedad: gravedad,
-          fecha: new Date().toISOString().slice(0, 10),
-        }),
+          id_gravedad: idGravedad,
+          fecha: new Date().toISOString().slice(0, 10)
+        })
       });
 
       const data = await res.json();
       if (res.ok) {
-        alert(`✅ Observación registrada para ${estudiante.nombre}`);
+        alert(`✅ Observación registrada para ${estudiante.persona?.nombre || estudiante.nombre}`);
         setObservacion('');
         setIdCategoria('');
         setGravedad('Leve');
@@ -91,7 +103,7 @@ function RegistrarObservacion() {
       <div>
         <input
           type="text"
-          placeholder="Buscar estudiante por nombre"
+          placeholder="Buscar estudiante por nombre o documento"
           value={nombreBuscado}
           onChange={(e) => setNombreBuscado(e.target.value)}
           style={{ padding: '8px', width: '60%', marginRight: '10px' }}
@@ -105,9 +117,9 @@ function RegistrarObservacion() {
 
       {estudiante && (
         <form onSubmit={manejarRegistro} className="mt-4">
-          <p><strong>Estudiante:</strong> {estudiante.nombre}</p>
+          <p><strong>Estudiante:</strong> {estudiante.persona?.nombre ?? estudiante.nombre ?? 'Sin nombre'}</p>
 
-          {/* 🔽 Categoría */}
+          {/* Categoría */}
           <div className="mb-3">
             <label><strong>Categoría:</strong></label>
             <select
@@ -119,13 +131,13 @@ function RegistrarObservacion() {
               <option value="">Seleccione una categoría</option>
               {categorias.map((cat) => (
                 <option key={cat.id_categoria} value={cat.id_categoria}>
-                  {cat.nombre_categoria}
+                  {cat.nombre}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 🔽 Gravedad */}
+          {/* Gravedad */}
           <div className="mb-3">
             <label><strong>Gravedad:</strong></label>
             <select
@@ -139,7 +151,7 @@ function RegistrarObservacion() {
             </select>
           </div>
 
-          {/* 📝 Observación */}
+          {/* Observación */}
           <textarea
             placeholder="Escribe la observación..."
             value={observacion}
@@ -159,5 +171,3 @@ function RegistrarObservacion() {
 }
 
 export default RegistrarObservacion;
-
-

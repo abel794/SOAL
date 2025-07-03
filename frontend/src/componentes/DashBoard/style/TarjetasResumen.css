@@ -1,0 +1,42 @@
+.tarjetas-resumen {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tarjeta {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  flex: 1 1 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.tarjeta .titulo {
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.tarjeta h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.cambio {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cambio.verde {
+  color: #28a745;
+}
+
+.cambio.rojo {
+  color: #dc3545;
+}

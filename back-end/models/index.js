@@ -42,7 +42,6 @@ const models = {
   // AuditoriaObservacion: require('./AuditoriaObservacion')(sequelize, DataTypes),
 };
 
-
 // 3. Asociaciones internas de los modelos
 Object.values(models).forEach((model) => {
   if (model.associate) model.associate(models);
@@ -102,11 +101,19 @@ models.HistorialObservacion.belongsTo(models.Observacion, { foreignKey: 'id_obse
 models.Observacion.hasMany(models.HistorialObservacion, { foreignKey: 'id_observacion' });
 
 // Estudiante <-> Grado (Muchos a muchos)
-models.Estudiante.hasMany(models.EstudianteGrado, { foreignKey: 'id_estudiante' });
-models.EstudianteGrado.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
+models.Estudiante.hasMany(models.EstudianteGrado, {
+  foreignKey: 'id_estudiante',
+  as: 'grados',
+});
+models.EstudianteGrado.belongsTo(models.Estudiante, {
+  foreignKey: 'id_estudiante',
+  as: 'estudiante',
+});
 
 models.Grado.hasMany(models.EstudianteGrado, { foreignKey: 'id_grado' });
-models.EstudianteGrado.belongsTo(models.Grado, { foreignKey: 'id_grado' });
+models.EstudianteGrado.belongsTo(models.Grado, {
+  foreignKey: 'id_grado',
+});
 
 // Acudiente -> Estudiante (1:N)
 models.Acudiente.hasMany(models.Estudiante, { foreignKey: 'id_acudiente' });

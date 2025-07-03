@@ -25,19 +25,23 @@ const LoginFormulario = () => {
       const data = await res.json();
 
       if (res.ok) {
-        const rol = data.usuario.rol;
+        const tipoUsuario = data.usuario.id_tipo_usuario;
 
         // Guardar usuario en localStorage
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
-        // Redirección según el rol
-        if (rol === 'Coordinador' || rol === 'Rector' || rol === 'Administrativo') {
-          navigate('/coordinador');
+        // Redirección según tipo de usuario
+        if (tipoUsuario === 5) {
+          navigate('/dashboard'); // secretaria
+        } else if (tipoUsuario === 2) {
+          navigate('/profesor'); // profesor
+        } else if (tipoUsuario === 4) {
+          navigate('/coordinador'); // coordinador
         } else {
           alert('🔒 Tu rol no tiene acceso a este panel');
         }
       } else {
-        alert(`❌ ${data.error}`);
+        alert(`❌ ${data.error || 'Credenciales incorrectas'}`);
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);

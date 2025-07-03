@@ -9,17 +9,17 @@ class ServicioAutenticacion {
       throw new Error('Usuario no encontrado');
     }
 
-    // Validar contraseña
+    // Comparar la contraseña sin encriptar
     if (usuario.contrasena !== contrasena) {
       throw new Error('Contraseña incorrecta');
     }
 
-    // Validar estado del usuario (activo normalmente es id_estado_usuario = 1)
+    // Validar si el usuario está activo
     if (usuario.id_estado_usuario !== 1) {
       throw new Error('El usuario está inactivo');
     }
 
-    // Retornar datos esenciales del usuario
+    // Retornar solo lo necesario
     return {
       id_usuario: usuario.id_usuario,
       username: usuario.username,
@@ -30,6 +30,3 @@ class ServicioAutenticacion {
 }
 
 module.exports = new ServicioAutenticacion();
-
-
-

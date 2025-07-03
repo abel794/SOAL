@@ -31,7 +31,6 @@ const Login = () => {
       const res = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // Enviamos los campos que espera el backend
         body: JSON.stringify({
           username: username,
           contrasena: contrasena
@@ -41,24 +40,40 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        // Se asume que el backend devuelve los datos del usuario en data.usuario,
-        // y que el campo "id_tipo_usuario" es un número, ej. 4 para Coordinador.
         const id_tipo_usuario = data.usuario.id_tipo_usuario;
-        // Convertimos el número a su representación textual usando nuestro mapping.
         const rol = rolesMapping[id_tipo_usuario];
 
         // Guardar el usuario en localStorage
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
-        // Redirigir según el rol permitido. Aquí permitimos Coordinador, Rector y Administrativo.
-        if (rol === 'Coordinador' || rol === 'Rector' || rol === 'Administrativo') {
-          navigate('/coordinador');
-        } else {
-          alert(`🔒 Tu rol (${rol}) no tiene acceso a este panel.`);
+        // Redirigir según el rol
+        switch (rol) {
+          case 'Coordinador':
+          case 'Rector':
+          case 'Administrativo':
+            navigate('/coordinador');
+            break;
+          case 'Secretaria':
+            navigate('/secretaria');
+            break;
+          case 'Profesor':
+            navigate('/profesor');
+            break;
+          case 'Estudiante':
+            navigate('/estudiante');
+            break;
+          case 'Acudiente':
+            navigate('/acudiente');
+            break;
+          case 'Orientador':
+            navigate('/orientador');
+            break;
+          default:
+            alert(`🔒 Tu rol (${rol}) no tiene acceso o no está definido aún.`);
+            break;
         }
       } else {
-        // Si hay error, se muestra el mensaje devuelto por el backend.
-        alert(`❌ ${data.error}`);
+        alert(`❌ ${data.mensaje || 'Credenciales incorrectas'}`);
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);

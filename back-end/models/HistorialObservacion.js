@@ -1,5 +1,3 @@
-const { toDefaultValue } = require("sequelize/lib/utils");
-
 module.exports = (sequelize, DataTypes) => {
   const HistorialObservacion = sequelize.define('HistorialObservacion', {
     id_historial: {
@@ -14,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     fecha_modificacion: {
       type: DataTypes.DATE,
       allowNull: false,
-      DefaultValue:DataTypes.NOW,
+      defaultValue: DataTypes.NOW // ✅ corregido
     },
     descripcion_modificacion: {
       type: DataTypes.STRING(255),
@@ -28,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   HistorialObservacion.associate = function (models) {
     HistorialObservacion.belongsTo(models.Observacion, {
       foreignKey: 'id_observacion',
-      as: 'observacion'
+      as: 'observacion' // ✅ necesario para .observacion en el frontend
     });
   };
 

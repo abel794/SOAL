@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/historialObservacionController');
 
-// 🔍 Buscar historial por nombre de estudiante
+// 🔍 Buscar historial por nombre del estudiante
+router.get('/buscar', controller.buscarPorNombreEstudiante);
+
+// 🔍 Buscar historial por nombre del estudiante (alias redundante)
 router.get('/buscar/estudiante', controller.historialPorNombreEstudiante);
 
 // 🔍 Buscar historial por nombre del profesor

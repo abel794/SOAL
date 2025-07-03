@@ -55,6 +55,46 @@ const historialController = {
   },
 
   // 🔍 Buscar historial por nombre del estudiante
+async buscarPorNombreEstudiante(req, res) {
+  const { nombre } = req.query;
+
+  try {
+    const historiales = await Historial.findAll({
+      include: {
+        model: Observacion,
+        as: 'observacion',
+        include: {
+          model: db.Estudiante,
+          as: 'estudiante',
+          include: {
+            model: db.Persona,
+            as: 'persona',
+            where: {
+              [Op.or]: [
+                { nombre: { [Op.like]: `%${nombre}%` } },
+                { apellido: { [Op.like]: `%${nombre}%` } }
+              ]
+            },
+            attributes: ['nombre', 'apellido']
+          }
+        }
+      },
+      order: [['fecha_modificacion', 'DESC']]
+    });
+
+    if (historiales.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron coincidencias con el nombre del estudiante' });
+    }
+
+    res.json(historiales);
+  } catch (error) {
+    console.error("Error al buscar historial por nombre de estudiante:", error);
+    res.status(500).json({ error: 'Error al buscar historial por nombre', detalle: error.message });
+  }
+},
+
+
+  // 🔍 Buscar historial por nombre del estudiante
   async historialPorNombreEstudiante(req, res) {
     const { nombre } = req.query;
 
