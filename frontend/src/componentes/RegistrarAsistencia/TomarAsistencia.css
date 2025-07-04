@@ -1,0 +1,70 @@
+.asistencia-contenedor {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.asistencia-contenedor h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.asistencia-contenedor select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.asistencia-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.asistencia-tabla th,
+.asistencia-tabla td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.asistencia-tabla th {
+  background-color: #f5f5f5;
+}
+
+.asistencia-tabla select,
+.asistencia-tabla textarea {
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.asistencia-tabla textarea {
+  resize: vertical;
+}
+
+.btn-guardar {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-guardar:hover {
+  background-color: #218838;
+}

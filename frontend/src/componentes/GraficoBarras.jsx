@@ -20,7 +20,7 @@ export default function GraficoBarras({ datos }) {
     datasets: [{
       label: 'Cantidad',
       data: values,
-      backgroundColor: '#6c63ff',
+      backgroundColor: ['#6c63ff','#4CAF50','#FFC107', '#F44336'],
       borderRadius: 5,
     }]
   };

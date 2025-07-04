@@ -1,0 +1,120 @@
+/* src/componentes/configuracion/ConfiguracionSistema.css */
+
+.config-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.config-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.config-form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+.config-form input,
+.config-form select,
+.config-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.config-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.config-form .checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.config-form .checkbox-group input {
+  margin-right: 0.5rem;
+}
+
+.config-form .button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.config-form button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.config-form .btn-guardar {
+  background-color: #007bff;
+  color: white;
+}
+
+.config-form .btn-guardar:hover {
+  background-color: #0056b3;
+}
+
+.config-form .btn-cancelar {
+  background-color: #ccc;
+  color: #333;
+}
+
+.config-form .btn-cancelar:hover {
+  background-color: #999;
+}
+
+/* ✅ Mensaje de éxito */
+.mensaje-exito {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 6px;
+  border: 1px solid #c3e6cb;
+  text-align: center;
+}
+
+/* ❌ Mensaje de error */
+.mensaje-error {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 6px;
+  border: 1px solid #f5c6cb;
+  text-align: center;
+}
+
+/* 📱 Responsive */
+@media screen and (max-width: 600px) {
+  .config-container {
+    padding: 1rem;
+  }
+
+  .config-form .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .config-form button {
+    width: 100%;
+  }
+}

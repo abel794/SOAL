@@ -1,23 +1,46 @@
 // src/componentes/Coordinador/PanelCoordinador.jsx
 import React, { useState } from 'react';
 import '../../App.css';
-import ResumenObservaciones from '../ResumenObservaciones';
+
+
+
+// Componentes
 import Sidebar from '../Sidebar';
 import UserHeader from '../UserHeader';
 import DashboardCards from '../DashboardCards';
-import TarjetasPorcentajes from '../TarjetasPorcentajes';
+import ResumenObservaciones from '../ResumenObservaciones';
 import TablaObservaciones from '../TablaObservaciones';
 import BuscarEstudiante from '../BuscarEstudiante';
 import RegistrarObservacion from '../registrarObservacion';
 import HistorialObservaciones from '../historialObservaciones';
 import AgendarCitaConAcudiente from '../Agendar_cita_con_acudiente';
+import MatricularEstudiante from '../matricular estudiante/MatricularEstudiante';
+import Notificaciones from '../notificaciones/Notificaciones';
+import Configuracion from '../configuracion/Configuracion';
+import RegistroProfesor from '../RegistrProfesor/RegistroProfesor';
+import RegistroSecretaria from '../RegistrSecretaria/RegistroSecretaria';
+import DesactivarUsuario from '../Desactivar usuario/DesactivarUsuario';
+import AsignarGradoProfesor from '../AsignarGradoProfesor/AsignarGradoProfesor';
+import RegistrarAsistencia from '../RegistrarAsistencia/RegistrarAsistencia';
+import ModalCerrarSesion from './ModalCerrarSesion'; // ✅ CORRECTO
+
 
 function PanelCoordinador() {
   const [abierto, setAbierto] = useState(true);
   const [vista, setVista] = useState('Dashboard');
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
+  const [mostrarModalCerrarSesion, setMostrarModalCerrarSesion] = useState(false);
 
   const toggleMenu = () => setAbierto(!abierto);
+
+  const manejarCerrarSesion = () => {
+    setMostrarModalCerrarSesion(true);
+  };
+
+  const confirmarCerrarSesion = () => {
+    // Aquí puedes limpiar sesión o redirigir
+    window.location.href = '/login';
+  };
 
   const renderContenido = () => {
     switch (vista) {
@@ -31,13 +54,25 @@ function PanelCoordinador() {
           />
         );
       case 'Historial de Observaciones':
-        return (
-          <HistorialObservaciones nombre={estudianteSeleccionado} />
-        );
+        return <HistorialObservaciones nombre={estudianteSeleccionado} />;
       case 'Agendar cita con acudiente':
-        return (
-          <AgendarCitaConAcudiente nombre={estudianteSeleccionado} />
-        );
+        return <AgendarCitaConAcudiente nombre={estudianteSeleccionado} />;
+      case 'Matricular estudiante':
+        return <MatricularEstudiante />;
+      case 'Notificaciones':
+        return <Notificaciones />;
+      case 'Configuración':
+        return <Configuracion />;
+      case 'Registrar profesor':
+        return <RegistroProfesor />;
+      case 'Registrar secretaria':
+        return <RegistroSecretaria />;
+      case 'Activar o desactivar usuario':
+        return <DesactivarUsuario />;
+      case 'Asignar grado a profesor':
+        return <AsignarGradoProfesor />;
+      case 'Registrar asistencia':
+        return <RegistrarAsistencia />;
       default:
         return (
           <>
@@ -55,10 +90,22 @@ function PanelCoordinador() {
 
   return (
     <div className="d-flex">
-      <Sidebar abierto={abierto} toggleMenu={toggleMenu} setVista={setVista} />
+      <Sidebar
+        abierto={abierto}
+        toggleMenu={toggleMenu}
+        setVista={setVista}
+        onCerrarSesion={manejarCerrarSesion}
+      />
       <div className="contenido-principal" style={{ marginLeft: abierto ? '250px' : '60px' }}>
         {renderContenido()}
       </div>
+
+      {mostrarModalCerrarSesion && (
+        <ModalCerrarSesion
+          onConfirmar={confirmarCerrarSesion}
+          onCancelar={() => setMostrarModalCerrarSesion(false)}
+        />
+      )}
     </div>
   );
 }
