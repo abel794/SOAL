@@ -1,0 +1,19 @@
+.panel-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f5f5f5;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.observaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 1rem;
+}

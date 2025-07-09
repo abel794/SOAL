@@ -1,0 +1,70 @@
+/* AgendarCitaAcu.css */
+
+.agendar-cita {
+  padding: 1.5rem;
+}
+
+.agendar-cita h2 {
+  margin-bottom: 0.5rem;
+}
+
+.agendar-cita .linea {
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.agendar-cita input[type="text"] {
+  padding: 8px;
+  width: 60%;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+}
+
+.agendar-cita button {
+  padding: 8px 15px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.agendar-cita button:hover {
+  background-color: #084bb6;
+}
+
+.agendar-cita .mensaje {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.agendar-cita .info-estudiante {
+  margin-top: 1rem;
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #0d6efd;
+}
+
+@media (max-width: 768px) {
+  .agendar-cita input[type="text"] {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    margin-right: 0;
+  }
+
+  .agendar-cita button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .agendar-cita {
+    padding: 1rem 0.5rem;
+  }
+
+  .agendar-cita h2 {
+    font-size: 1.2rem;
+  }
+}

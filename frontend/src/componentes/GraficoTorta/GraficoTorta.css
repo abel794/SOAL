@@ -1,0 +1,25 @@
+/* src/componentes/GraficoTorta/GraficoTorta.css */
+.grafico-torta-contenedor {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  height: 350px;
+  margin-bottom: 1rem;
+}
+
+.grafico-torta-contenedor h4 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 480px) {
+  .grafico-torta-contenedor {
+    height: auto;
+    padding: 0.8rem;
+  }
+
+  .grafico-torta-contenedor h4 {
+    font-size: 1rem;
+  }
+}

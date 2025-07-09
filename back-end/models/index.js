@@ -9,6 +9,8 @@ const sequelize = new Sequelize('SOAL1', 'root', '', {
 
 // 2. Importación de modelos
 const models = {
+  Archivo: require('./Archivo')(sequelize, DataTypes),
+  ConfiguracionSistema: require('./ConfiguracionSistema')(sequelize, DataTypes),
   Acudiente: require('./Acudiente')(sequelize, DataTypes),
   Asistencia: require('./Asistencia')(sequelize, DataTypes),
   CanalNotificacion : require('./Canal_notificacion')(sequelize, DataTypes),
@@ -163,6 +165,11 @@ models.Usuario.belongsTo(models.EstadoUsuario, { foreignKey: 'id_estado_usuario'
 
 models.TipoUsuario.hasMany(models.Usuario, { foreignKey: 'id_tipo_usuario' });
 models.Usuario.belongsTo(models.TipoUsuario, { foreignKey: 'id_tipo_usuario' });
+
+// Usuario tiene muchos archivos
+models.Usuario.hasMany(models.Archivo, { foreignKey: 'id_usuario' });
+models.Archivo.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
+
 
 // 5. Exportar sequelize + todos los modelos
 module.exports = {

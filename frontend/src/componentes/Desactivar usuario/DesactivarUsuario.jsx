@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DesactivarUsuario.css';
 
-const datosIniciales = [
-  { id: 1, nombre: 'Laura Gómez', documento: '10203040', estado: 'Activo', rol: 'Profesor' },
-  { id: 2, nombre: 'Carlos Ruiz', documento: '11223344', estado: 'Activo', rol: 'Secretaria' },
-  { id: 3, nombre: 'Ana Torres', documento: '22334455', estado: 'Inactivo', rol: 'Coordinador' },
-];
-
 export default function DesactivarUsuario() {
   const [usuarios, setUsuarios] = useState([]);
   const [busqueda, setBusqueda] = useState('');
@@ -14,8 +8,10 @@ export default function DesactivarUsuario() {
   const [mensaje, setMensaje] = useState(null);
 
   useEffect(() => {
-    // Aquí puedes hacer fetch al backend si deseas
-    setUsuarios(datosIniciales);
+    fetch('http://localhost:3000/api/usuarios')
+      .then(res => res.json())
+      .then(data => setUsuarios(data))
+      .catch(err => console.error('Error al cargar usuarios:', err));
   }, []);
 
   const handleBusqueda = (e) => {
@@ -26,17 +22,38 @@ export default function DesactivarUsuario() {
     setEstadoFiltro(e.target.value);
   };
 
-  const toggleEstado = (id) => {
-    const actualizados = usuarios.map(u =>
-      u.id === id ? { ...u, estado: u.estado === 'Activo' ? 'Inactivo' : 'Activo' } : u
-    );
-    setUsuarios(actualizados);
-    const actualizado = actualizados.find(u => u.id === id);
-    setMensaje({
-      tipo: 'exito',
-      texto: `✅ Usuario ${actualizado.estado.toLowerCase()} correctamente.`,
-    });
-    setTimeout(() => setMensaje(null), 2500);
+  const toggleEstado = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/usuarios/${id}/toggle-estado`, {
+        method: 'PATCH'
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setUsuarios(prev =>
+          prev.map(u =>
+            u.id === id ? { ...u, estado: data.estado === 1 ? 'Activo' : 'Inactivo' } : u
+          )
+        );
+
+        setMensaje({
+          tipo: 'exito',
+          texto: `✅ Usuario ${data.estado === 1 ? 'activado' : 'desactivado'} correctamente.`
+        });
+      } else {
+        setMensaje({
+          tipo: 'error',
+          texto: data.mensaje || '❌ Error al cambiar estado.'
+        });
+      }
+
+      setTimeout(() => setMensaje(null), 2500);
+    } catch (error) {
+      console.error('Error:', error);
+      setMensaje({ tipo: 'error', texto: '❌ Error de conexión al servidor' });
+      setTimeout(() => setMensaje(null), 2500);
+    }
   };
 
   const usuariosFiltrados = usuarios.filter(u => {

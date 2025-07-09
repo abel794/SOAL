@@ -1,0 +1,65 @@
+/* === CONTENIDO PRINCIPAL === */
+.contenido-principal {
+  margin-left: 250px;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  width: calc(100% - 250px);
+}
+
+/* Ajuste cuando la barra está colapsada */
+.barra-lateral.colapsada ~ .contenido-principal {
+  margin-left: 60px;
+  width: calc(100% - 60px);
+}
+
+/* Línea separadora */
+.linea {
+  border-bottom: 2px solid #ccc;
+  margin: 1rem 0;
+}
+
+/* Título principal */
+.contenido-principal h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.contenido-principal h3 {
+  font-weight: normal;
+  margin-bottom: 1rem;
+  color: #555;
+}
+/* === RESPONSIVE PARA PANTALLAS PEQUEÑAS === */
+@media (max-width: 768px) {
+  .contenido-principal {
+    padding: 1rem;
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .contenido-principal h1 {
+    font-size: 1.5rem;
+  }
+
+  .contenido-principal h3 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contenido-principal {
+    padding: 1rem 0.5rem;
+  }
+
+  .contenido-principal h1 {
+    font-size: 1.3rem;
+  }
+
+  .contenido-principal h3 {
+    font-size: 0.9rem;
+  }
+
+  .linea {
+    margin: 0.5rem 0;
+  }
+}

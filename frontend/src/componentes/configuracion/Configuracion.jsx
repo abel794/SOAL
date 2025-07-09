@@ -1,4 +1,3 @@
-// src/componentes/ConfiguracionSistema.jsx
 import React, { useState } from 'react';
 import './ConfiguracionSistema.css';
 
@@ -33,10 +32,50 @@ export default function ConfiguracionSistema() {
     setFormulario({ ...formulario, logo: e.target.files[0] });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje('✅ Cambios guardados con éxito');
-    // Aquí podrías hacer un fetch al backend para guardar los datos
+    setMensaje(''); // Reinicia el mensaje
+
+    const formData = new FormData();
+    formData.append('nombreColegio', formulario.nombreColegio);
+    formData.append('direccion', formulario.direccion);
+    formData.append('telefono', formulario.telefono);
+    formData.append('correo', formulario.correo);
+    formData.append('anioEscolar', formulario.anioEscolar.toString());
+    formData.append('horaCierre', formulario.horaCierre);
+    formData.append('activarAnio', formulario.activarAnio.toString());
+    formData.append('notificacion', formulario.notificacion);
+    formData.append('horarioEnvio', formulario.horarioEnvio);
+    formData.append('notificarAcudiente', formulario.notificarAcudiente.toString());
+    formData.append('maxEstudiantesPorCurso', formulario.maxEstudiantesPorCurso.toString());
+    formData.append('mensajeInstitucional', formulario.mensajeInstitucional);
+
+    if (formulario.logo) {
+      formData.append('logo', formulario.logo);
+    }
+
+    try {
+      const token = localStorage.getItem('token'); // Asegúrate de que esté guardado tras login
+
+      const response = await fetch('http://localhost:3000/api/configuracion', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}` // Solo el Authorization va como header
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMensaje('✅ Cambios guardados con éxito');
+      } else {
+        setMensaje(`❌ Error: ${data.error || 'No se pudo actualizar'}`);
+      }
+    } catch (error) {
+      console.error(error);
+      setMensaje('❌ Error en la conexión con el servidor');
+    }
   };
 
   return (
@@ -107,7 +146,7 @@ export default function ConfiguracionSistema() {
 
         <div className="botones">
           <button type="submit">Guardar cambios</button>
-          <button type="reset">Cancelar</button>
+          <button type="reset" onClick={() => setMensaje('')}>Cancelar</button>
         </div>
 
         {mensaje && <p className="mensaje-ok">{mensaje}</p>}

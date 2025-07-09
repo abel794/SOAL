@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/sexoController');
 
+// 📊 Contar personas por sexo (más específica, debe ir antes)
+router.get('/estadistica/personas', controller.contarPersonasPorSexo);
+
 // 🔍 Obtener todos los sexos
 router.get('/', controller.obtenerTodos);
 
@@ -16,8 +19,5 @@ router.put('/:id', controller.actualizar);
 
 // ❌ Eliminar un sexo
 router.delete('/:id', controller.eliminar);
-
-// 📊 Contar personas por sexo
-router.get('/estadistica/personas', controller.contarPersonasPorSexo);
 
 module.exports = router;

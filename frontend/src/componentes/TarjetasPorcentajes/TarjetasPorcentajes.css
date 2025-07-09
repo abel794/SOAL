@@ -1,0 +1,59 @@
+.porcentajes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.porcentaje-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  width: 24rem;
+  height: 22rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  text-align: center;
+}
+
+.porcentaje-card:hover {
+  transform: scale(1.02);
+}
+
+.porcentaje-card h4 {
+  margin-top: 0.5rem;
+  color: #333;
+}
+
+.porcentaje-card h3 {
+  margin: 0.3rem 0;
+  font-size: 2rem;
+  color: #007bff;
+}
+
+.porcentaje-card small {
+  margin-top: 0.5rem;
+  color: #888;
+}
+
+.porcentaje-card .grafico-torta {
+  margin-top: 1rem;
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .porcentaje-card {
+    width: 90%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .porcentaje-card .grafico-torta {
+    width: 100px;
+    height: 100px;
+  }
+}

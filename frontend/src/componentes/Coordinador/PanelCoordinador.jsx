@@ -1,19 +1,19 @@
 // src/componentes/Coordinador/PanelCoordinador.jsx
 import React, { useState } from 'react';
-import '../../App.css';
+import './PanelCoordinador.css';
 
 
 
 // Componentes
-import Sidebar from '../Sidebar';
-import UserHeader from '../UserHeader';
-import DashboardCards from '../DashboardCards';
-import ResumenObservaciones from '../ResumenObservaciones';
-import TablaObservaciones from '../TablaObservaciones';
-import BuscarEstudiante from '../BuscarEstudiante';
-import RegistrarObservacion from '../registrarObservacion';
-import HistorialObservaciones from '../historialObservaciones';
-import AgendarCitaConAcudiente from '../Agendar_cita_con_acudiente';
+import Sidebar from '../Sidebar/Sidebar';
+import UserHeader from '../UserHeader/UserHeader';
+import DashboardCards from '../DashboardCards/DashboardCards';
+import ResumenObservaciones from '../ResumenObservaciones/ResumenObservaciones';
+import TablaObservaciones from '../TablaObservaciones/TablaObservaciones';
+import BuscarEstudiante from '../BuscarEstudiante/BuscarEstudiante';
+import RegistrarObservacion from '../registrarObservacion/registrarObservacion';
+import HistorialObservaciones from '../historialObservaciones/historialObservaciones';
+import AgendarCitaConAcudiente from '../Agendar_cita_con_acudiente/Agendar_cita_con_acudiente';
 import MatricularEstudiante from '../matricular estudiante/MatricularEstudiante';
 import Notificaciones from '../notificaciones/Notificaciones';
 import Configuracion from '../configuracion/Configuracion';

@@ -1,105 +1,151 @@
-const db = require('../models');
+const fs = require('fs');
 const {
-  Persona, Usuario, Estudiante, Acudiente,
-  EstudianteGrado, EstudianteAcudiente, sequelize
-} = db;
-
-const bcrypt = require('bcrypt');
-const twilio = require('twilio');
-require('dotenv').config(); // ✅ Carga las variables del archivo .env
-
-// 🔐 Configuración de Twilio desde el archivo .env
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioPhone = process.env.TWILIO_PHONE;
-const twilioClient = twilio(accountSid, authToken);
-
-
+  Persona,
+  Usuario,
+  Estudiante,
+  Acudiente,
+  Archivo,
+  sequelize
+} = require('../models');
 
 const registrarEstudianteCompleto = {
-
   async registrarTodo(req, res) {
-    const t = await sequelize.transaction(); // 👉 Transacción para asegurar integridad
+    const t = await sequelize.transaction();
 
     try {
-      const numeroDoc = req.body.numero_documento;
+      const { estudiante, acudiente } = JSON.parse(req.body.formulario);
 
-      // Verificar si ya existe la Persona
-      const personaExistente = await Persona.findOne({ where: { numero_documento: numeroDoc } });
+      const foto = req.files['foto']?.[0];
+      const documento = req.files['documento']?.[0];
+
+      if (!foto || !documento) {
+        return res.status(400).json({ mensaje: 'Faltan archivos requeridos (foto o documento)' });
+      }
+
+      const numeroDocEst = estudiante.numero_documento;
+      const numeroDocAcu = acudiente.numero_documento;
+
+      const personaExistente = await Persona.findOne({ where: { numero_documento: numeroDocEst } });
       if (personaExistente) {
-        return res.status(400).json({ mensaje: 'El número de documento ya existe en Persona' });
+        return res.status(400).json({ mensaje: 'Ya existe una persona con ese número de documento' });
       }
 
-      // Verificar si el username ya está usado
-      const usernameExistente = await Usuario.findOne({ where: { username: req.body.username } });
-      if (usernameExistente) {
-        return res.status(400).json({ mensaje: 'El nombre de usuario ya está en uso' });
-      }
-
-      // Verificar si ya existe el documento en Usuario
-      const usuarioDocExistente = await Usuario.findOne({ where: { numero_documento: numeroDoc } });
-      if (usuarioDocExistente) {
-        return res.status(400).json({ mensaje: 'Ese número de documento ya está asociado a un Usuario' });
-      }
-
-      // Verificar si ya existe el estudiante
-      const estudianteExistente = await Estudiante.findOne({ where: { numero_documento: numeroDoc } });
-      if (estudianteExistente) {
-        return res.status(400).json({ mensaje: 'Ese número de documento ya pertenece a un Estudiante' });
-      }
-
-      // Crear Persona
-      const persona = await Persona.create({
-        numero_documento: numeroDoc,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        correo: req.body.correo,
-        telefono: req.body.telefono,
-        direccion: req.body.direccion,
-        ciudad_residencia: req.body.ciudad_residencia,
-        tipo_sangre: req.body.tipo_sangre,
-        discapacidad: req.body.discapacidad,
-        ocupacion: req.body.ocupacion,
-        fecha_nacimiento: req.body.fecha_nacimiento,
-        foto: req.body.foto,
-        id_sexo: req.body.id_sexo,
-        id_tipo_documento: req.body.id_tipo_documento
+      // Crear Persona Estudiante
+      const personaEstudiante = await Persona.create({
+        numero_documento: numeroDocEst,
+        nombre: estudiante.nombre,
+        apellido: estudiante.apellido,
+        correo: estudiante.correo,
+        telefono: estudiante.telefono,
+        direccion: estudiante.direccion,
+        ciudad_residencia: estudiante.ciudad,
+        tipo_sangre: estudiante.tipo_sangre,
+        discapacidad: estudiante.discapacidad,
+        ocupacion: estudiante.ocupacion,
+        fecha_nacimiento: estudiante.fecha_nacimiento,
+        id_tipo_documento: estudiante.tipo_documento,
+        id_sexo: estudiante.sexo
       }, { transaction: t });
 
-      // Crear Usuario
-      const usuario = await Usuario.create({
-        username: req.body.username,
-        contrasena: req.body.contrasena,
-        numero_documento: numeroDoc,
-        id_tipo_usuario: req.body.id_tipo_usuario,
-        id_estado_usuario: req.body.id_estado_usuario
+      // Crear Usuario Estudiante
+      const usuarioEstudiante = await Usuario.create({
+        username: `est${numeroDocEst}`,
+        contrasena: numeroDocEst,
+        numero_documento: numeroDocEst,
+        id_tipo_usuario: 1,
+        id_estado_usuario: 1
       }, { transaction: t });
 
-      // Crear Estudiante
-      const estudiante = await Estudiante.create({
-        numero_documento: numeroDoc,
-        id_usuario: usuario.id_usuario,
-        id_eps: req.body.id_eps,
-        id_estado_academico: req.body.id_estado_academico,
-        id_acudiente: req.body.id_acudiente
+      // Guardar archivos en la base de datos (no en el disco)
+      const archivosEstudiante = [
+        {
+          file: foto,
+          tipo_documento: 'Foto tipo carné'
+        },
+        {
+          file: documento,
+          tipo_documento: 'Copia del documento'
+        }
+      ];
+
+      for (const { file, tipo_documento } of archivosEstudiante) {
+        const buffer = fs.readFileSync(file.path); // Leer el archivo subido
+
+        await Archivo.create({
+          nombre_original: file.originalname,
+          nombre_sistema: file.filename,
+          tipo: file.mimetype,
+          contenido: buffer,
+          tipo_documento,
+          id_usuario: usuarioEstudiante.id_usuario,
+          fecha_subida: new Date()
+        }, { transaction: t });
+
+        fs.unlinkSync(file.path); // Eliminar archivo físico temporal
+      }
+
+      // Crear Persona Acudiente
+      const personaAcudiente = await Persona.create({
+        numero_documento: numeroDocAcu,
+        nombre: acudiente.nombre,
+        apellido: acudiente.apellido,
+        correo: acudiente.correo,
+        telefono: acudiente.telefono,
+        direccion: acudiente.direccion,
+        ciudad_residencia: acudiente.ciudad,
+        tipo_sangre: acudiente.tipo_sangre,
+        discapacidad: acudiente.discapacidad,
+        ocupacion: acudiente.ocupacion,
+        fecha_nacimiento: acudiente.fecha_nacimiento,
+        id_tipo_documento: acudiente.tipo_documento,
+        id_sexo: acudiente.sexo
+      }, { transaction: t });
+
+      // Crear Usuario Acudiente
+      const usuarioAcudiente = await Usuario.create({
+        username: `acu${numeroDocAcu}`,
+        contrasena: numeroDocAcu,
+        numero_documento: numeroDocAcu,
+        id_tipo_usuario: 2,
+        id_estado_usuario: 1
+      }, { transaction: t });
+
+      const acudienteNuevo = await Acudiente.create({
+        numero_documento: numeroDocAcu,
+        id_usuario: usuarioAcudiente.id_usuario
+      }, { transaction: t });
+
+      const estudianteNuevo = await Estudiante.create({
+        numero_documento: numeroDocEst,
+        id_usuario: usuarioEstudiante.id_usuario,
+        id_eps: estudiante.eps,
+        id_estado_academico: estudiante.estado_academico,
+        id_acudiente: acudienteNuevo.id_acudiente
       }, { transaction: t });
 
       await t.commit();
 
       res.status(201).json({
-        mensaje: 'Estudiante registrado exitosamente',
-        persona,
-        usuario,
-        estudiante
+        mensaje: 'Registro exitoso',
+        usuario_estudiante: usuarioEstudiante.username,
+        contrasena_estudiante: usuarioEstudiante.contrasena,
+        usuario_acudiente: usuarioAcudiente.username,
+        contrasena_acudiente: usuarioAcudiente.contrasena
       });
 
     } catch (error) {
       await t.rollback();
-      console.error(error);
-      res.status(500).json({ mensaje: 'Error al registrar el estudiante', error });
+      console.error('❌ Error al registrar:', error);
+      res.status(500).json({
+        mensaje: 'Error interno al registrar',
+        error: {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        }
+      });
     }
   }
-
 };
 
 module.exports = registrarEstudianteCompleto;

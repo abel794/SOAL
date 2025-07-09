@@ -1,0 +1,91 @@
+.historial-container {
+  padding: 2rem;
+}
+
+.busqueda {
+  margin-bottom: 1rem;
+}
+
+.busqueda input {
+  padding: 8px;
+  width: 60%;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.busqueda button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.busqueda button:hover {
+  background-color: #0056b3;
+}
+
+.titulo {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.linea {
+  height: 2px;
+  background-color: #ccc;
+  margin: 1rem 0;
+}
+
+.mensaje-error {
+  color: red;
+  font-weight: bold;
+}
+
+.tabla-responsive {
+  overflow-x: auto;
+}
+
+.tabla-historial {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-historial th,
+.tabla-historial td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabla-historial th {
+  background-color: #f8f9fa;
+}
+
+@media screen and (max-width: 600px) {
+  .historial-container {
+    padding: 1rem;
+  }
+
+  .busqueda input {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .busqueda button {
+    width: 100%;
+  }
+
+  .titulo {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .tabla-historial th,
+  .tabla-historial td {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
+}

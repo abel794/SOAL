@@ -1,0 +1,91 @@
+.buscar-estudiante {
+  padding: 1.5rem;
+}
+
+.buscar-estudiante h1 {
+  margin-bottom: 0.3rem;
+}
+
+.buscar-estudiante .linea {
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.buscar-estudiante input[type="text"] {
+  padding: 8px;
+  width: 60%;
+  max-width: 400px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  margin-right: 10px;
+}
+
+.buscar-estudiante button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.buscar-estudiante button:hover {
+  background-color: #0056b3;
+}
+
+.buscar-estudiante .mensaje {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.buscar-estudiante table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.buscar-estudiante th,
+.buscar-estudiante td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .buscar-estudiante input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .buscar-estudiante button {
+    width: 100%;
+  }
+
+  .buscar-estudiante table th,
+  .buscar-estudiante table td {
+    font-size: 0.9rem;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .buscar-estudiante {
+    padding: 1rem;
+  }
+
+  .buscar-estudiante input[type="text"],
+  .buscar-estudiante button {
+    width: 100%;
+    margin: 0 0 10px 0;
+  }
+
+  .buscar-estudiante table {
+    font-size: 0.85rem;
+  }
+
+  .buscar-estudiante table th,
+  .buscar-estudiante table td {
+    padding: 0.5rem;
+  }
+}

@@ -127,3 +127,37 @@ button[type="submit"] {
     gap: 5px;
   }
 }
+
+@media (max-width: 600px) {
+  .profesor-formulario {
+    padding: 1rem;
+    margin: 20px;
+  }
+
+  .pasos-profesor {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .pasos-profesor div {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .form-step input,
+  .form-step select {
+    font-size: 0.95rem;
+  }
+
+  .archivos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .botones-profesor button {
+    width: 100%;
+    font-size: 1rem;
+  }
+}

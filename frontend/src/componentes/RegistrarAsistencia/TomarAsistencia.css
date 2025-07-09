@@ -68,3 +68,27 @@
 .btn-guardar:hover {
   background-color: #218838;
 }
+
+/* === RESPONSIVE PARA MÓVILES === */
+@media (max-width: 600px) {
+  .asistencia-contenedor {
+    padding: 15px;
+  }
+
+  .asistencia-tabla th,
+  .asistencia-tabla td {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .asistencia-tabla select,
+  .asistencia-tabla textarea {
+    font-size: 14px;
+  }
+
+  .btn-guardar {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}

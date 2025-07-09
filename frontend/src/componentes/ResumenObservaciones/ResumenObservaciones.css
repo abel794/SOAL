@@ -1,0 +1,77 @@
+/* === Estilos para ResumenObservaciones.jsx === */
+
+.resumen-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.resumen-card {
+  background-color: #f5f7ff;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.grafico-barras,
+.grafico-torta {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.grafico-barras canvas,
+.grafico-torta canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.grafico-torta {
+  max-width: 260px;
+  margin: 1rem auto 0;
+}
+
+.text-primary {
+  color: #007bff;
+}
+
+/* Margen inferior entre secciones siguientes */
+.resumen-container + * {
+  margin-top: 2rem;
+}
+
+/* Responsive tablet */
+@media (max-width: 768px) {
+  .resumen-card {
+    max-width: 100%;
+  }
+
+  .grafico-torta {
+    max-width: 200px;
+  }
+}
+
+/* Responsive móvil */
+@media (max-width: 480px) {
+  .grafico-torta {
+    max-width: 160px;
+  }
+
+  .grafico-barras {
+    overflow-x: auto;
+  }
+
+  .grafico-barras canvas {
+    min-width: 320px; /* Asegura scroll si las etiquetas son muchas */
+  }
+}

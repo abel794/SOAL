@@ -7,7 +7,7 @@ import '../Login/style/CampoTexto.css';
 import '../Login/style/Boton.css';
 import logo from '../../assets/image.png';
 
-// Mapeo de tipos de usuario
+// Mapeo de roles según el ID
 const rolesMapping = {
   1: 'Estudiante',
   2: 'Acudiente',
@@ -31,22 +31,20 @@ const Login = () => {
       const res = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: username,
-          contrasena: contrasena
-        }),
+        body: JSON.stringify({ username, contrasena })
       });
 
       const data = await res.json();
 
-      if (res.ok) {
+      if (res.ok && data.token) {
+        // Guardar el token y el usuario
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
         const id_tipo_usuario = data.usuario.id_tipo_usuario;
         const rol = rolesMapping[id_tipo_usuario];
 
-        // Guardar el usuario en localStorage
-        localStorage.setItem('usuario', JSON.stringify(data.usuario));
-
-        // Redirigir según el rol
+        // Redirección según rol
         switch (rol) {
           case 'Coordinador':
           case 'Rector':
@@ -69,15 +67,15 @@ const Login = () => {
             navigate('/orientador');
             break;
           default:
-            alert(`🔒 Tu rol (${rol}) no tiene acceso o no está definido aún.`);
+            alert(`🔒 Rol no autorizado: ${rol}`);
             break;
         }
       } else {
-        alert(`❌ ${data.mensaje || 'Credenciales incorrectas'}`);
+        alert(`❌ ${data.mensaje || 'Credenciales inválidas'}`);
       }
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      alert('⚠️ Error de conexión con el servidor');
+      console.error('Error de conexión:', error);
+      alert('❌ Error de conexión con el servidor');
     }
   };
 
@@ -86,7 +84,7 @@ const Login = () => {
       <form className="formulario-login" onSubmit={manejarEnvio}>
         <img src={logo} alt="Logo" className="logo-login" />
         <h2>¡Ingresar! <span>🎓</span></h2>
-        <p>Entra tu cuenta</p>
+        <p>Entra a tu cuenta</p>
 
         <CampoTexto
           etiqueta="Nombre de usuario"
