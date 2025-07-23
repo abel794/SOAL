@@ -1,132 +1,147 @@
-.asignar-grado-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  background-color: #f3f4f6;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
+/* AsignarGrado.css */
 
-.asignar-grado-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
-
-.filtros {
+/* Fondo centrado */
+.asignar-grado-main {
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 25px;
   justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  background: #f3f4f6;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
 }
 
-.filtros input,
-.filtros select {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  min-width: 220px;
+/* Card principal */
+.form-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.profesores-lista {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
+/* Card de profesor */
 .profesor-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  transition: 0.3s ease;
-  flex-wrap: wrap;
-}
-
-.profesor-card:hover {
   background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
 }
 
-.profesor-card img {
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+/* Título */
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
-.info {
+/* Inputs y selects */
+.input-field,
+.select-field {
   flex: 1;
-  margin-left: 15px;
-  min-width: 150px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  outline: none;
 }
 
-.nombre {
-  font-weight: bold;
-  margin-bottom: 4px;
-  color: #333;
+.input-field:focus,
+.select-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.doc {
-  font-size: 14px;
-  color: #555;
-}
-
-.profesor-card button {
-  background-color: #007bff;
+/* Botones */
+.btn-primary {
+  background-color: #2563eb;
   color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: 0.2s ease;
-  margin-top: 10px;
+  transition: background 0.2s ease;
 }
 
-.profesor-card button:hover {
-  background-color: #0056b3;
+.btn-primary:hover {
+  background-color: #1d4ed8;
 }
 
-.mensaje {
-  margin-top: 20px;
+.btn-secondary {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #059669;
+}
+
+/* Disposición de filas */
+.form-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Información del profesor */
+.profesor-info {
+  font-size: 1rem;
+  color: #374151;
+}
+
+/* Mensaje flotante */
+.mensaje-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+  /* Estilos opcionales para embellecer */
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 16px;
+  padding: 20px;
   text-align: center;
-  color: #2ecc71;
-  font-weight: bold;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
 }
 
-/* 🌐 RESPONSIVE para móviles */
-@media (max-width: 480px) {
-  .asignar-grado-container {
-    padding: 20px 10px;
-  }
 
-  .filtros {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.mensaje-exito {
+  border-left: 6px solid #10b981;
+}
 
-  .filtros input,
-  .filtros select {
-    width: 100%;
-    min-width: auto;
-  }
+.mensaje-error {
+  border-left: 6px solid #ef4444;
+}
 
-  .profesor-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+.mensaje-texto {
+  font-size: 3rem;
+  color: #111827;
+  margin: 0;
+}
 
-  .info {
-    margin-left: 0;
-    margin-top: 10px;
-  }
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-  .profesor-card button {
-    width: 100%;
-    margin-top: 10px;
-  }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }

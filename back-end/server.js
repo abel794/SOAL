@@ -1,3 +1,5 @@
+// back-end/server.js
+// Este archivo es el punto de entrada del servidor Express
 // 📦 Módulos principales
 const express = require('express');
 const cors = require('cors');
@@ -56,6 +58,8 @@ const registroAcudienteRoutes = require('./routes/registrarAcudienteRoutes');
 const registroFuncionarioRoutes = require('./routes/registrarFuncionarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const configuracionSistemaRoutes = require('./routes/configuracionSistemaRoutes');
+
+
 app.use('/api/configuracion', configuracionSistemaRoutes);
 
 // ✅ Montaje de rutas (usa los imports anteriores)

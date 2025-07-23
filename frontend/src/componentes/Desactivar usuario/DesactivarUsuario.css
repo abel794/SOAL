@@ -141,3 +141,40 @@ input:checked + .slider:before {
     width: 100%;
   }
 }
+.contenedor {
+  padding: 20px;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-usuarios th {
+  background-color: #f0f0f0;
+}
+
+.mensaje {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.mensaje.exito {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.mensaje.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}

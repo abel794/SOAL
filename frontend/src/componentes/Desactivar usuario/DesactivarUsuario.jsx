@@ -1,115 +1,93 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './DesactivarUsuario.css';
 
-export default function DesactivarUsuario() {
+const DesactivarUsuario = () => {
   const [usuarios, setUsuarios] = useState([]);
-  const [busqueda, setBusqueda] = useState('');
-  const [estadoFiltro, setEstadoFiltro] = useState('Todos');
   const [mensaje, setMensaje] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/usuarios')
-      .then(res => res.json())
-      .then(data => setUsuarios(data))
-      .catch(err => console.error('Error al cargar usuarios:', err));
+    const fetchUsuarios = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/usuarios');
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        const data = await res.json();
+        setUsuarios(
+          data.map(u => ({
+            ...u,
+            estado: u.id_estado_usuario === 1 ? 'Activo' : 'Inactivo'
+          }))
+        );
+      } catch (err) {
+        console.error('Error al obtener usuarios:', err);
+        setMensaje({ tipo: 'error', texto: 'No se pudieron cargar los usuarios.' });
+        setTimeout(() => setMensaje(null), 2500);
+      }
+    };
+    fetchUsuarios();
   }, []);
 
-  const handleBusqueda = (e) => {
-    setBusqueda(e.target.value);
-  };
-
-  const handleFiltroEstado = (e) => {
-    setEstadoFiltro(e.target.value);
-  };
-
-  const toggleEstado = async (id) => {
+  const toggleEstado = async (id_usuario) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/usuarios/${id}/toggle-estado`, {
-        method: 'PATCH'
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setUsuarios(prev =>
-          prev.map(u =>
-            u.id === id ? { ...u, estado: data.estado === 1 ? 'Activo' : 'Inactivo' } : u
-          )
-        );
-
-        setMensaje({
-          tipo: 'exito',
-          texto: `✅ Usuario ${data.estado === 1 ? 'activado' : 'desactivado'} correctamente.`
-        });
-      } else {
-        setMensaje({
-          tipo: 'error',
-          texto: data.mensaje || '❌ Error al cambiar estado.'
-        });
-      }
-
-      setTimeout(() => setMensaje(null), 2500);
-    } catch (error) {
-      console.error('Error:', error);
-      setMensaje({ tipo: 'error', texto: '❌ Error de conexión al servidor' });
+      const res = await fetch(
+        `http://localhost:3000/api/usuarios/${id_usuario}/toggle-estado`,
+        { method: 'PATCH' }
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const { mensaje: msg, estado } = await res.json();
+      setUsuarios(prev =>
+        prev.map(u =>
+          u.id_usuario === id_usuario
+            ? { ...u, id_estado_usuario: estado, estado: estado === 1 ? 'Activo' : 'Inactivo' }
+            : u
+        )
+      );
+      setMensaje({ tipo: 'exito', texto: msg });
+    } catch (err) {
+      console.error('Error en toggleEstado:', err);
+      setMensaje({ tipo: 'error', texto: 'No se pudo cambiar el estado.' });
+    } finally {
       setTimeout(() => setMensaje(null), 2500);
     }
   };
 
-  const usuariosFiltrados = usuarios.filter(u => {
-    const coincideTexto =
-      u.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      u.documento.includes(busqueda);
-    const coincideEstado = estadoFiltro === 'Todos' || u.estado === estadoFiltro;
-    return coincideTexto && coincideEstado;
-  });
-
   return (
-    <div className="desactivar-contenedor">
-      <h2>Desactivar Usuario</h2>
+    <div className="contenedor">
+      <h2>Gestión de Estado de Usuarios</h2>
 
-      <div className="desactivar-filtros">
-        <input
-          type="text"
-          placeholder="Buscar por nombre o documento"
-          value={busqueda}
-          onChange={handleBusqueda}
-        />
-        <select value={estadoFiltro} onChange={handleFiltroEstado}>
-          <option value="Todos">Todos</option>
-          <option value="Activo">Activo</option>
-          <option value="Inactivo">Inactivo</option>
-        </select>
-      </div>
+      {mensaje && <div className={`mensaje ${mensaje.tipo}`}>{mensaje.texto}</div>}
 
-      <div className="usuarios-lista">
-        {usuariosFiltrados.map(u => (
-          <div key={u.id} className="usuario-item">
-            <div>
-              <p><strong>{u.nombre}</strong> ({u.rol})</p>
-              <p>Documento: {u.documento}</p>
-            </div>
-
-            <div className="switch-container">
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={u.estado === 'Activo'}
-                  onChange={() => toggleEstado(u.id)}
-                />
-                <span className="slider round"></span>
-              </label>
-              <span className={`estado-label ${u.estado === 'Activo' ? 'activo' : 'inactivo'}`}>
-                {u.estado}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {mensaje && (
-        <div className={`mensaje ${mensaje.tipo}`}>{mensaje.texto}</div>
-      )}
+      <table className="tabla-usuarios">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Documento</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {usuarios.map(u => (
+            <tr key={u.id_usuario}>
+              <td>{u.username}</td>
+              <td>{u.numero_documento || 'N/A'}</td>
+              <td>{u.estado}</td>
+              <td>
+                {/* Toggle switch personalizado */}
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={u.estado === 'Activo'}
+                    onChange={() => toggleEstado(u.id_usuario)}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
+
+export default DesactivarUsuario;

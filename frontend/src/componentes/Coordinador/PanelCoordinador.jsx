@@ -25,6 +25,7 @@ import RegistrarAsistencia from '../RegistrarAsistencia/RegistrarAsistencia';
 import ModalCerrarSesion from './ModalCerrarSesion'; // ✅ CORRECTO
 
 
+
 function PanelCoordinador() {
   const [abierto, setAbierto] = useState(true);
   const [vista, setVista] = useState('Dashboard');

@@ -1,6 +1,14 @@
+// back-end/routes/usuarioRoutes.js
+// Rutas para manejar las operaciones relacionadas con los usuarios
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/usuarioController');
+const usuarioController = require('../controllers/usuarioController');
+
+
+// 🔄 Activar o inactivar usuario
+router.patch('/:id/toggle-estado', controller.toggleEstado);
+
 
 // 🔍 Buscar usuarios por nombre de usuario
 router.get('/buscar', controller.buscar);
@@ -34,6 +42,8 @@ router.put('/:id', controller.actualizar);
 
 // ❌ Eliminar usuario
 router.delete('/:id', controller.eliminar);
+
+
 
 module.exports = router;
 

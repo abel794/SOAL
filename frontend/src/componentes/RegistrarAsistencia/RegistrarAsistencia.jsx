@@ -7,48 +7,40 @@ export default function TomarAsistenciaPorGrado() {
   const [estudiantes, setEstudiantes] = useState([]);
   const [asistencias, setAsistencias] = useState({});
   const [observaciones, setObservaciones] = useState({});
+  const [mensaje, setMensaje] = useState(null);
 
-  // Simulación de grados
+  // 1. Cargar grados
   useEffect(() => {
-    const gradosSimulados = [
-      { id_grado: 1, nombre: '3A' },
-      { id_grado: 2, nombre: '4B' },
-      { id_grado: 3, nombre: '5C' }
-    ];
-    setGrados(gradosSimulados);
+    fetch('http://localhost:3000/api/grados')
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => setGrados(data))
+      .catch(() => setMensaje({ tipo: 'error', texto: 'Error al cargar grados.' }));
   }, []);
 
-  // Al seleccionar un grado, carga estudiantes simulados
+  // 2. Obtener estudiantes del grado
   const obtenerEstudiantes = (idGrado) => {
     setGradoSeleccionado(idGrado);
-    const estudiantesSimulados = {
-      1: [
-        { id_estudiante: 101, nombre: 'Laura Gómez' },
-        { id_estudiante: 102, nombre: 'Pedro Díaz' }
-      ],
-      2: [
-        { id_estudiante: 201, nombre: 'Ana Torres' },
-        { id_estudiante: 202, nombre: 'Juan Pérez' }
-      ],
-      3: [
-        { id_estudiante: 301, nombre: 'Carlos Ríos' },
-        { id_estudiante: 302, nombre: 'Daniela Suárez' }
-      ]
-    };
+    fetch(`http://localhost:3000/api/estudiantes/grado/${idGrado}`)
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        setEstudiantes(data);
 
-    const lista = estudiantesSimulados[idGrado] || [];
-    setEstudiantes(lista);
-
-    const estadoInicial = {};
-    const obsInicial = {};
-    lista.forEach(e => {
-      estadoInicial[e.id_estudiante] = 'Presente';
-      obsInicial[e.id_estudiante] = '';
-    });
-    setAsistencias(estadoInicial);
-    setObservaciones(obsInicial);
+        const estados = {};
+        const obs = {};
+        data.forEach(e => {
+          estados[e.id_estudiante] = 'Presente';
+          obs[e.id_estudiante] = '';
+        });
+        setAsistencias(estados);
+        setObservaciones(obs);
+      })
+      .catch(() => {
+        setEstudiantes([]);
+        setMensaje({ tipo: 'error', texto: 'Error al cargar estudiantes.' });
+      });
   };
 
+  // 3. Manejar cambios de estado/observación
   const manejarCambioAsistencia = (id, estado) => {
     setAsistencias(prev => ({ ...prev, [id]: estado }));
   };
@@ -57,18 +49,39 @@ export default function TomarAsistenciaPorGrado() {
     setObservaciones(prev => ({ ...prev, [id]: texto }));
   };
 
+  // 4. Enviar asistencias en lote
   const enviarAsistencias = () => {
+    const fechaHoy = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
     const payload = estudiantes.map(est => ({
       id_estudiante: est.id_estudiante,
-      id_funcionario: 1, // Simulado
-      id_grado_asistencia: gradoSeleccionado,
+      id_funcionario: 1, // 🔁 Reemplazar con ID real del profesor
+      id_grado_asistencia: parseInt(gradoSeleccionado),
       estado: asistencias[est.id_estudiante],
-      observacion: observaciones[est.id_estudiante]
+      observacion: observaciones[est.id_estudiante],
+      fecha: fechaHoy
     }));
 
-    console.log("📤 Enviando asistencia:", payload);
-    alert("✅ Asistencia registrada (simulado)");
+    fetch('http://localhost:3000/api/asistencias/masivo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(() => {
+        setMensaje({ tipo: 'exito', texto: '✅ Asistencia registrada correctamente.' });
+      })
+      .catch(() => {
+        setMensaje({ tipo: 'error', texto: '❌ No se pudo guardar la asistencia.' });
+      });
   };
+
+  // 5. Ocultar mensaje automáticamente
+  useEffect(() => {
+    if (!mensaje) return;
+    const timer = setTimeout(() => setMensaje(null), 3000);
+    return () => clearTimeout(timer);
+  }, [mensaje]);
 
   return (
     <div className="asistencia-contenedor">
@@ -81,7 +94,9 @@ export default function TomarAsistenciaPorGrado() {
       >
         <option value="">-- Selecciona --</option>
         {grados.map(g => (
-          <option key={g.id_grado} value={g.id_grado}>{g.nombre}</option>
+          <option key={g.id_grado} value={g.id_grado}>
+            {g.nombre_grado || g.nombre}
+          </option>
         ))}
       </select>
 
@@ -97,7 +112,7 @@ export default function TomarAsistenciaPorGrado() {
           <tbody>
             {estudiantes.map(e => (
               <tr key={e.id_estudiante}>
-                <td>{e.nombre}</td>
+                <td>{e.nombre} {e.apellido}</td>
                 <td>
                   <select
                     value={asistencias[e.id_estudiante]}
@@ -127,6 +142,12 @@ export default function TomarAsistenciaPorGrado() {
         <button className="btn-guardar" onClick={enviarAsistencias}>
           Guardar asistencia
         </button>
+      )}
+
+      {mensaje && (
+        <div className={`mensaje mensaje-${mensaje.tipo}`}>
+          <p>{mensaje.texto}</p>
+        </div>
       )}
     </div>
   );

@@ -1,30 +1,25 @@
+// routes/funcionarioRoutes.js
 const express = require('express');
 const router = express.Router();
-const funcionarioController = require('../controllers/funcionarioController');
+const controller = require('../controllers/funcionarioController');
 
-// 🔍 Buscar funcionarios por nombre (query param: ?nombre=Juan)
-router.get('/buscar', funcionarioController.buscarPorNombre);
+// 🔄 CRUD básico
+router.get('/todos', controller.obtenerTodos);
+router.get('/:id', controller.obtenerPorId);
+router.post('/', controller.crear);
+router.put('/:id', controller.actualizar);
+router.delete('/:id', controller.eliminar);
 
-// 📊 Contar por cargo (query param: ?cargo=docente)
-router.get('/contar', funcionarioController.contarPorCargo);
+// 🔍 Búsqueda avanzada
+router.get('/buscar', controller.buscarPorNombre);               // ?nombre=...
+router.get('/cedula/:numero_documento', controller.obtenerPorDocumento);
 
-// 🎓 Filtrar por escolaridad (query param: ?id_escolaridad=1)
-router.get('/escolaridad', funcionarioController.filtrarPorEscolaridad);
+// 📊 Estadísticas y filtros
+router.get('/contar', controller.contarPorCargo);               // ?cargo=...
+router.get('/escolaridad', controller.filtrarPorEscolaridad);   // ?id_escolaridad=...
 
-// 📋 Obtener todos los funcionarios (con relaciones)
-router.get('/todos', funcionarioController.obtenerTodos);
-
-// 📚 Obtener grados asignados a un funcionario
-router.get('/:id/grados', funcionarioController.gradosAsignados);
-
-// ➕ Asignar grado a funcionario
-router.post('/asignar-grado', funcionarioController.asignarGrado);
-
-// 📄 CRUD básico
-router.get('/:id', funcionarioController.obtenerPorId);
-router.post('/', funcionarioController.crear);
-router.put('/:id', funcionarioController.actualizar);
-router.delete('/:id', funcionarioController.eliminar);
+// 📚 Funcionario–Grado
+router.post('/asignar-grado', controller.asignarGrado);
+router.get('/:id/grados', controller.gradosAsignados);
 
 module.exports = router;
-

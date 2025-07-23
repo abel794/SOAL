@@ -154,6 +154,47 @@ const usuarioController = {
     }
   },
 
+  // ✅ Alternar estado Activo/Inactivo
+// controllers/usuarioController.js
+
+// Método para alternar entre activo (1) e inactivo (2) un usuario por su ID
+async toggleEstado(req, res) {
+  // 1️⃣ Extraemos el parámetro `id` de la URL: /api/usuarios/:id/toggle-estado
+  const id = req.params.id;
+
+  try {
+    // 2️⃣ Buscamos al usuario en la base de datos por su PK
+    const usuario = await Usuario.findByPk(id);
+
+    // 3️⃣ Si no existe, devolvemos un 404 con mensaje de error
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // 4️⃣ Alternamos el valor de `id_estado_usuario`:
+    //    - Si era 1 (activo), lo pasamos a 2 (inactivo)
+    //    - Si era 2, lo pasamos a 1
+    usuario.id_estado_usuario = usuario.id_estado_usuario === 1 ? 2 : 1;
+
+    // 5️⃣ Guardamos los cambios en la base
+    await usuario.save();
+
+    // 6️⃣ Respondemos con un JSON que incluye:
+    //    - Un mensaje de confirmación
+    //    - El nuevo estado numérico
+    res.json({
+      mensaje: `Usuario ${usuario.id_estado_usuario === 1 ? 'activado' : 'inactivado'} correctamente`,
+      estado: usuario.id_estado_usuario
+    });
+  } catch (error) {
+    // 7️⃣ Si ocurre cualquier error interno, lo registramos y devolvemos un 500
+    console.error('Error al alternar estado:', error);
+    res.status(500).json({ error: 'Error al alternar el estado del usuario' });
+  }
+},
+
+
+
   // ✅ Activar o inactivar por número de documento
   async cambiarEstadoPorDocumento(req, res) {
     const { numero_documento } = req.params;

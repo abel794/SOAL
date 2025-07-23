@@ -1,3 +1,5 @@
+// controllers/funcionarioController.js
+
 const db = require('../models');
 const { Op } = require('sequelize');
 
@@ -133,6 +135,28 @@ const funcionarioController = {
     }
   },
 
+  // 🔍 Buscar funcionario por número de documento (cédula)
+  async obtenerPorDocumento(req, res) {
+    const { numero_documento } = req.params;
+    try {
+      const func = await Funcionario.findOne({
+        where: { numero_documento },
+        include: [
+          { model: Persona, as: 'persona' },
+          { model: Usuario, as: 'usuario', attributes: ['id_usuario', 'username', 'id_tipo_usuario'] },
+          { model: NivelEscolaridad, as: 'escolaridad' }
+        ]
+      });
+      if (!func) {
+        return res.status(404).json({ error: 'Funcionario no encontrado' });
+      }
+      res.json(func);
+    } catch (error) {
+      console.error('Error al buscar por documento:', error);
+      res.status(500).json({ error: 'Error interno', detalle: error.message });
+    }
+  },
+
   // 📚 Asignar grado a funcionario
   async asignarGrado(req, res) {
     const { id_funcionario, id_grado } = req.body;
@@ -146,7 +170,6 @@ const funcionarioController = {
       }
 
       await FuncionarioGrado.create({ id_funcionario, id_grado });
-
       res.status(201).json({ mensaje: 'Grado asignado correctamente' });
     } catch (error) {
       console.error('Error en asignarGrado:', error);
@@ -155,40 +178,30 @@ const funcionarioController = {
   },
 
   // 📚 Obtener grados asignados a un funcionario
-  // 📚 Obtener grados asignados a un funcionario
-async gradosAsignados(req, res) {
-  const id_funcionario = req.params.id;
-  try {
-    const grados = await FuncionarioGrado.findAll({
-      where: { id_funcionario },
-      include: [
-        {
-          model: Grado,
-          as: 'grado' // 👈 Este alias debe coincidir con el definido en el modelo
-        }
-      ]
-    });
-    res.json(grados);
-  } catch (error) {
-    console.error('Error en gradosAsignados:', error);
-    res.status(500).json({ error: 'Error al obtener los grados asignados', detalle: error.message });
-  }
-},
-
+  async gradosAsignados(req, res) {
+    const id_funcionario = req.params.id;
+    try {
+      const grados = await FuncionarioGrado.findAll({
+        where: { id_funcionario },
+        include: [{ model: Grado, as: 'grado' }] // alias debe coincidir con la asociación
+      });
+      res.json(grados);
+    } catch (error) {
+      console.error('Error en gradosAsignados:', error);
+      res.status(500).json({ error: 'Error al obtener los grados asignados', detalle: error.message });
+    }
+  },
 
   // 📊 Contar funcionarios por cargo
   async contarPorCargo(req, res) {
     const { cargo } = req.query;
-
     if (!cargo) {
       return res.status(400).json({ error: 'Debe proporcionar el cargo' });
     }
-
     try {
       const total = await Funcionario.count({
         where: { cargo: { [Op.like]: `%${cargo}%` } }
       });
-
       res.json({ cargo, total });
     } catch (error) {
       console.error('Error al contar por cargo:', error);
@@ -199,11 +212,9 @@ async gradosAsignados(req, res) {
   // 📚 Filtrar funcionarios por nivel de escolaridad
   async filtrarPorEscolaridad(req, res) {
     const { id_escolaridad } = req.query;
-
     if (!id_escolaridad) {
       return res.status(400).json({ error: 'Debe enviar id_escolaridad' });
     }
-
     try {
       const resultados = await Funcionario.findAll({
         where: { id_escolaridad },
@@ -212,7 +223,6 @@ async gradosAsignados(req, res) {
           { model: NivelEscolaridad, as: 'escolaridad' }
         ]
       });
-
       res.json(resultados);
     } catch (error) {
       console.error('Error al filtrar por escolaridad:', error);
