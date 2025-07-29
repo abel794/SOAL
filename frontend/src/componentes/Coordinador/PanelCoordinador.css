@@ -63,3 +63,24 @@
     margin: 0.5rem 0;
   }
 }
+.contenido-principal {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+h2 {
+  color: #2d2d2d;
+}
+
+.card {
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.card h6 {
+  margin-bottom: 15px;
+}
+
+.border-bottom {
+  border-bottom: 2px solid #e1e1e1 !important;
+}

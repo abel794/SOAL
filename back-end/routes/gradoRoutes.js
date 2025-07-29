@@ -2,21 +2,22 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/gradoController');
 
-// 🔍 Buscar por nombre
+// 🔍 Buscar grados por nombre (query param ?nombre=Primero)
 router.get('/buscar', controller.buscarPorNombre);
 
-// 📊 Contar estudiantes
+// 📊 Contar estudiantes en un grado
 router.get('/:id/contar', controller.contarEstudiantes);
 
-// 👥 Ver funcionarios asignados
+// 👥 Obtener funcionarios asignados a un grado
 router.get('/:id/funcionarios', controller.funcionariosAsignados);
 
-// 📄 CRUD
-router.get('/', controller.listarTodos);
-router.get('/:id', controller.obtenerPorId); // Asegúrate que exista en el controlador
-router.post('/', controller.crear);
-router.put('/:id', controller.actualizar);
-router.delete('/:id', controller.eliminar);
+// 📄 CRUD Grados
+router.get('/', controller.listarTodos);         // Listar todos los grados
+router.get('/:id', controller.obtenerPorId);     // Obtener un grado por ID
+router.post('/', controller.crear);              // Crear nuevo grado
+router.put('/:id', controller.actualizar);       // Actualizar grado por ID
+router.delete('/:id', controller.eliminar);      // Eliminar grado por ID
 
 module.exports = router;
+
 

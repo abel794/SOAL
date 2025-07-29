@@ -1,3 +1,4 @@
+// Observacion.js
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -38,40 +39,30 @@ module.exports = (sequelize) => {
 
   // Asociaciones
   Observacion.associate = (models) => {
-    // Estudiante al que pertenece la observación
     Observacion.belongsTo(models.Estudiante, {
       foreignKey: 'id_estudiante',
       as: 'estudiante'
     });
 
-    // Funcionario (profesor/orientador/coordinador) que hizo la observación
     Observacion.belongsTo(models.Funcionario, {
       foreignKey: 'id_funcionario',
       as: 'funcionario'
     });
 
-    // Gravedad de la observación (leve, moderada, grave)
     Observacion.belongsTo(models.GravedadObservacion, {
       foreignKey: 'id_gravedad',
       as: 'gravedad'
     });
 
-    // Categoría (ej. disciplina, académico, etc.)
     Observacion.belongsTo(models.CategoriaObservacion, {
       foreignKey: 'id_categoria',
       as: 'categoria'
     });
 
-    /* Relación con auditoría (si usas)
-    Observacion.hasMany(models.AuditoriaObservacion, {
-      foreignKey: 'id_observacion',
-      as: 'auditoria'
-    });*/
-
-    // Historial de modificaciones (corrección agregada)
+    // 🔹 Relación con historial (el alias DEBE ser distinto a 'observacion')
     Observacion.hasMany(models.HistorialObservacion, {
       foreignKey: 'id_observacion',
-      as: 'historial'
+      as: 'historiales'
     });
   };
 

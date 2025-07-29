@@ -4,12 +4,13 @@ import './RegistrarObservacion.css'; // ✅ Estilos separados
 function RegistrarObservacion() {
   const [nombreBuscado, setNombreBuscado] = useState('');
   const [estudiante, setEstudiante] = useState(null);
-  const [mensaje, setMensaje] = useState('');
+  const [mensaje, setMensaje] = useState(null);
   const [observacion, setObservacion] = useState('');
   const [categorias, setCategorias] = useState([]);
   const [idCategoria, setIdCategoria] = useState('');
   const [gravedad, setGravedad] = useState('Leve');
 
+  // ✅ Cargar categorías
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -18,11 +19,13 @@ function RegistrarObservacion() {
         setCategorias(data.categorias);
       } catch (error) {
         console.error('Error al cargar categorías:', error);
+        setMensaje({ tipo: 'error', texto: '⚠️ No se pudieron cargar las categorías.' });
       }
     };
     fetchCategorias();
   }, []);
 
+  // ✅ Buscar estudiante
   const manejarBusqueda = async () => {
     try {
       let url = 'http://localhost:3000/api/estudiantes/buscar';
@@ -35,22 +38,35 @@ function RegistrarObservacion() {
 
       if (res.ok && Array.isArray(data) && data.length > 0) {
         setEstudiante(data[0]);
-        setMensaje(`✅ Estudiante encontrado: ${data[0].persona?.nombre || data[0].nombre}`);
+        setMensaje({ tipo: 'exito', texto: `✅ Estudiante encontrado: ${data[0].persona?.nombre || data[0].nombre}` });
       } else {
         setEstudiante(null);
-        setMensaje('❌ Estudiante no encontrado.');
+        setMensaje({ tipo: 'error', texto: ' Estudiante no encontrado.' });
       }
     } catch (error) {
       console.error('Error en la búsqueda:', error);
-      setMensaje('⚠️ Error de conexión con el servidor.');
+      setMensaje({ tipo: 'error', texto: '⚠️ Error de conexión con el servidor.' });
     }
   };
 
+  // ✅ Ocultar mensaje automáticamente
+  useEffect(() => {
+    if (!mensaje) return;
+    const timeout = setTimeout(() => setMensaje(null), 3000);
+    const handleClick = () => setMensaje(null);
+    document.addEventListener('click', handleClick);
+    return () => {
+      clearTimeout(timeout);
+      document.removeEventListener('click', handleClick);
+    };
+  }, [mensaje]);
+
+  // ✅ Registrar observación
   const manejarRegistro = async (e) => {
     e.preventDefault();
 
     if (!estudiante || !idCategoria || observacion.trim() === '') {
-      alert('⚠️ Completa todos los campos antes de enviar.');
+      setMensaje({ tipo: 'error', texto: '⚠️ Completa todos los campos antes de enviar.' });
       return;
     }
 
@@ -72,16 +88,16 @@ function RegistrarObservacion() {
 
       const data = await res.json();
       if (res.ok) {
-        alert(`✅ Observación registrada para ${estudiante.persona?.nombre || estudiante.nombre}`);
+        setMensaje({ tipo: 'exito', texto: `✅ Observación registrada para ${estudiante.persona?.nombre || estudiante.nombre}` });
         setObservacion('');
         setIdCategoria('');
         setGravedad('Leve');
       } else {
-        alert(`❌ Error: ${data.error}`);
+        setMensaje({ tipo: 'error', texto: `❌ Error: ${data.error}` });
       }
     } catch (error) {
       console.error('❌ Error al registrar:', error);
-      alert('❌ Error de conexión al servidor.');
+      setMensaje({ tipo: 'error', texto: '❌ Error de conexión al servidor.' });
     }
   };
 
@@ -101,7 +117,17 @@ function RegistrarObservacion() {
         <button onClick={manejarBusqueda}>Buscar estudiante</button>
       </div>
 
-      {mensaje && <p className="mensaje">{mensaje}</p>}
+      {/* ✅ Mensaje */}
+      {mensaje && (
+        <div className={`mensaje-card mensaje-${mensaje.tipo}`}>
+          {mensaje.tipo === 'exito' ? (
+            <lord-icon src="/icons/checkmark.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
+          ) : (
+            <lord-icon src="/icons/error.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
+          )}
+          <p className="mensaje-texto">{mensaje.texto}</p>
+        </div>
+      )}
 
       {estudiante && (
         <form onSubmit={manejarRegistro} className="formulario-observacion">

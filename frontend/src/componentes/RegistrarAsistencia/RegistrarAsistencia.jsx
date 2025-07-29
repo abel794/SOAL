@@ -1,154 +1,242 @@
-import React, { useState, useEffect } from 'react';
-import './TomarAsistencia.css';
+// Instrucciones de configuración:
+// 1. Añade el script de Lordicon en public/index.html:
+//    <script src="https://cdn.lordicon.com/lusqsztk.js"></script>
+// 2. En src/index.js, importa React y ReactDOM:
+//    import React from 'react';
+//    import ReactDOM from 'react-dom';
+//    import App from './App';
+//    ReactDOM.render(<App />, document.getElementById('root'));
 
-export default function TomarAsistenciaPorGrado() {
+import React, { useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import ListarAsistencias from './ListarAsistencias';
+
+const ESTADOS = {
+  'Presente': 1,
+  'Ausente': 2,
+  'Tarde': 3,
+  'Justificada': 4,
+};
+
+const ORDEN_ESTADOS = ['Presente', 'Ausente', 'Tarde', 'Justificada'];
+
+const RegistrarAsistencia = () => {
   const [grados, setGrados] = useState([]);
   const [gradoSeleccionado, setGradoSeleccionado] = useState('');
   const [estudiantes, setEstudiantes] = useState([]);
   const [asistencias, setAsistencias] = useState({});
   const [observaciones, setObservaciones] = useState({});
+  const [cargando, setCargando] = useState(false);
+  const [vista, setVista] = useState('registrar');
   const [mensaje, setMensaje] = useState(null);
 
-  // 1. Cargar grados
+  // Cargar grados
   useEffect(() => {
-    fetch('http://localhost:3000/api/grados')
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => setGrados(data))
-      .catch(() => setMensaje({ tipo: 'error', texto: 'Error al cargar grados.' }));
+    axios.get('http://localhost:3000/api/grados')
+      .then(res => setGrados(res.data))
+      .catch(() => setMensaje({ tipo: 'error', texto: 'No se pudieron cargar los grados.' }));
   }, []);
 
-  // 2. Obtener estudiantes del grado
-  const obtenerEstudiantes = (idGrado) => {
-    setGradoSeleccionado(idGrado);
-    fetch(`http://localhost:3000/api/estudiantes/grado/${idGrado}`)
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => {
-        setEstudiantes(data);
+  // Cargar estudiantes al seleccionar grado
+  useEffect(() => {
+    if (!gradoSeleccionado) {
+      setEstudiantes([]);
+      setAsistencias({});
+      setObservaciones({});
+      return;
+    }
 
-        const estados = {};
-        const obs = {};
-        data.forEach(e => {
-          estados[e.id_estudiante] = 'Presente';
-          obs[e.id_estudiante] = '';
+    setCargando(true);
+    axios.get(`http://localhost:3000/api/estudiantegrados/por-grado/${gradoSeleccionado}`)
+      .then(res => {
+        setEstudiantes(res.data);
+        const inicialAsis = {};
+        const inicialObs = {};
+        res.data.forEach(e => {
+          inicialAsis[e.id_estudiante] = '';
+          inicialObs[e.id_estudiante] = '';
         });
-        setAsistencias(estados);
-        setObservaciones(obs);
+        setAsistencias(inicialAsis);
+        setObservaciones(inicialObs);
       })
-      .catch(() => {
-        setEstudiantes([]);
-        setMensaje({ tipo: 'error', texto: 'Error al cargar estudiantes.' });
-      });
-  };
+      .catch(() => setMensaje({ tipo: 'error', texto: 'No se pudieron cargar los estudiantes.' }))
+      .finally(() => setCargando(false));
+  }, [gradoSeleccionado]);
 
-  // 3. Manejar cambios de estado/observación
-  const manejarCambioAsistencia = (id, estado) => {
-    setAsistencias(prev => ({ ...prev, [id]: estado }));
-  };
-
-  const manejarCambioObservacion = (id, texto) => {
-    setObservaciones(prev => ({ ...prev, [id]: texto }));
-  };
-
-  // 4. Enviar asistencias en lote
-  const enviarAsistencias = () => {
-    const fechaHoy = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-
-    const payload = estudiantes.map(est => ({
-      id_estudiante: est.id_estudiante,
-      id_funcionario: 1, // 🔁 Reemplazar con ID real del profesor
-      id_grado_asistencia: parseInt(gradoSeleccionado),
-      estado: asistencias[est.id_estudiante],
-      observacion: observaciones[est.id_estudiante],
-      fecha: fechaHoy
-    }));
-
-    fetch('http://localhost:3000/api/asistencias/masivo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(() => {
-        setMensaje({ tipo: 'exito', texto: '✅ Asistencia registrada correctamente.' });
-      })
-      .catch(() => {
-        setMensaje({ tipo: 'error', texto: '❌ No se pudo guardar la asistencia.' });
-      });
-  };
-
-  // 5. Ocultar mensaje automáticamente
+  // Ocultar mensaje automáticamente
   useEffect(() => {
     if (!mensaje) return;
-    const timer = setTimeout(() => setMensaje(null), 3000);
-    return () => clearTimeout(timer);
+    const timeout = setTimeout(() => setMensaje(null), 3000);
+    const handleClick = () => setMensaje(null);
+    document.addEventListener('click', handleClick);
+    return () => {
+      clearTimeout(timeout);
+      document.removeEventListener('click', handleClick);
+    };
   }, [mensaje]);
 
-  return (
-    <div className="asistencia-contenedor">
-      <h2>Tomar Asistencia por Grado</h2>
+  // Cambiar estado asistencia
+  const handleEstadoChange = (idEstudiante, estadoNombre) => {
+    setAsistencias(prev => ({ ...prev, [idEstudiante]: ESTADOS[estadoNombre] }));
+  };
 
-      <label>Selecciona un grado:</label>
-      <select
-        value={gradoSeleccionado}
-        onChange={(e) => obtenerEstudiantes(e.target.value)}
-      >
-        <option value="">-- Selecciona --</option>
-        {grados.map(g => (
-          <option key={g.id_grado} value={g.id_grado}>
-            {g.nombre_grado || g.nombre}
-          </option>
-        ))}
-      </select>
+  // Cambiar observación
+  const handleObservacionChange = (idEstudiante, texto) => {
+    setObservaciones(prev => ({ ...prev, [idEstudiante]: texto }));
+  };
 
-      {estudiantes.length > 0 && (
-        <table className="asistencia-tabla">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Asistencia</th>
-              <th>Observación</th>
-            </tr>
-          </thead>
-          <tbody>
-            {estudiantes.map(e => (
-              <tr key={e.id_estudiante}>
-                <td>{e.nombre} {e.apellido}</td>
-                <td>
-                  <select
-                    value={asistencias[e.id_estudiante]}
-                    onChange={(ev) => manejarCambioAsistencia(e.id_estudiante, ev.target.value)}
-                  >
-                    <option value="Presente">Presente</option>
-                    <option value="Ausente">Ausente</option>
-                    <option value="Tarde">Tarde</option>
-                    <option value="Justificada">Justificada</option>
-                  </select>
-                </td>
-                <td>
-                  <textarea
-                    rows="1"
-                    value={observaciones[e.id_estudiante]}
-                    onChange={(ev) => manejarCambioObservacion(e.id_estudiante, ev.target.value)}
-                    placeholder="Observaciones..."
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+  // Guardar asistencias
+  const handleSubmit = async () => {
+    const fechaHoy = new Date().toISOString().split('T')[0];
 
-      {estudiantes.length > 0 && (
-        <button className="btn-guardar" onClick={enviarAsistencias}>
-          Guardar asistencia
+    const payload = Object.entries(asistencias)
+      .filter(([_, estadoId]) => estadoId)
+      .map(([id_estudiante, id_estado_asistencia]) => ({
+        id_estudiante: parseInt(id_estudiante, 10),
+        id_funcionario: 1,
+        id_grado_asistencia: parseInt(gradoSeleccionado, 10),
+        id_estado_asistencia,
+        observacion: observaciones[id_estudiante],
+        fecha: fechaHoy,
+      }));
+
+    if (payload.length === 0) {
+      setMensaje({ tipo: 'error', texto: 'Debes marcar al menos una asistencia.' });
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:3000/api/asistencias/masivo', payload);
+      setMensaje({ tipo: 'exito', texto: 'Asistencias registradas correctamente.' });
+    } catch (err) {
+      console.error('❌ Error al registrar asistencias:', err);
+      setMensaje({ tipo: 'error', texto: 'Hubo un error al registrar las asistencias.' });
+    }
+  };
+
+  // Vista Listar
+  if (vista === 'listar') {
+    return (
+      <div className="container-fluid px-2 px-md-5 mt-3">
+        <button
+          className="btn btn-outline-primary mb-3 w-100 w-md-auto"
+          onClick={() => setVista('registrar')}
+        >
+          ⬅ Volver a Registrar Asistencia
         </button>
-      )}
+        <ListarAsistencias />
+      </div>
+    );
+  }
 
+  // Vista Registrar
+  return (
+    <div className="container-fluid px-2 px-md-5 mt-3">
+      <h2 className="text-primary mb-4 text-center" style={{ fontSize: '2rem' }}>
+        Registrar Asistencia por Grado
+      </h2>
+
+      {/* Selector de grado */}
+      <div className="mb-4" style={{ maxWidth: '400px', margin: '0 auto' }}>
+        <label className="form-label">Selecciona un grado:</label>
+        <select
+          className="form-select"
+          value={gradoSeleccionado}
+          onChange={e => setGradoSeleccionado(e.target.value)}
+        >
+          <option value="">-- Elige un grado --</option>
+          {grados.map(grado => (
+            <option key={grado.id_grado} value={grado.id_grado}>
+              {grado.nombre_grado}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Tabla de estudiantes */}
+      {cargando ? (
+        <p className="text-center">Cargando estudiantes...</p>
+      ) : estudiantes.length > 0 ? (
+        <div className="table-responsive" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+          <table className="table table-bordered table-hover align-middle text-center">
+            <thead className="table-dark">
+              <tr>
+                <th>Estudiante</th>
+                <th>Estado</th>
+                <th>Observación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {estudiantes.map(est => (
+                <tr key={est.id_estudiante}>
+                  <td style={{ minWidth: '180px' }}>
+                    {`${est.nombre} ${est.apellido} : ${est.numero_documento}`}
+                  </td>
+                  <td>
+                    <select
+                      className="form-select"
+                      value={
+                        Object.keys(ESTADOS).find(
+                          k => ESTADOS[k] === asistencias[est.id_estudiante]
+                        ) || ''
+                      }
+                      onChange={e => handleEstadoChange(est.id_estudiante, e.target.value)}
+                    >
+                      <option value="">-- Selecciona --</option>
+                      {ORDEN_ESTADOS.map(estado => (
+                        <option key={estado} value={estado}>
+                          {estado}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      placeholder="Observación..."
+                      className="form-control"
+                      value={observaciones[est.id_estudiante] || ''}
+                      onChange={e => handleObservacionChange(est.id_estudiante, e.target.value)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : gradoSeleccionado ? (
+        <p className="text-center text-muted">No hay estudiantes en este grado.</p>
+      ) : null}
+
+      {/* Botones */}
+      <div className="d-flex flex-column flex-md-row justify-content-between gap-2 mt-4">
+        {estudiantes.length > 0 && (
+          <button className="btn btn-primary w-100 w-md-auto" onClick={handleSubmit}>
+            Guardar Asistencia
+          </button>
+        )}
+        <button
+          className="btn btn-secondary w-100 w-md-auto"
+          onClick={() => setVista('listar')}
+        >
+          📋 Listar Asistencias
+        </button>
+      </div>
+
+      {/* Mensaje */}
       {mensaje && (
-        <div className={`mensaje mensaje-${mensaje.tipo}`}>
-          <p>{mensaje.texto}</p>
+        <div className={`mensaje-card mensaje-${mensaje.tipo}`}>
+          {mensaje.tipo === 'exito' ? (
+            <lord-icon src="/icons/checkmark.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
+          ) : (
+            <lord-icon src="/icons/error.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
+          )}
+          <p className="mensaje-texto">{mensaje.texto}</p>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default RegistrarAsistencia;

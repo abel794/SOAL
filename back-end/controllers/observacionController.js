@@ -104,6 +104,37 @@ const observacionController = {
       res.status(500).json({ error: 'Error al listar observaciones', detalle: error.message });
     }
   },
+  // controllers/observacionController.js
+//// ✅ Actualizar observación y registrar en historial
+async actualizar(req, res) {
+  
+  const id = req.params.id;
+
+  const { descripcion_modificacion, ...datosActualizados } = req.body;
+  
+  try {
+    // 🔹 1. Actualizar la observación
+    const [actualizado] = await Observacion.update(datosActualizados, {
+      where: { id_observacion: id }
+    });
+
+    if (actualizado === 0)
+      return res.status(404).json({ error: 'Observación no encontrada o sin cambios' });
+
+    // 🔹 2. Registrar el historial
+    await HistorialObservacion.create({
+      id_observacion: id,
+      descripcion_modificacion: descripcion_modificacion || 'Modificación en observación',
+      fecha_modificacion: new Date()
+    });
+
+    res.json({ mensaje: '✅ Observación actualizada y registrada en el historial' });
+  } catch (error) {
+    console.error("❌ Error al actualizar observación:", error);
+    res.status(400).json({ error: 'Error al actualizar', detalle: error.message });
+  }
+},
+
 
   // ✅ Obtener por ID
   async obtenerPorId(req, res) {
@@ -241,8 +272,40 @@ async contarPorTipo(req, res) {
       console.error("❌ Error al contar críticas:", error);
       res.status(500).json({ error: 'Error al contar críticas', detalle: error.message });
     }
+  },
+
+// ✅ Listar observaciones críticas (Grave)
+  async listarCriticos(req, res) {
+    try {
+      // Filtrar por gravedad Grave (id_gravedad = 3)
+      const casos = await Observacion.findAll({
+        where: { id_gravedad: 3 },
+        include: [
+          { model: Estudiante, as: 'estudiante', include: ['persona'] },
+          { model: CategoriaObservacion, as: 'categoria' },
+          { model: GravedadObservacion, as: 'gravedad' }
+        ]
+      });
+
+      if (!casos || casos.length === 0) {
+        return res.json([]); // ✅ Devuelve un array vacío si no hay datos
+      }
+
+      const resultado = casos.map(c => ({
+        estudiante: c.estudiante?.persona?.nombre || 'No disponible',
+        tipo: c.categoria?.nombre,
+        fecha: c.fecha,
+        gravedad: c.gravedad?.nombre,
+        observacion: c.descripcion
+      }));
+
+      res.json(resultado);
+    } catch (error) {
+      console.error("❌ Error al listar casos críticos:", error);
+      res.status(500).json({ error: 'Error al listar casos críticos', detalle: error.message });
+    }
   }
-};
+}
 
 module.exports = observacionController;
 

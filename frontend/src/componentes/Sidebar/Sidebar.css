@@ -1,6 +1,6 @@
 .barra-lateral {
   background-color: #0d85fd;
-  color: white;
+  color: rgb(15, 14, 14);
   position: fixed;
   width: 250px;
   height: 100vh;
@@ -10,53 +10,9 @@
 }
 
 .barra-lateral.colapsada {
-  width: 60px;
+  width: 70px;
 }
 
-.barra-lateral::-webkit-scrollbar {
-  width: 8px;
-}
-
-.barra-lateral::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 4px;
-}
-
-.barra-lateral::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.toggle-btn {
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 768px) {
-  .barra-lateral {
-    position: absolute;
-    z-index: 1000;
-    height: 100%;
-    left: 0;
-    top: 0;
-    transition: transform 0.3s ease;
-    transform: translateX(0);
-  }
-
-  .barra-lateral.colapsada {
-    transform: translateX(-100%);
-  }
-
-  .contenido-principal {
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
-
-  .toggle-btn {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1100;
-  }
-}
 .toggle-btn {
   position: fixed;
   top: 1rem;
@@ -65,6 +21,26 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: white;
+  color: rgb(16, 15, 15);
   cursor: pointer;
+}
+
+/* Botones centrados cuando está colapsado */
+.sidebar-btn.centrado {
+  justify-content: center !important;
+}
+
+/* Avatar 👤 redondo */
+.avatar-colapsado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  margin: 0 auto 1rem auto;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  color: rgb(19, 19, 19);
+  background-color: rgba(9, 9, 9, 0.15);
 }

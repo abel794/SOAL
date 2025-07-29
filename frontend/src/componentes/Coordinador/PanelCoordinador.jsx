@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import './PanelCoordinador.css';
 
-
-
 // Componentes
 import Sidebar from '../Sidebar/Sidebar';
 import UserHeader from '../UserHeader/UserHeader';
@@ -22,9 +20,9 @@ import RegistroSecretaria from '../RegistrSecretaria/RegistroSecretaria';
 import DesactivarUsuario from '../Desactivar usuario/DesactivarUsuario';
 import AsignarGradoProfesor from '../AsignarGradoProfesor/AsignarGradoProfesor';
 import RegistrarAsistencia from '../RegistrarAsistencia/RegistrarAsistencia';
-import ModalCerrarSesion from './ModalCerrarSesion'; // ✅ CORRECTO
-
-
+import CasosCriticos from './CasosCriticos';
+import ModalCerrarSesion from './ModalCerrarSesion';
+import GradosYEstudiantes from './GradosYEstudiantes';
 
 function PanelCoordinador() {
   const [abierto, setAbierto] = useState(true);
@@ -34,12 +32,9 @@ function PanelCoordinador() {
 
   const toggleMenu = () => setAbierto(!abierto);
 
-  const manejarCerrarSesion = () => {
-    setMostrarModalCerrarSesion(true);
-  };
+  const manejarCerrarSesion = () => setMostrarModalCerrarSesion(true);
 
   const confirmarCerrarSesion = () => {
-    // Aquí puedes limpiar sesión o redirigir
     window.location.href = '/login';
   };
 
@@ -74,6 +69,11 @@ function PanelCoordinador() {
         return <AsignarGradoProfesor />;
       case 'Registrar asistencia':
         return <RegistrarAsistencia />;
+      case 'Casos críticos':
+        return <CasosCriticos />;
+      case 'Grados y estudiantes':
+        return <GradosYEstudiantes />;
+
       default:
         return (
           <>
@@ -81,7 +81,7 @@ function PanelCoordinador() {
             <h1>Observador estudiantil</h1>
             <h3>Instituto Renato Descartes</h3>
             <div className="linea"></div>
-            <DashboardCards />
+            <DashboardCards setVista={setVista} /> {/* ✅ Aquí se pasa bien */}
             <ResumenObservaciones />
             <TablaObservaciones />
           </>

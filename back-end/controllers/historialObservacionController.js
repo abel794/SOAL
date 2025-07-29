@@ -59,39 +59,79 @@ async buscarPorNombreEstudiante(req, res) {
   const { nombre } = req.query;
 
   try {
-    const historiales = await Historial.findAll({
-      include: {
-        model: Observacion,
-        as: 'observacion',
-        include: {
+    console.log(`📩 Nombre recibido: ${nombre}`);
+
+    const historiales = await db.Observacion.findAll({
+      include: [
+        {
           model: db.Estudiante,
           as: 'estudiante',
-          include: {
-            model: db.Persona,
-            as: 'persona',
-            where: {
-              [Op.or]: [
-                { nombre: { [Op.like]: `%${nombre}%` } },
-                { apellido: { [Op.like]: `%${nombre}%` } }
-              ]
-            },
-            attributes: ['nombre', 'apellido']
-          }
+          include: [
+            {
+              model: db.Persona,
+              as: 'persona',
+              where: {
+                [Op.or]: [
+                  { nombre: { [Op.like]: `%${nombre}%` } },
+                  { apellido: { [Op.like]: `%${nombre}%` } }
+                ]
+              },
+              attributes: ['nombre', 'apellido', 'numero_documento']
+            }
+          ],
+          required: true
+        },
+        {
+          model: db.HistorialObservacion,
+          as: 'historiales',
+          required: false,
+          attributes: ['id_historial', 'fecha_modificacion', 'descripcion_modificacion']
         }
-      },
-      order: [['fecha_modificacion', 'DESC']]
+      ],
+      order: [
+        ['id_observacion', 'DESC'],
+        [{ model: db.HistorialObservacion, as: 'historiales' }, 'fecha_modificacion', 'DESC']
+      ]
     });
 
     if (historiales.length === 0) {
-      return res.status(404).json({ mensaje: 'No se encontraron coincidencias con el nombre del estudiante' });
+      console.warn(`⚠️ No se encontraron registros para: ${nombre}`);
+      return res
+        .status(404)
+        .json({ mensaje: '❌ No se encontró historial ni observaciones para este estudiante.' });
     }
+
+    console.log(`🔍 Resultados encontrados: ${historiales.length}`);
+
+    historiales.forEach(obs => {
+      const estudiante = obs.estudiante;
+      const persona = estudiante ? estudiante.persona : null;
+
+      if (!persona) {
+        console.warn(`⚠️ Observación ID: ${obs.id_observacion} no tiene persona asociada`);
+      } else {
+        console.log(`📝 Observación ID: ${obs.id_observacion}, Estudiante: ${persona.nombre}`);
+      }
+
+      if (obs.historiales && obs.historiales.length > 0) {
+        obs.historiales.forEach(hist => {
+          console.log(`   ↳ Historial ID: ${hist.id_historial} - ${hist.descripcion_modificacion}`);
+        });
+      } else {
+        console.log(`   ↳ Sin historial`);
+      }
+    });
 
     res.json(historiales);
   } catch (error) {
-    console.error("Error al buscar historial por nombre de estudiante:", error);
-    res.status(500).json({ error: 'Error al buscar historial por nombre', detalle: error.message });
+    console.error("❌ Error al buscar historial/observaciones:", error);
+    res.status(500).json({
+      error: 'Error al buscar historial y observaciones',
+      detalle: error.message
+    });
   }
-},
+}
+,
 
 
   // 🔍 Buscar historial por nombre del estudiante

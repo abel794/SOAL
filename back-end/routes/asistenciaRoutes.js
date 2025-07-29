@@ -1,28 +1,41 @@
-// routes/asistencia.routes.js
 const express = require('express');
 const router = express.Router();
-const asistenciaController = require('../controllers/asistenciaController');
+const ctrl = require('../controllers/asistenciaController');
 
-// Registrar nueva asistencia
-router.post('/', asistenciaController.registrar);
+// Crear asistencia individual
+router.post('/', ctrl.registrar);
 
-// Obtener todas las asistencias
-router.get('/', asistenciaController.obtenerTodas);
+// Listar todas las asistencias
+router.get('/', ctrl.obtenerTodas);
 
-// Buscar asistencias por ID de estudiante
-router.get('/estudiante/:id', asistenciaController.porEstudiante);
+// Buscar asistencias por estudiante
+router.get('/estudiante/:id', ctrl.porEstudiante);
 
-// Buscar asistencias por ID de funcionario/profesor
-router.get('/profesor/:id', asistenciaController.porProfesor);
+// Buscar asistencias por profesor
+router.get('/profesor/:id', ctrl.porProfesor);
 
-// Buscar asistencias por fecha exacta (YYYY-MM-DD)
-router.get('/fecha/:fecha', asistenciaController.porFecha);
+// Buscar asistencias por fecha
+router.get('/fecha/:fecha', ctrl.porFecha);
 
-// Contar asistencias por estado (ej: Presente, Ausente, Justificada)
-router.get('/estado/:estado/contar', asistenciaController.contarPorEstado);
+// Filtrar asistencias por estado y/o fecha
+router.get('/filter', ctrl.filtrar);
 
-// Filtrar asistencias por estado y fecha (query params)
-router.get('/filtrar', asistenciaController.porEstadoYFecha);
+// Contar asistencias por estado
+router.get('/count/estado/:estado', ctrl.contarPorEstado);
+
+// Registrar asistencias masivas
+router.post('/masivo', ctrl.registrarMasivo);
+
+// Registrar asistencia de todo un grado
+router.post('/grado/:id_grado', ctrl.registrarPorGrado);
+
+// Obtener asistencia por ID (DEBE IR AL FINAL)
+router.get('/:id', ctrl.obtenerPorId);
+
+// Actualizar asistencia
+router.put('/:id', ctrl.actualizar);
+
+// Eliminar asistencia
+router.delete('/:id', ctrl.eliminar);
 
 module.exports = router;
-

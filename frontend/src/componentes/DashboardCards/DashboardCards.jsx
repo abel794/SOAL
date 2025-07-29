@@ -1,8 +1,9 @@
+// src/componentes/DashboardCards/DashboardCards.jsx
 import { FaGraduationCap, FaClipboardList, FaExclamationTriangle, FaCalendarAlt } from 'react-icons/fa';
 import React, { useState, useEffect } from 'react';
-import './DashboardCards.css'
+import './DashboardCards.css';
 
-function DashboardCards() {
+function DashboardCards({ setVista }) {  // ✅ Recibe setVista bien
   const [estudiantesAsignados, setEstudiantesAsignados] = useState(null);
   const [observaciones, setObservaciones] = useState(null);
   const [criticos, setCriticos] = useState(null);
@@ -11,102 +12,79 @@ function DashboardCards() {
   const nombreGrado = 'Tercero';
 
   useEffect(() => {
-    // 🎓 Total de estudiantes asignados al grado
-    async function fetchEstudiantes() {
+    async function fetchData() {
       try {
-        const res = await fetch('http://localhost:3000/api/grados/3/contar');
-        const data = await res.json();
-        setEstudiantesAsignados(data.total_estudiantes ?? 'Error'); // <- usa fallback si total no existe
+        const resEst = await fetch('http://localhost:3000/api/grados/3/contar');
+        const dataEst = await resEst.json();
+        setEstudiantesAsignados(dataEst.total_estudiantes ?? 'Error');
+
+        const resObs = await fetch('http://localhost:3000/api/observaciones/contar');
+        const dataObs = await resObs.json();
+        setObservaciones(dataObs.totalObservaciones ?? 'Error');
+
+        const resCrit = await fetch('http://localhost:3000/api/observaciones/contar/criticas');
+        const dataCrit = await resCrit.json();
+        setCriticos(dataCrit.observacionesCriticas ?? 'Error');
+
+        const resCitas = await fetch('http://localhost:3000/api/citas/contar');
+        const dataCitas = await resCitas.json();
+        setCitas(dataCitas.totalCitas ?? 'Error');
       } catch (error) {
-        console.error('❌ Error estudiantes:', error);
-        setEstudiantesAsignados('Error');
+        console.error('❌ Error cargando datos:', error);
       }
     }
-
-    // 📋 Total de observaciones registradas
-    async function fetchObservaciones() {
-      try {
-        const res = await fetch('http://localhost:3000/api/observaciones/contar');
-        const data = await res.json();
-        setObservaciones(data.totalObservaciones ?? 'Error');
-      } catch (error) {
-        console.error('❌ Error observaciones:', error);
-        setObservaciones('Error');
-      }
-    }
-
-    // 🚨 Total de casos críticos
-    async function fetchCriticos() {
-      try {
-        const res = await fetch('http://localhost:3000/api/observaciones/contar/criticas');
-        const data = await res.json();
-        setCriticos(data.observacionesCriticas ?? 'Error'); // ✅ nombre correcto
-      } catch (error) {
-        console.error('❌ Error críticos:', error);
-        setCriticos('Error');
-      }
-    }
-
-    // 📅 Total de citas
-    async function fetchCitas() {
-      try {
-        const res = await fetch('http://localhost:3000/api/citas/contar');
-        const data = await res.json();
-        setCitas(data.totalCitas ?? 'Error');
-      } catch (error) {
-        console.error('❌ Error citas:', error);
-        setCitas('Error');
-      }
-    }
-
-    fetchEstudiantes();
-    fetchObservaciones();
-    fetchCriticos();
-    fetchCitas();
+    fetchData();
   }, [nombreGrado]);
 
-  // 🧱 Lista de tarjetas
-  
-
-const cards = [
-  {
-    title: (
-      <>
-        Estudiantes asignados a <br />
-        <span className="text-primary"><FaGraduationCap /> {nombreGrado}</span>
-      </>
-    ),
-    count: estudiantesAsignados ?? 'Cargando...'
-  },
-  {
-    title: (
-      <>
-        Observaciones registradas <br />
-        <FaClipboardList />
-      </>
-    ),
-    count: observaciones ?? 'Cargando...'
-  },
-  {
-    title: (
-      <>
-        Casos críticos <br />
-        <FaExclamationTriangle className="text-danger" />
-      </>
-    ),
-    count: criticos ?? 'Cargando...'
-  },
-  {
-    title: (
-      <>
-        Citas programadas <br />
-        <FaCalendarAlt className="text-info" />
-      </>
-    ),
-    count: citas ?? 'Cargando...'
-  }
-];
-
+  const cards = [
+    {
+      key: 'criticos',
+      title: (
+        <>
+          Casos críticos <br />
+          <FaExclamationTriangle className="text-danger" />
+        </>
+      ),
+      count: criticos ?? 'Cargando...',
+      vista: 'Casos críticos'
+    },
+    {
+  key: 'estudiantes',
+  title: (
+    <>
+      Estudiantes asignados <br />
+      <span className="text-primary">
+        <FaGraduationCap /> por grados
+      </span>
+    </>
+  ),
+  count: estudiantesAsignados ?? 'Cargando...',
+  vista: 'Grados y estudiantes'
+}
+,
+    {
+      key: 'observaciones',
+      title: (
+        <>
+          Observaciones registradas <br />
+          <FaClipboardList />
+        </>
+      ),
+      count: observaciones ?? 'Cargando...',
+      vista: 'Registrar observación'
+    },
+    {
+      key: 'citas',
+      title: (
+        <>
+          Citas programadas <br />
+          <FaCalendarAlt className="text-info" />
+        </>
+      ),
+      count: citas ?? 'Cargando...',
+      vista: 'Agendar cita con acudiente'
+    }
+  ];
 
   return (
     <div className="cards text-center d-flex gap-4 flex-wrap justify-content-center">
@@ -115,6 +93,11 @@ const cards = [
           <div className="card-body">
             <h4 className="card-title">{item.title}</h4>
             <h3 className="card-text">{item.count}</h3>
+            <button 
+              className="btn btn-primary mt-2" 
+              onClick={() => setVista(item.vista)}> {/* ✅ Esto ahora funciona */}
+              Ver más
+            </button>
           </div>
         </div>
       ))}
@@ -123,6 +106,7 @@ const cards = [
 }
 
 export default DashboardCards;
+
 
 
 

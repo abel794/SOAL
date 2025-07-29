@@ -58,6 +58,10 @@ const registroAcudienteRoutes = require('./routes/registrarAcudienteRoutes');
 const registroFuncionarioRoutes = require('./routes/registrarFuncionarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const configuracionSistemaRoutes = require('./routes/configuracionSistemaRoutes');
+const gradoAsistenciaRoutes = require('./routes/grado_asistenciaRoutes');
+
+// 
+app.use('/api/grado-asistencia', gradoAsistenciaRoutes);
 
 
 app.use('/api/configuracion', configuracionSistemaRoutes);

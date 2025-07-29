@@ -103,7 +103,8 @@ export default function AsignarGradoProfesor() {
           {mensaje.tipo === 'exito' ? (
             <lord-icon src="/icons/checkmark.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
           ) : (
-            <lord-icon src="/icons/sadface.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
+            // Mostrar un ícono de error
+            <lord-icon src="/icons/error.json" trigger="loop" delay="500" style={{ width: '90px', height: '90px' }} />
           )}
           <p className="mensaje-texto">{mensaje.texto}</p>
         </div>

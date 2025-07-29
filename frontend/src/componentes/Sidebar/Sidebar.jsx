@@ -21,34 +21,49 @@ function Sidebar({ abierto, toggleMenu, setVista, onCerrarSesion }) {
 
   return (
     <>
-      {/* Botón para abrir/cerrar menú (si está colapsado) */}
+      {/* Botón hamburguesa SIEMPRE visible arriba */}
       <button className="toggle-btn" onClick={toggleMenu}>
         <FaBars />
       </button>
 
       <div className={`barra-lateral ${!abierto ? 'colapsada' : ''}`}>
-        <h4 className="mb-4">{abierto ? 'Coordinador' : '👤'}</h4>
-        <ul className="list-unstyled">
+        {/* 👤 avatar cuando está colapsado */}
+        {!abierto && <div className="avatar-colapsado">👤</div>}
+
+        {/* Texto Coordinador cuando está abierto */}
+        <div className='text-center mb-3'>
+        {abierto && <h4 className="mb-4 text-center">Coordinador</h4>}
+        </div>
+        {/* Lista de opciones */}
+        <ul className="list-unstyled w-110">
           {opciones.map((op, index) => (
-            <li
-              key={index}
-              style={{ margin: '10px 0', cursor: 'pointer' }}
-              onClick={() => setVista(op.label)}
-            >
-              <span style={{ marginRight: '10px' }}>{op.icon}</span>
-              {abierto && op.label}
+            <li key={index} className="mb-2">
+              <button
+                className={`btn btn-outline-light w-100 d-flex align-items-center border rounded sidebar-btn ${
+                  !abierto ? 'centrado' : ''
+                }`}
+                onClick={() => setVista(op.label)}
+              >
+                <span className="me-2">{op.icon}</span>
+                {abierto && <span>{op.label}</span>}
+              </button>
             </li>
           ))}
         </ul>
 
-        <hr />
-        <button
-          onClick={onCerrarSesion}
-          className="btn btn-light mt-3"
-          style={{ width: '100%' }}
-        >
-          <FaSignOutAlt /> {abierto && 'Cerrar sesión'}
-        </button>
+        {/* Botón de cerrar sesión */}
+        <div className="cerrar-sesion w-100">
+          <hr />
+          <button
+            onClick={onCerrarSesion}
+            className={`btn btn-outline-light w-100 d-flex align-items-center justify-content-center border rounded mt-3 ${
+              !abierto ? 'centrado' : ''
+            }`}
+          >
+            <FaSignOutAlt className="me-3" />
+            {abierto && 'Cerrar sesión'}
+          </button>
+        </div>
       </div>
     </>
   );

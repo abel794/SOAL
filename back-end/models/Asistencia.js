@@ -1,55 +1,64 @@
-// Importamos los tipos de datos de Sequelize
+// models/asistencia.js
+
 const { DataTypes } = require('sequelize');
 
-// Exportamos la función que define el modelo Asistencia
 module.exports = (sequelize) => {
-  // Definimos el modelo con sus columnas
   const Asistencia = sequelize.define('Asistencia', {
     id_asistencia: {
       type: DataTypes.INTEGER,
-      primaryKey: true,       // Clave primaria
-      autoIncrement: true     // Se autoincrementa automáticamente
+      primaryKey: true,
+      autoIncrement: true
     },
     id_estudiante: {
       type: DataTypes.INTEGER,
-      allowNull: false        // FK obligatoria (estudiante que recibe la asistencia)
+      allowNull: false
     },
     id_funcionario: {
       type: DataTypes.INTEGER,
-      allowNull: false        // FK obligatoria (quien registra la asistencia)
+      allowNull: false
+    },
+    id_grado_asistencia: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'grado_asistencia',
+        key: 'id_grado_asistencia'
+      }
     },
     fecha: {
       type: DataTypes.DATEONLY,
-      allowNull: false        // Fecha de la asistencia (formato YYYY-MM-DD)
+      allowNull: false
     },
     id_estado_asistencia: {
       type: DataTypes.INTEGER,
-      allowNull: false        // FK obligatoria (estado como presente, ausente, etc.)
+      allowNull: false
     },
     observacion: {
       type: DataTypes.TEXT,
-      allowNull: true         // Campo opcional para detalles adicionales
+      allowNull: true
     }
   }, {
-    tableName: 'asistencia',  // Nombre de la tabla real
-    timestamps: false         // No se usarán createdAt ni updatedAt
+    tableName: 'asistencia',
+    timestamps: false
   });
 
-  // Definimos las asociaciones con otras tablas
+  // Asociaciones
   Asistencia.associate = (models) => {
-    // Relación con estudiante (muchas asistencias pueden pertenecer a un estudiante)
     Asistencia.belongsTo(models.Estudiante, {
       foreignKey: 'id_estudiante',
       as: 'estudiante'
     });
 
-    // Relación con funcionario (quien toma la asistencia)
     Asistencia.belongsTo(models.Funcionario, {
       foreignKey: 'id_funcionario',
       as: 'funcionario'
     });
 
-    // Relación con estado de asistencia
+    Asistencia.belongsTo(models.GradoAsistencia, {
+      foreignKey: 'id_grado_asistencia',
+      as: 'gradoAsistencia'
+    });
+
     Asistencia.belongsTo(models.EstadoAsistencia, {
       foreignKey: 'id_estado_asistencia',
       as: 'estadoAsistencia'

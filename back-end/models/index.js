@@ -9,6 +9,7 @@ const sequelize = new Sequelize('SOAL1', 'root', '', {
 
 // 2. Importación de modelos
 const models = {
+  GradoAsistencia: require('./GradoAsistencia')(sequelize, DataTypes),
   Archivo: require('./Archivo')(sequelize, DataTypes),
   ConfiguracionSistema: require('./ConfiguracionSistema')(sequelize, DataTypes),
   Acudiente: require('./Acudiente')(sequelize, DataTypes),
@@ -75,6 +76,7 @@ models.Usuario.belongsTo(models.Persona, {
   targetKey: 'numero_documento',
 });
 
+
 // Funcionario <-> Grado (Muchos a Muchos)
 models.Funcionario.belongsToMany(models.Grado, {
   through: models.FuncionarioGrado,
@@ -116,6 +118,7 @@ models.Grado.hasMany(models.EstudianteGrado, { foreignKey: 'id_grado' });
 models.EstudianteGrado.belongsTo(models.Grado, {
   foreignKey: 'id_grado',
 });
+
 
 // Acudiente -> Estudiante (1:N)
 models.Acudiente.hasMany(models.Estudiante, { foreignKey: 'id_acudiente' });

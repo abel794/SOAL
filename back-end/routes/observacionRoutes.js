@@ -8,6 +8,9 @@ router.get('/contar/categoria', controller.contarPorCategoriaConPorcentaje); // 
 router.get('/contar/gravedad', controller.contarPorGravedad); // Por gravedad
 router.get('/contar/tipo', controller.contarPorTipo); // Por tipo de observación
 router.get('/contar/criticas', controller.contarCriticos); // Solo disciplinarias
+router.get('/criticas', controller.listarCriticos);// Listar críticas
+router.put('/:id', controller.actualizar);// Actualizar observación
+
 
 // 📋 Listado general con detalles
 router.get('/detalles', controller.listarConDetalles);
