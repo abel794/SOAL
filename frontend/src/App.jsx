@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './componentes/Login/Login';
 import PanelCoordinador from './componentes/Coordinador/PanelCoordinador';
 import DashboardSecretaria from './componentes/DashBoard/DashboardSecretaria';
-import PanelProfesor from './componentes/Profesor/Profesor/PanelProfesor';
+import PanelProfesor from './componentes/Profesor/PanelProfesor';
 import PanelAcudiente from './componentes/VistaAcudiente/PanelAcudiente/PanelAcudiente';
 
 function App() {
