@@ -60,7 +60,7 @@ const observacionController = {
       return res.status(404).json({ error: 'Acudiente no encontrado para el estudiante' });
     }
 
-    // 📢 Crear notificación
+    // Crear notificación
     await Notificacion.create({
       id_acudiente: estudiante.acudiente.id_acudiente,
       mensaje: 'Se ha registrado una observación para su acudido. Por favor, revísela.',
@@ -72,7 +72,7 @@ const observacionController = {
     res.status(201).json(nueva);
   } catch (error) {
     await t.rollback();
-    console.error('❌ Error al crear observación y notificación:', error);
+    console.error('Error al crear observación y notificación:', error);
     res.status(500).json({ error: 'Error al crear observación', detalle: error.message });
   }
 },
@@ -100,7 +100,7 @@ const observacionController = {
 
       res.json(resultado);
     } catch (error) {
-      console.error('❌ Error al listar observaciones detalladas:', error);
+      console.error('Error al listar observaciones detalladas:', error);
       res.status(500).json({ error: 'Error al listar observaciones', detalle: error.message });
     }
   },
@@ -301,7 +301,7 @@ async contarPorTipo(req, res) {
 
       res.json(resultado);
     } catch (error) {
-      console.error("❌ Error al listar casos críticos:", error);
+      console.error(" Error al listar casos críticos:", error);
       res.status(500).json({ error: 'Error al listar casos críticos', detalle: error.message });
     }
   }

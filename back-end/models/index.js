@@ -131,6 +131,9 @@ models.Asistencia.belongsTo(models.Funcionario, { foreignKey: 'id_funcionario' }
 models.Estudiante.hasMany(models.Asistencia, { foreignKey: 'id_estudiante' });
 models.Asistencia.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
 
+
+
+
 // Citas
 models.Acudiente.hasMany(models.Cita, { foreignKey: 'id_acudiente' });
 models.Cita.belongsTo(models.Acudiente, { foreignKey: 'id_acudiente' });

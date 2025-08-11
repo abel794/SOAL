@@ -10,6 +10,8 @@ const sequelize = db.sequelize;
 
 // 🚀 Inicializa la app de Express
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // ✅ Middlewares globales
@@ -34,6 +36,7 @@ const historialObservacionRoutes = require('./routes/historialObservacionRoutes'
 const observacionRoutes = require('./routes/observacionRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const canalRoutes = require('./routes/canalRoutes');
+const profesorRoutes = require('./routes/profesorRoutes');
 
 const personaRoutes = require('./routes/personaRoutes');
 const sexoRoutes = require('./routes/sexoRoutes');
@@ -103,10 +106,11 @@ app.use('/api/observaciones', observacionRoutes);
 app.use('/api/registro-estudiante', registroEstudianteRoutes);
 app.use('/api/registro-acudiente', registroAcudienteRoutes);
 app.use('/api/registro-funcionario', registroFuncionarioRoutes);
+app.use('/api/profesor', profesorRoutes);
 app.use('/api/auth', authRoutes);
 
 // ✅ Puerto del servidor
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // ✅ Conexión Sequelize + Inicio del servidor
 sequelize.authenticate()

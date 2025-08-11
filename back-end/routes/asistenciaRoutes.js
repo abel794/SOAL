@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/asistenciaController');
+const asistenciaController = require('../controllers/profesor/asistenciaController');
 
 // Crear asistencia individual
 router.post('/', ctrl.registrar);
