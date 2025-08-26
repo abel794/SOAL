@@ -26,18 +26,19 @@ const Login = () => {
 
   const manejarEnvio = async (e) => {
     e.preventDefault();
+    console.log('Login enviado:', username, contrasena);
 
     try {
       const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, contrasena })
+        body: JSON.stringify({ usuario: username, contrasena })
       });
 
       const data = await res.json();
 
-      if (res.ok && data.token) {
-        // Guardar el token y el usuario
+      if (res.ok) {
+        // ✅ Guardar token y usuario en localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
@@ -108,12 +109,12 @@ const Login = () => {
 
         <p className="texto-pequeño">
           Al iniciar sesión, aceptas nuestras
-          <a href="#"> Políticas de Privacidad</a> y
-          <a href="#"> Términos de Servicio</a>.
+          <a href="/politicas-privacidad"> Políticas de Privacidad</a> y
+          <a href="/terminos-servicio"> Términos de Servicio</a>.
         </p>
 
         <p className="texto-pequeño">
-          ¿No tienes cuenta? <a href="#">Regístrate</a>
+          ¿No tienes cuenta? <a href="/registro">Regístrate</a>
         </p>
       </form>
     </div>

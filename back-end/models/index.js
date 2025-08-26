@@ -1,12 +1,18 @@
+require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
 
-// 1. Conexión a la base de datos
-const sequelize = new Sequelize('SOAL1', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false,
-});
-
+// 1. Conexión a la base de datos usando variables de entorno
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT, 
+    dialect: 'mysql',
+    logging: false,
+  }
+);
 // 2. Importación de modelos
 const models = {
   GradoAsistencia: require('./GradoAsistencia')(sequelize, DataTypes),

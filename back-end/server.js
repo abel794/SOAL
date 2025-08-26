@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const db = require('./models');
 const sequelize = db.sequelize;
+require('dotenv').config();
+
 
 // 🚀 Inicializa la app de Express
 const app = express();
@@ -108,6 +110,9 @@ app.use('/api/registro-acudiente', registroAcudienteRoutes);
 app.use('/api/registro-funcionario', registroFuncionarioRoutes);
 app.use('/api/profesor', profesorRoutes);
 app.use('/api/auth', authRoutes);
+
+
+
 
 // ✅ Puerto del servidor
 const PORT = process.env.PORT || 5000;

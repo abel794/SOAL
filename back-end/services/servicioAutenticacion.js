@@ -1,45 +1,50 @@
-const { Usuario, Funcionario } = require('../models');
+// back-end/controllers/servicioAutenticacion.js
+const { Usuario } = require('../models');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-class ServicioAutenticacion {
-  async iniciarSesion(username, contrasena) {
-    // Buscar usuario incluyendo la relación con funcionario
-    const usuario = await Usuario.findOne({
-      where: { username },
-      include: [
-        {
-          model: Funcionario,
-          as: 'funcionario', // este alias debe coincidir con el modelo
-          attributes: ['id_funcionario']
+const authController = {
+  async iniciarSesion(req, res) {
+    try {
+      const { username, contrasena } = req.body;
+
+      // Buscar usuario por username
+      const usuario = await Usuario.findOne({ where: { username } });
+      if (!usuario) {
+        return res.status(401).json({ mensaje: 'Usuario no encontrado' });
+      }
+
+      // Validar contraseña (quitar esta línea si quieres ignorarla para pruebas)
+      if (usuario.contrasena !== contrasena) {
+        return res.status(401).json({ mensaje: 'Contraseña incorrecta' });
+      }
+
+      // Verificar que esté activo
+      if (usuario.id_estado_usuario !== 1) {
+        return res.status(401).json({ mensaje: 'Usuario inactivo' });
+      }
+
+      // ✅ Generar token JWT
+      const token = jwt.sign(
+        { id_usuario: usuario.id_usuario, username: usuario.username }, // payload
+        process.env.JWT_SECRET || 'miclave123', // tu clave secreta
+        { expiresIn: '1h' } // duración del token
+      );
+
+      // Enviar datos y token
+      res.status(200).json({
+        mensaje: 'Inicio de sesión exitoso',
+        token,
+        usuario: {
+          id_usuario: usuario.id_usuario,
+          username: usuario.username,
+          id_tipo_usuario: usuario.id_tipo_usuario
         }
-      ]
-    });
-
-    if (!usuario) {
-      throw new Error('Usuario no encontrado');
+      });
+    } catch (error) {
+      res.status(500).json({ mensaje: error.message });
     }
+  },
+};
 
-    // Validar contraseña sin cifrado (como estás usando)
-    if (usuario.contrasena !== contrasena) {
-      throw new Error('Contraseña incorrecta');
-    }
-
-    if (usuario.id_estado_usuario !== 1) {
-      throw new Error('El usuario está inactivo');
-    }
-
-    const datos = usuario.toJSON();
-
-    // Agregar id_funcionario si existe
-    const idFuncionario = datos.funcionario?.id_funcionario || null;
-
-    return {
-      id_usuario: datos.id_usuario,
-      username: datos.username,
-      id_tipo_usuario: datos.id_tipo_usuario,
-      id_estado_usuario: datos.id_estado_usuario,
-      id_funcionario: idFuncionario // aquí va el que necesitabas
-    };
-  }
-}
-
-module.exports = new ServicioAutenticacion();
+module.exports = authController;

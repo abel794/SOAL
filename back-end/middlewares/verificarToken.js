@@ -1,3 +1,4 @@
+// back-end/middlewares/verificarToken.js
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -11,10 +12,20 @@ module.exports = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const usuario = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = usuario; // ✅ Aquí se guarda en el request
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'miclave123');
+
+    // Guardamos el id_funcionario y username en req.user
+    req.user = {
+      id_funcionario: decoded.id_funcionario,
+      username: decoded.username
+    };
+    console.log('Headers recibidos:', req.headers);
+    console.log('Authorization header:', req.headers['authorization']);
+
+
     next();
   } catch (error) {
-    return res.status(403).json({ error: '❌ Token inválido o expirado' });
+    console.error('Error al verificar token:', error);
+    return res.status(401).json({ error: 'Token no válido' });
   }
 };

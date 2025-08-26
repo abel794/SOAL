@@ -1,3 +1,4 @@
+// controllers/profesor/estudiantesController.js
 const { Op } = require('sequelize');
 const {
   FuncionarioGrado,
@@ -9,11 +10,10 @@ const {
 
 /**
  * GET /api/profesor/estudiantes
- * Query: profesorId, nombre, apellido, numero_documento, grado, page, limit
+ * Query opcionales: nombre, apellido, numero_documento, grado, page, limit
  */
 const obtenerEstudiantesAsignados = async (req, res) => {
   const {
-    profesorId,
     nombre,
     apellido,
     numero_documento,
@@ -22,18 +22,20 @@ const obtenerEstudiantesAsignados = async (req, res) => {
     limit = 25,
   } = req.query;
 
+  // Ahora tomamos el ID del profesor desde el usuario autenticado
+  const profesorId = req.user?.id_funcionario;
+
   if (!profesorId) {
-    return res.status(400).json({ error: 'Falta profesorId' });
+    return res.status(401).json({ error: 'No autorizado o sin ID de profesor' });
   }
 
   const offset = (page - 1) * limit;
 
   try {
-    // Solo se considera rol 'Profesor' como quien dicta clase
     const asignaciones = await FuncionarioGrado.findAll({
       where: {
         id_funcionario: profesorId,
-        rol: 'Profesor',
+        rol: 'Profesor titular',
       },
       include: {
         model: Grado,
@@ -61,10 +63,10 @@ const obtenerEstudiantesAsignados = async (req, res) => {
       },
     });
 
+    // Extraer estudiantes únicos
     const temp = [];
     asignaciones.forEach(fg => {
-      const grado = fg.grado;
-      const estGrados = grado?.estudiantesGrado || [];
+      const estGrados = fg.grado?.estudiantesGrado || [];
       estGrados.forEach(eg => {
         if (eg.estudianteAsignado) temp.push(eg.estudianteAsignado);
       });
@@ -77,6 +79,7 @@ const obtenerEstudiantesAsignados = async (req, res) => {
       }, {})
     );
 
+    // Paginación manual
     const paginados = estudiantes.slice(offset, offset + Number(limit));
 
     return res.json({

@@ -5,6 +5,24 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+window.WebSocket = class {
+  constructor() {
+    console.warn("WebSocket bloqueado temporalmente");
+    return {
+      send: () => {},
+      close: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      onopen: null,
+      onmessage: null,
+      onclose: null,
+      onerror: null,
+    };
+  }
+};
+
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

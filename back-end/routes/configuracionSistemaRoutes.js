@@ -6,6 +6,7 @@ const permisos = require('../middlewares/permisosConfiguracion');
 // Opcional: middleware de autenticación si ya lo usas
 const verificarToken = require('../middlewares/verificarToken');
 
+
 // Multer si se sube logo
 const multer = require('multer');
 const path = require('path');
@@ -16,7 +17,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-router.get('/', verificarToken, controlador.obtener);
-router.put('/', verificarToken, permisos, upload.single('logo'), controlador.actualizar);
-
+router.get('/', (req, res) => res.send('test'));  // si esto funciona, el problema está en el controller o middleware
+router.put('/', (req, res) => res.send('put test'));
 module.exports = router;
