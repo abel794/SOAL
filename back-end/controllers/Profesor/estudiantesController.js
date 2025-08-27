@@ -1,98 +1,67 @@
-// controllers/profesor/estudiantesController.js
-const { Op } = require('sequelize');
-const {
-  FuncionarioGrado,
-  EstudianteGrado,
-  Estudiante,
-  Grado,
-  Persona,
-} = require('../../models');
+// back-end/controllers/Profesor/estudiantesController.js
 
-/**
- * GET /api/profesor/estudiantes
- * Query opcionales: nombre, apellido, numero_documento, grado, page, limit
- */
+const { FuncionarioGrado, Grado, EstudianteGrado, Estudiante, Persona } = require("../../models");
+
 const obtenerEstudiantesAsignados = async (req, res) => {
-  const {
-    nombre,
-    apellido,
-    numero_documento,
-    grado: filtroGrado,
-    page = 1,
-    limit = 25,
-  } = req.query;
-
-  // Ahora tomamos el ID del profesor desde el usuario autenticado
-  const profesorId = req.user?.id_funcionario;
-
-  if (!profesorId) {
-    return res.status(401).json({ error: 'No autorizado o sin ID de profesor' });
-  }
-
-  const offset = (page - 1) * limit;
-
   try {
+    const { id } = req.params;
+
     const asignaciones = await FuncionarioGrado.findAll({
-      where: {
-        id_funcionario: profesorId,
-        rol: 'Profesor titular',
-      },
-      include: {
-        model: Grado,
-        as: 'grado',
-        where: filtroGrado ? { id_grado: filtroGrado } : undefined,
-        include: {
-          model: EstudianteGrado,
-          as: 'estudiantesGrado',
-          include: {
-            model: Estudiante,
-            as: 'estudianteAsignado',
-            include: {
-              model: Persona,
-              as: 'persona',
-              where: {
-                ...(nombre && { nombre: { [Op.like]: `%${nombre}%` } }),
-                ...(apellido && { apellido: { [Op.like]: `%${apellido}%` } }),
-              },
+      where: { id_funcionario: id },
+      include: [
+        {
+          model: Grado,
+          as: "grado",
+          include: [
+            {
+              model: EstudianteGrado,
+              as: "estudiantesGrado",
+              include: [
+                {
+                  model: Estudiante,
+                  as: "estudianteAsignado",
+                  include: [
+                    {
+                      model: Persona,
+                      as: "persona",
+                    },
+                  ],
+                },
+              ],
             },
-            where: {
-              ...(numero_documento && { numero_documento: { [Op.like]: `%${numero_documento}%` } }),
-            },
-          },
+          ],
         },
-      },
+      ],
     });
 
-    // Extraer estudiantes únicos
+    // 👉 Convertimos las asignaciones en un arreglo de estudiantes + grado
     const temp = [];
-    asignaciones.forEach(fg => {
+    asignaciones.forEach((fg) => {
       const estGrados = fg.grado?.estudiantesGrado || [];
-      estGrados.forEach(eg => {
-        if (eg.estudianteAsignado) temp.push(eg.estudianteAsignado);
+      estGrados.forEach((eg) => {
+        if (eg.estudianteAsignado) {
+          temp.push({
+            id_estudiante: eg.estudianteAsignado.id_estudiante,
+            numero_documento: eg.estudianteAsignado.numero_documento,
+            persona: eg.estudianteAsignado.persona,
+            grado: fg.grado.nombre_grado, // 👈 Nombre del grado
+          });
+        }
       });
     });
 
+    // 👉 Eliminamos duplicados (diferenciando por estudiante + grado)
     const estudiantes = Object.values(
       temp.reduce((acc, e) => {
-        acc[e.id_estudiante] = e;
+        acc[e.id_estudiante + "-" + e.grado] = e;
         return acc;
       }, {})
     );
 
-    // Paginación manual
-    const paginados = estudiantes.slice(offset, offset + Number(limit));
-
-    return res.json({
-      data: paginados,
-      meta: {
-        total: estudiantes.length,
-        page: Number(page),
-        limit: Number(limit),
-      },
-    });
-  } catch (err) {
-    console.error('Error obtenerEstudiantesAsignados:', err);
-    return res.status(500).json({ error: 'Error obteniendo estudiantes asignados' });
+    res.json({ success: true, data: estudiantes });
+  } catch (error) {
+    console.error("Error en obtenerEstudiantesPorProfesor:", error);
+    res.status(500).json({ success: false, error: "Error obteniendo estudiantes del profesor" });
   }
 };
 

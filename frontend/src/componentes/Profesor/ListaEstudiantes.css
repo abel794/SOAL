@@ -1,0 +1,73 @@
+/* ListaEstudiantes.css */
+
+.lista-estudiantes-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.buscar-input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.grado-section {
+  margin-bottom: 15px;
+}
+
+.grado-btn {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: left;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s ease;
+}
+
+.grado-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.estudiantes-list {
+  margin-top: 10px;
+  padding-left: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.card-estudiante {
+  flex: 1 1 200px;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  background-color: #fefefe;
+  transition: transform 0.2s ease;
+}
+
+.card-estudiante:hover {
+  transform: translateY(-2px);
+}
+
+/* Colores por grado */
+.grado-section:nth-child(1) .grado-btn { background-color: #bbdefb; } /* 301 */
+.grado-section:nth-child(2) .grado-btn { background-color: #c8e6c9; } /* 302 */
+.grado-section:nth-child(3) .grado-btn { background-color: #fff9c4; } /* 303 */
+.grado-section:nth-child(4) .grado-btn { background-color: #d1c4e9; } /* 401 */
+.grado-section:nth-child(5) .grado-btn { background-color: #f8bbd0; } /* 402 */
+.grado-section:nth-child(6) .grado-btn { background-color: #ffe0b2; } /* 403 */
+.grado-section:nth-child(7) .grado-btn { background-color: #ffccbc; } /* 501 */
+.grado-section:nth-child(8) .grado-btn { background-color: #b2dfdb; } /* 502 */
+.grado-section:nth-child(9) .grado-btn { background-color: #b3e5fc; } /* 503 */

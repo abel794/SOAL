@@ -38,7 +38,8 @@ const historialObservacionRoutes = require('./routes/historialObservacionRoutes'
 const observacionRoutes = require('./routes/observacionRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const canalRoutes = require('./routes/canalRoutes');
-const profesorRoutes = require('./routes/profesorRoutes');
+const profesorRoutes = require('./routes/profesor/profesorRoutes.js');
+
 
 const personaRoutes = require('./routes/personaRoutes');
 const sexoRoutes = require('./routes/sexoRoutes');
