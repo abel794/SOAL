@@ -41,6 +41,7 @@ const Login = () => {
         // ✅ Guardar token y usuario en localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
+        localStorage.setItem('id_usuario', data.usuario.id_usuario);
 
         const id_tipo_usuario = data.usuario.id_tipo_usuario;
         const rol = rolesMapping[id_tipo_usuario];

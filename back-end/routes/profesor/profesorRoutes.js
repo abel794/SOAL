@@ -1,21 +1,20 @@
-// routes/profesorRoutes.js
 const express = require("express");
 const router = express.Router();
 
-// Importar controlador de estudiantes
+// Importar controladores directos
 const EstudianteController = require("../../controllers/Profesor/estudiantesController");
-
+const { obtenerPorId } = require("../../controllers/Profesor/profesorController");
 
 // Importar subrutas
-const estudiantesRoutes = require("./estudiantesRoutes");
+const asistenciaRoutes = require("./asistencias");
+const observacionRoutes = require("./observacionRoutes");
 
+// 👉 Rutas propias del profesor
+router.get("/:id/datos", obtenerPorId);
+router.get("/:id/estudiantes", EstudianteController.obtenerEstudiantesAsignados);
 
-// Montar subrutas con prefijos
-router.use("/estudiantes", estudiantesRoutes);
-
-
-// Ruta principal para obtener estudiantes asignados a un profesor
-// Ejemplo de uso: GET /api/profesor/1
-router.get("/:id", EstudianteController.obtenerEstudiantesAsignados);
+// 👉 Subrutas (quedan anidadas bajo /api/profesor/)
+router.use("/asistencias", asistenciaRoutes);
+router.use("/observaciones", observacionRoutes);
 
 module.exports = router;

@@ -1,4 +1,8 @@
+// frontend/src/Profesor/ListaEstudiantes.jsx
 import React, { useState, useEffect } from "react";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from "recharts";
 import "./ListaEstudiantes.css";
 
 const ListaEstudiantes = ({ idProfesor }) => {
@@ -9,10 +13,8 @@ const ListaEstudiantes = ({ idProfesor }) => {
   useEffect(() => {
     const fetchEstudiantes = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/profesor/${idProfesor}`, {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          },
+        const response = await fetch(`http://localhost:5000/api/profesor/${idProfesor}/estudiantes`, {
+          headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         });
         if (!response.ok) throw new Error("Error en la petición");
         const data = await response.json();
@@ -25,7 +27,16 @@ const ListaEstudiantes = ({ idProfesor }) => {
     if (idProfesor) fetchEstudiantes();
   }, [idProfesor]);
 
-  // Agrupar estudiantes por grado
+  // Preparar datos para gráfico: contar estudiantes por grado
+  const datosGrafico = Object.values(
+    estudiantes.reduce((acc, est) => {
+      if (!acc[est.grado]) acc[est.grado] = { grado: est.grado, cantidad: 0 };
+      acc[est.grado].cantidad += 1;
+      return acc;
+    }, {})
+  );
+
+  // Agrupar estudiantes por grado para la lista
   const estudiantesPorGrado = estudiantes.reduce((acc, est) => {
     if (!acc[est.grado]) acc[est.grado] = [];
     acc[est.grado].push(est);
@@ -39,28 +50,40 @@ const ListaEstudiantes = ({ idProfesor }) => {
   return (
     <div className="lista-estudiantes-container">
       <h2>👨‍🎓 Estudiantes Asignados</h2>
+
+      {/* Gráfico de estudiantes por grado */}
+      <h3>📊 Estudiantes por grado</h3>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={datosGrafico}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="grado" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="cantidad" fill="#8884d8" />
+        </BarChart>
+      </ResponsiveContainer>
+
+      {/* Buscador */}
       <input
         type="text"
-        placeholder="Buscar por nombre o apellido"
+        placeholder="Buscar por nombre, apellido o grado"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
         className="buscar-input"
       />
 
+      {/* Lista de estudiantes por grado */}
       {Object.keys(estudiantesPorGrado).map((grado) => {
-        // Filtrar estudiantes del grado según búsqueda
         const estudiantesFiltrados = estudiantesPorGrado[grado].filter((e) =>
-          `${e.persona.nombre} ${e.persona.apellido}`
+          `${e.persona.nombre} ${e.persona.apellido} ${e.grado}`
             .toLowerCase()
             .includes(busqueda.toLowerCase())
         );
 
         return (
           <div key={grado} className="grado-section">
-            <button
-              className="grado-btn"
-              onClick={() => toggleGrado(grado)}
-            >
+            <button className="grado-btn" onClick={() => toggleGrado(grado)}>
               Grado {grado} ({estudiantesFiltrados.length})
             </button>
 
@@ -72,6 +95,7 @@ const ListaEstudiantes = ({ idProfesor }) => {
                       <h3>{est.persona.nombre} {est.persona.apellido}</h3>
                       <p>Documento: {est.persona.numero_documento}</p>
                       <p>Ciudad: {est.persona.ciudad_residencia}</p>
+                      <p>Grado: {est.grado}</p>
                     </div>
                   ))
                 ) : (
