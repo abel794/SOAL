@@ -1,0 +1,36 @@
+.observaciones-page {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Selects azul cielo */
+.observaciones-page select.form-select {
+  background-color: #87ceeb; /* azul cielo */
+  color: white;
+  border: 1px solid #00bfff;
+}
+
+/* Botones azul */
+.observaciones-page .btn-azul {
+  background-color: #00bfff;
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
+
+.observaciones-page .btn-azul:hover {
+  background-color: #1e90ff;
+  color: white;
+}
+
+/* Tablas */
+.observaciones-page table {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.observaciones-page thead {
+  background-color: #87ceeb;
+  color: white;
+}

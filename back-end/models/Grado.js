@@ -38,6 +38,12 @@ module.exports = (sequelize) => {
       foreignKey: 'id_grado',
       as: 'funcionarioGrados'
     });
+     
+    Grado.hasMany(models.GradoAsistencia, {
+      foreignKey: "id_grado",
+      as: "gradoAsistencias",
+    });
+    
   };
 
   return Grado;

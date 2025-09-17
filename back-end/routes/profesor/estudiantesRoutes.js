@@ -1,9 +1,11 @@
-// routes/profesor/estudiantesRoutes.js
 const express = require('express');
 const router = express.Router();
-const { obtenerEstudiantesAsignados } = require('../../controllers/Profesor/estudiantesController');
+const { obtenerEstudiantesAsignados, obtenerGradosPorProfesor } = require('../../controllers/Profesor/estudiantesController');
 
-// GET /api/profesor/estudiantes?profesorId=XX
-router.get('/', obtenerEstudiantesAsignados);
+
+router.get("/:idProfesor/grados", obtenerGradosPorProfesor);
+
+
+router.get("/:id/estudiantes/:id_grado?", obtenerEstudiantesAsignados);
 
 module.exports = router;

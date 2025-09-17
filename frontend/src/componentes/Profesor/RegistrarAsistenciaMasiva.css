@@ -1,0 +1,31 @@
+.registrar-asistencia-container {
+  background-color: #00bfff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(246, 244, 244, 0.1);
+}
+
+/* Selects y inputs azules */
+.azul-select {
+  background-color: white; /* azul cielo */
+  color: black;
+  border: 1px solid #00bfff;
+}
+
+/* Botón azul */
+.btn-azul {
+  background-color: #00bfff;
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-azul:hover {
+  background-color: #1e90ff;
+  color: white;
+}
+
+/* Tabla */
+.table-primary {
+  background-color: #87ceeb !important;
+  color: white;
+}

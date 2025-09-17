@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const asistenciaController = require("../../controllers/Profesor/asistenciaController");
 
-// Registrar
+// Registrar individual
 router.post("/", asistenciaController.registrar);
 
 // Registrar masivo
@@ -13,6 +13,12 @@ router.get("/", asistenciaController.obtenerTodas);
 
 // Obtener con filtros
 router.get("/filtros", asistenciaController.obtenerConFiltros);
+
+// Historial por profesor
+router.get("/historial/profesor/:id", asistenciaController.historialPorProfesor);
+
+// Historial por estudiante
+router.get("/historial/estudiante/:id", asistenciaController.historialPorEstudiante);
 
 // Actualizar
 router.put("/:id", asistenciaController.actualizar);

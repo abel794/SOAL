@@ -1,7 +1,9 @@
-// frontend/src/Profesor/PanelProfesor.jsx
 import React, { useState, useEffect } from "react";
 import ListaEstudiantes from "./ListaEstudiantes";
-import AsistenciasPage from "./AsistenciasPage";
+import HistorialAsistencias from "./HistorialAsistencia";
+import RegistrarAsistenciaMasiva from "./RegistrarAsistenciaMasiva";
+import ObservacionPage from "./ObservacionPage";
+import "./PanelProfesor.css";
 
 const PanelProfesor = () => {
   const [profesor, setProfesor] = useState({});
@@ -12,14 +14,15 @@ const PanelProfesor = () => {
       try {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (usuario?.id_funcionario) {
-          const res = await fetch(`http://localhost:5000/api/profesor/${usuario.id_funcionario}/datos`);
+          const res = await fetch(
+            `http://localhost:5000/api/profesor/${usuario.id_funcionario}/datos`
+          );
           const data = await res.json();
 
           setProfesor({
-            nombre: data.persona?.nombre || '',
-            apellido: data.persona?.apellido || '',
-            email: data.persona?.correo || '',
-            foto: data.persona?.foto || null,
+            nombre: data.persona?.nombre || "",
+            apellido: data.persona?.apellido || "",
+            email: data.persona?.correo || "",
             id_funcionario: data.id_funcionario,
           });
         }
@@ -27,61 +30,62 @@ const PanelProfesor = () => {
         console.error("Error cargando datos del profesor:", error);
       }
     };
-
     fetchProfesor();
   }, []);
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
+    <div className="d-flex panel-profesor">
       {/* Sidebar */}
-      <div style={{ width: "250px", padding: "20px", backgroundColor: "#f0f0f0", textAlign: "center" }}>
-        <h2>👨‍🏫 Profesor</h2>
-
-        {profesor.foto ? (
-          <img
-            src={profesor.foto}
-            alt="Foto del profesor"
-            style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: '10px' }}
-          />
-        ) : (
-          <div style={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            backgroundColor: '#ccc',
-            display: 'inline-block',
-            marginBottom: '10px',
-          }}>👤</div>
-        )}
-
-        <p><strong>Nombre:</strong> {profesor.nombre} {profesor.apellido}</p>
-        <p><strong>Correo:</strong> {profesor.email}</p>
-        <p><strong>ID:</strong> {profesor.id_funcionario}</p>
+      <div className="sidebar p-3">
+        <h3 className="text-center">👨‍🏫 Profesor</h3>
+        <div className="profesor-info mb-3">
+          <p><strong>Nombre:</strong> {profesor.nombre} {profesor.apellido}</p>
+          <p><strong>Correo:</strong> {profesor.email}</p>
+          <p><strong>ID:</strong> {profesor.id_funcionario}</p>
+        </div>
 
         <hr />
-        <button
-          onClick={() => setFuncionSeleccionada("estudiantes")}
-          style={{ display: "block", margin: "10px auto", padding: "5px 10px" }}
-        >
-          Mis Estudiantes
-        </button>
-
-        <button
-          onClick={() => setFuncionSeleccionada("asistencias")}
-          style={{ display: "block", margin: "10px auto", padding: "5px 10px" }}
-        >
-          Mis Asistencias
-        </button>
+        <div className="d-grid gap-2">
+          <button
+            className={`btn btn-outline-primary ${funcionSeleccionada === "estudiantes" ? "active" : ""}`}
+            onClick={() => setFuncionSeleccionada("estudiantes")}
+          >
+            👨‍🎓 Mis Estudiantes
+          </button>
+          <button
+            className={`btn btn-outline-primary ${funcionSeleccionada === "asistencias" ? "active" : ""}`}
+            onClick={() => setFuncionSeleccionada("asistencias")}
+          >
+            📊 Mis Asistencias
+          </button>
+          <button
+            className={`btn btn-outline-primary ${funcionSeleccionada === "masiva" ? "active" : ""}`}
+            onClick={() => setFuncionSeleccionada("masiva")}
+          >
+            📋 Asistencia Masiva
+          </button>
+          <button
+            className={`btn btn-outline-primary ${funcionSeleccionada === "observaciones" ? "active" : ""}`}
+            onClick={() => setFuncionSeleccionada("observaciones")}
+          >
+            📝 Observaciones
+          </button>
+        </div>
       </div>
 
       {/* Contenido */}
-      <div style={{ flex: 1, padding: "20px" }}>
+      <div className="flex-grow-1 p-4 contenido">
         {profesor.id_funcionario && funcionSeleccionada === "estudiantes" && (
           <ListaEstudiantes idProfesor={profesor.id_funcionario} />
         )}
-
         {profesor.id_funcionario && funcionSeleccionada === "asistencias" && (
-          <AsistenciasPage idProfesor={profesor.id_funcionario} />
+          <HistorialAsistencias idProfesor={profesor.id_funcionario} />
+        )}
+        {profesor.id_funcionario && funcionSeleccionada === "masiva" && (
+          <RegistrarAsistenciaMasiva idProfesor={profesor.id_funcionario} />
+        )}
+        {profesor.id_funcionario && funcionSeleccionada === "observaciones" && (
+          <ObservacionPage idProfesor={profesor.id_funcionario} />
         )}
       </div>
     </div>

@@ -1,0 +1,86 @@
+.historial-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.historial-title {
+  margin-bottom: 20px;
+}
+
+.historial-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.historial-input, .historial-select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.historial-input {
+  width: 150px;
+}
+
+.historial-select {
+  width: 160px;
+  background-color: #87ceeb; /* azul cielo */
+  color: white;
+  border: none;
+}
+
+.btn-azul {
+  background-color: #87ceeb; /* azul cielo */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-gris {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-guardar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.historial-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.historial-table th, .historial-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.historial-table th {
+  background-color: #87ceeb;
+  color: white;
+  text-align: left;
+}

@@ -1,0 +1,50 @@
+/* Sidebar */
+.panel-profesor .sidebar {
+  width: 250px;
+  background: linear-gradient(to bottom, #87ceeb, #00bfff); /* Azul cielo degradado */
+  border-right: 1px solid #dee2e6;
+  min-height: 100vh;
+  color: white;
+}
+
+/* Botones en el sidebar */
+.panel-profesor .sidebar .btn {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botones activos */
+.panel-profesor .sidebar .btn.active {
+  background-color: #1e90ff; /* Azul más intenso para activo */
+  color: white;
+}
+
+/* Hover botones */
+.panel-profesor .sidebar .btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Información del profesor */
+.panel-profesor .profesor-info p {
+  margin-bottom: 0.5rem;
+}
+
+/* Contenido principal */
+.panel-profesor .contenido {
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Responsive: sidebar colapsa en móvil */
+@media (max-width: 768px) {
+  .panel-profesor {
+    flex-direction: column;
+  }
+  .panel-profesor .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+  }
+}

@@ -1,15 +1,10 @@
-// controllers/Profesor/index.js
-
-const { obtenerEstudiantesPorProfesor } = require('../Profesor/estudiantesController');
-const {
-  registroMasivo,
-  historialPorProfesor,
-  historialPorEstudiante
-} = require('./asistenciaController');
+const { obtenerEstudiantesAsignados, obtenerGradosPorProfesor } = require('./estudiantesController');
+const { registrarMasivo, obtenerTodas, obtenerConFiltros } = require('./asistenciaController');
 
 module.exports = {
-  obtenerEstudiantesPorProfesor,
-  registroMasivo,
-  historialPorProfesor,
-  historialPorEstudiante
+  obtenerEstudiantesAsignados,
+  obtenerGradosPorProfesor,
+  registrarMasivo,
+  obtenerTodas,
+  obtenerConFiltros
 };

@@ -20,9 +20,7 @@ const profesorController = {
         ]
       });
 
-      if (!profesor) {
-        return res.status(404).json({ mensaje: 'Profesor no encontrado' });
-      }
+      if (!profesor) return res.status(404).json({ mensaje: 'Profesor no encontrado' });
 
       res.json(profesor);
     } catch (error) {

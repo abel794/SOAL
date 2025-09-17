@@ -1,17 +1,12 @@
-const express = require('express');
+// back-end/routes/profesor/observacionRoutes.js
+const express = require("express");
 const router = express.Router();
-const observacionCtrl = require('../../controllers/profesor/observacionController');
+const { obtenerObservacionesPorEstudiante, crearObservacion } = require("../../controllers/Profesor/observacionController");
 
-// Listar observaciones del profesor
-router.get('/', observacionCtrl.listar);
+// Obtener observaciones de un estudiante
+router.get("/:idEstudiante", obtenerObservacionesPorEstudiante);
 
-// Crear nueva observación
-router.post('/', observacionCtrl.crear);
-
-// Actualizar observación
-router.put('/:id', observacionCtrl.actualizar);
-
-// Eliminar observación
-router.delete('/:id', observacionCtrl.eliminar);
+// Crear observación nueva
+router.post("/", crearObservacion);
 
 module.exports = router;
