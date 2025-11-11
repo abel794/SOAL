@@ -1,0 +1,67 @@
+/* 🎨 CampoTexto.css — Sistema SOAL (Módulo Secretaría)
+   Basado en la paleta institucional documentada.
+   ----------------------------------------------------
+   Azul primario: #003366
+   Azul secundario: #00509e
+   Azul alternativo: #3498db
+   Gris claro: #dddddd
+   Gris medio: #bbbbbb
+   Blanco neutro: #ffffff
+   Gris oscuro texto: #333333
+*/
+
+.campo-texto {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Etiqueta del campo */
+.campo-texto label {
+  color: #003366; /* Azul institucional primario */
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* Input principal */
+.campo-texto input {
+  padding: 10px 14px;
+  border: 2px solid #dddddd; /* Borde gris claro por defecto */
+  border-radius: 6px;
+  font-size: 15px;
+  color: #333333; /* Texto gris oscuro */
+  background-color: #ffffff; /* Fondo blanco neutro */
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+/* Estado hover: borde azul alternativo */
+.campo-texto input:hover {
+  border-color: #3498db; /* Azul alternativo */
+}
+
+/* Estado focus: borde azul secundario + sombra sutil */
+.campo-texto input:focus {
+  border-color: #00509e; /* Azul secundario */
+  box-shadow: 0 0 5px rgba(0, 80, 158, 0.3);
+}
+
+/* Placeholder: tono gris medio */
+.campo-texto input::placeholder {
+  color: #bbbbbb;
+}
+
+/* Estado inválido: borde rojo claro (para validación nativa del HTML5) */
+.campo-texto input:invalid {
+  border-color: #e74c3c; /* rojo suave de alerta */
+}
+
+/* Responsivo: mejora el ancho en pantallas pequeñas */
+@media (max-width: 480px) {
+  .campo-texto input {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}

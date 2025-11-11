@@ -1,0 +1,14 @@
+Registrar Observación;;;;;;
+;;;;;;
+ID Flujo;Tipo;Descripción Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-OBS-01;Flujo Normal;Usuario autorizado carga la página de registro de observación;Página carga correctamente con campos y select de categorías y gravedad;—;Coordinador/Profesor;OK
+HU-OBS-02;Flujo Normal;"Usuario busca estudiante por nombre o documento y pulsa ""Buscar""";Se muestra el estudiante encontrado con sus datos;""" Estudiante encontrado: [Nombre]""";Coordinador/Profesor;OK
+HU-OBS-03;Flujo Normal;Usuario completa categoría, gravedad y descripción de observación;Todos los campos completados;—;Coordinador/Profesor;OK
+HU-OBS-04;Flujo Normal;Usuario confirma registro de observación en modal;Observación registrada correctamente;"""Observación registrada para [Nombre]""";Coordinador/Profesor;OK
+HU-OBS-05;Flujo Alterno;"Usuario deja el campo de búsqueda vacío y pulsa ""Buscar""";No se realiza búsqueda;"""Escribe algo para buscar.""";Usuario;X
+HU-OBS-06;Flujo Alterno;Usuario busca un estudiante no registrado;No se encuentra el estudiante;"""Estudiante no encontrado.""";Usuario;X
+HU-OBS-07;Flujo Alterno;No hay token o sesión expirada;No se puede realizar búsqueda;"""No hay token. Inicia sesión nuevamente."" / ""Token inválido o expirado.""";Usuario;X
+HU-OBS-08;Flujo Alterno;Usuario no selecciona categoría, gravedad o deja observación vacía;No se registra la observación;""" Completa todos los campos.""";Usuario;X
+HU-OBS-09;Flujo Alterno;Error de conexión al servidor al registrar observación;Registro falla;""" Error de conexión al servidor.""";Usuario;X
+HU-OBS-10;Flujo Alterno;Error al registrar observación desde la API;Registro falla;""" [Mensaje de error del servidor]""";Usuario;X
+HU-OBS-11;Flujo Alterno;Usuario intenta registrar sin permisos;Registro denegado;"""No tiene permisos para realizar esta acción.""";Usuario con rol restringido;X

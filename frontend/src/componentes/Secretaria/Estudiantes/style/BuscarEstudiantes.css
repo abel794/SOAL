@@ -1,0 +1,149 @@
+.buscar-estudiantes-panel {
+  margin-left: 2px; /* Ancho barra lateral */
+  padding: 20px;
+  background-color: #f5f6fa;
+  min-height: 100vh;
+}
+
+
+
+.filtros-panel {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filtros-panel select,
+.filtros-panel button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 120px;
+}
+
+.filtros-panel button {
+  background-color: #003366;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.filtros-panel button:hover {
+  background-color: #0055aa;
+}
+
+.tabla-contenedor {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.tabla-panel {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-panel th,
+.tabla-panel td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+}
+
+.tabla-panel th {
+  background-color: #003366;
+  color: white;
+}
+
+.tabla-panel tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* 📱 Responsivo: convertir tabla en tarjetas */
+@media (max-width: 768px) {
+  .tabla-panel thead {
+    display: none; /* Ocultar encabezados */
+  }
+
+  .tabla-panel,
+  .tabla-panel tbody,
+  .tabla-panel tr,
+  .tabla-panel td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-panel tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .tabla-panel td {
+    text-align: left;
+    padding: 8px;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  /* Mostrar los nombres de las columnas antes de cada valor */
+  .tabla-panel td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #003366;
+    flex: 1;
+    margin-right: 10px;
+  }
+}
+/* 📱 Modo responsivo para móviles */
+@media (max-width: 768px) {
+  .tabla-panel thead {
+    display: none; /* Ocultar encabezados */
+  }
+
+  .tabla-panel,
+  .tabla-panel tbody,
+  .tabla-panel tr,
+  .tabla-panel td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-panel tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .tabla-panel td {
+    text-align: left;
+    padding: 8px;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .tabla-panel td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #003366;
+    flex: 1;
+    margin-right: 10px;
+  }
+}
+

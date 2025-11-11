@@ -1,0 +1,208 @@
+/* HeaderEstudianteFB.css
+   Estilos modularizados para el header (Facebook-like)
+*/
+
+/* Contenedor principal */
+.he-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  z-index: 10;
+}
+
+/* Izquierda: icono + textos */
+.he-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.he-school-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#0d6efd,#6610f2);
+  color: #fff;
+  font-size: 20px;
+  box-shadow: 0 6px 18px rgba(13,110,253,0.08);
+}
+.he-nombre-colegio { font-weight: 700; font-size: 16px; }
+.he-subtitulo { font-size: 12px; color: #6c757d; }
+
+/* Derecha: saludo, campana, avatar */
+.he-right { display: flex; align-items: center; gap: 12px; }
+
+/* Texto de saludo */
+.he-saludo {
+  text-align: right;
+  margin-right: 8px;
+}
+.he-greeting { font-size: 14px; font-weight: 700; color: #212529; }
+.he-greeting .he-nombre-usuario { color: #0d6efd; }
+.he-bienvenida { font-size: 12px; color: #6c757d; }
+
+.he-bell-btn svg {
+  color: #0d6efd; /* Azul, por ejemplo */
+  fill: currentColor; /* Asegúrate de que el SVG use currentColor */
+}
+.campana{
+  background-color: #212529;
+}
+.campana svg {
+  color: #0d6efd; /* azul por defecto */
+  transition: color 0.2s;
+}
+
+.campana.has-notif svg {
+  color: #dc3545; /* rojo si hay notificaciones */
+}
+
+/* Botón de notificaciones (campana) */
+.he-bell-wrap { position: relative; }
+.he-bell-btn {
+  position: relative;
+  background: black;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.he-bell-btn:focus { outline: 2px solid rgba(13,110,253,0.15); outline-offset: 2px; }
+
+/* badge (contador) */
+.he-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 12px;
+  background: #dc3545;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transform-origin: center;
+}
+
+/* Pulso cuando hay notificaciones */
+@keyframes he-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.he-badge.pulse { animation: he-pulse 1.2s infinite; }
+
+/* Dropdown (panel de notificaciones) */
+.he-dropdown {
+  position: absolute;
+  right: 8px;
+  top: calc(100% + 8px);
+  width: 360px;
+  max-height: 420px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  z-index: 9999;
+  padding: 8px;
+  animation: he-fadeIn 160ms ease;
+}
+
+/* Animación de entrada */
+@keyframes he-fadeIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Header del dropdown */
+.he-dropdown .he-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  border-bottom: 1px solid #f1f1f1;
+  margin-bottom: 6px;
+}
+
+/* Item de notificación */
+.he-notif-item {
+  padding: 10px;
+  border-bottom: 1px solid #f1f1f1;
+  background: transparent;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: default;
+  transition: background .12s;
+}
+.he-notif-item:last-child { border-bottom: none; margin-bottom: 0; }
+
+.he-notif-item:hover { background: #fafafa; }
+
+.he-notif-item.unread { background: #f8f9fa; } /* resaltado lectura local */
+
+/* Avatar pequeño dentro del item */
+.he-notif-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #6f42c1;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Texto dentro del item */
+.he-notif-body { flex: 1; }
+.he-notif-body p { margin: 0 0 6px 0; color: #212529; }
+.he-notif-body small { color: #6c757d; font-size: 12px; }
+
+/* Avatar del usuario (derecha) */
+.he-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #6f42c1;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Mensajes de estado (loading / error) */
+.he-status { padding: 12px; color: #6c757d; }
+
+/* Small screens */
+@media (max-width: 640px) {
+  .he-dropdown { right: 6px; left: 6px; width: auto; max-width: calc(100% - 12px); }
+  .he-nombre-colegio { font-size: 14px; }
+  .he-subtitulo { display: none; }
+  .he-greeting { display: none; }
+}
+
+/* Focus outline accesible */
+.he-bell-btn:focus-visible { box-shadow: 0 0 0 3px rgba(13,110,253,0.12); border-radius: 8px; }
+
+/* Utilidades */
+.hidden { display: none !important; }

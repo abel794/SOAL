@@ -1,0 +1,105 @@
+{
+  "info": {
+    "_postman_id": "8f6c9b39-1234-5678-abcd-abcdef123456",
+    "name": "TipoUsuario API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los tipos de usuario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-usuario",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-usuario"]
+        }
+      }
+    },
+    {
+      "name": "Obtener un tipo por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-usuario/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-usuario", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear nuevo tipo de usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Profesor\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-usuario",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-usuario"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar tipo de usuario",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Administrativo\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-usuario/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-usuario", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar tipo de usuario",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-usuario/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-usuario", "1"]
+        }
+      }
+    },
+    {
+      "name": "Contar usuarios por tipo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-usuario/estadistica/usuarios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-usuario", "estadistica", "usuarios"]
+        }
+      }
+    }
+  ]
+}

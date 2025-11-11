@@ -1,0 +1,111 @@
+{
+  "info": {
+    "_postman_id": "b6c8f7a9-9876-4321-abcd-123456789abc",
+    "name": "TipoDocumento API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los tipos de documento",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-documento",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-documento"]
+        }
+      }
+    },
+    {
+      "name": "Obtener tipo de documento por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-documento/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-documento", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear nuevo tipo de documento",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Cédula de Ciudadanía\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-documento",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-documento"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar tipo de documento",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Tarjeta de Identidad\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-documento/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-documento", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar tipo de documento",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-documento/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-documento", "1"]
+        }
+      }
+    },
+    {
+      "name": "Contar personas por tipo de documento",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/tipo-documento/estadistica/personas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "tipo-documento", "estadistica", "personas"]
+        }
+      }
+    }
+  ]
+}

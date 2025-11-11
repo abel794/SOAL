@@ -1,0 +1,20 @@
+Notificaciones coordinador;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-NOT-01;Flujo Normal;Usuario abre la pantalla de notificaciones;Se cargan todas las notificaciones desde el backend;Notificaciones visibles en listado;Coordinador;OK
+HU-NOT-02;Flujo Normal;Backend responde con notificaciones;"Se muestra cada notificación con: canal, fecha, mensaje, y botón ""Ver detalles""";Listado de tarjetas correctamente renderizado;Coordinador;OK
+HU-NOT-03;Flujo Normal;Usuario presiona “Ver detalles” en una notificación;Se expande la tarjeta mostrando detalles: Estado, Acudiente (documento), ID Observación, y botón “Ocultar”;Tarjeta muestra todos los detalles;Coordinador;OK
+HU-NOT-04;Flujo Normal;Usuario presiona “Ocultar” en una notificación;Se colapsa la tarjeta, ocultando detalles;Tarjeta vuelve a estado resumido;Coordinador;OK
+HU-NOT-05;Flujo Normal;Usuario ingresa un número de documento en el filtro;Valor visible en input, se mantiene en el estado de filtros;Campo listo para aplicar filtro;Coordinador;OK
+HU-NOT-06;Flujo Normal;Usuario selecciona un estado (Pendiente, Enviado, Fallido);Valor visible en select, actualizado en estado de filtros;Campo listo para aplicar filtro;Coordinador;OK
+HU-NOT-07;Flujo Normal;Usuario selecciona un canal (Email, WhatsApp, SMS);Valor visible en select, actualizado en estado de filtros;Campo listo para aplicar filtro;Coordinador;OK
+HU-NOT-08;Flujo Normal;Usuario selecciona fechas de inicio y fin;Valores visibles en inputs de fecha, actualizados en estado de filtros;Campo listo para aplicar filtro;Coordinador;OK
+HU-NOT-09;Flujo Normal;Usuario presiona botón “Buscar”;Se construye query con filtros aplicados, se llama al backend;Listado filtrado según criterios seleccionados;Coordinador;OK
+HU-NOT-10;Flujo Alterno;No hay notificaciones que coincidan con los filtros;Listado vacío, mensaje visible: “No hay notificaciones registradas con esos filtros.”;Mensaje tipo info mostrado;Coordinador;X
+HU-NOT-11;Flujo Normal;Usuario presiona botón “Limpiar”;Filtros reseteados a valores vacíos, se recargan todas las notificaciones;Listado completo visible, filtros vacíos;Coordinador;OK
+HU-NOT-12;Flujo Alterno;Error de red al obtener notificaciones;Mensaje visible: “?? Error al conectar con el servidor.”;Listado vacío, mensaje tipo error mostrado;Coordinador;X
+HU-NOT-13;Flujo Normal;Cargando notificaciones;Se muestra mensaje “Cargando notificaciones…” mientras se obtiene respuesta del backend;Indica estado de carga al usuario;Coordinador;OK
+HU-NOT-14;Flujo Normal;Cada tarjeta de notificación muestra correctamente:;Icono de campana, canal, fecha, mensaje, botón de ver/ocultar detalles;Información clara y accesible para cada notificación;Coordinador;OK
+HU-NOT-15;Flujo Normal;Usuario interactúa con múltiples filtros consecutivos;Listado se actualiza correctamente cada vez que aplica filtros;Estado de filtros consistente y actualizado;Coordinador;OK
+HU-NOT-16;Flujo Normal;Usuario cambia de fecha inicio a fin antes de aplicar filtro;Los valores se mantienen en filtros y se aplican correctamente;Evita errores en query y filtrado;Coordinador;OK
+HU-NOT-17;Flujo Normal;Backend devuelve datos incompletos (canal o estado null);Se muestra “Desconocido” o “No definido” en los campos correspondientes;Evita errores en renderizado;Coordinador;OK

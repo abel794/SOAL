@@ -1,0 +1,93 @@
+/* === CONTENEDOR GENERAL === */
+.ver-archivos-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.ver-archivos-container h2 {
+  color: #007bff;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* === TARJETAS DE ARCHIVO === */
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+}
+
+/* Imagen de archivo (solo si es imagen) */
+.card-img-top {
+  object-fit: cover;
+  height: 180px;
+}
+
+/* === CUERPO DE LA TARJETA === */
+.card-body {
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.text-muted {
+  font-size: 0.85rem;
+}
+
+/* === BOTÓN DESCARGAR === */
+.btn-outline-primary {
+  color: #007bff;
+  border: 1.8px solid #007bff;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* === ICONO PARA PDFs U OTROS ARCHIVOS === */
+.bg-light {
+  background-color: #f0f2f5 !important;
+  border-bottom: 2px solid #007bff20;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .ver-archivos-container {
+    padding: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .card-img-top {
+    height: 150px;
+  }
+
+  .btn-outline-primary {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,226 @@
+
+🧭 Guía para contribuir o entender el código — Proyecto SOAL
+🧩 Parte 1: Estructura general del proyecto
+
+El proyecto SOAL está dividido en tres partes principales:
+
+SOAL/
+│
+├── back-end/         → Servidor Node.js con Express y conexión a MySQL
+│
+├── frontend/         → Interfaz de usuario creada con React
+│
+└── db/               → Scripts SQL para crear y respaldar la base de datos
+
+📁 Descripción de carpetas principales:
+
+back-end/
+
+Contiene toda la lógica del servidor.
+
+Maneja las rutas API, controladores, modelos y la conexión a la base de datos.
+
+Se comunica directamente con MySQL.
+
+frontend/
+
+Proyecto React encargado de la interfaz visual del sistema.
+
+Contiene los componentes, estilos y vistas según el tipo de usuario (Coordinador, Profesor, Estudiante, etc).
+
+db/
+
+Guarda los scripts SQL para crear y poblar la base de datos.
+
+Subcarpetas:
+
+/scripts_db → Script principal para instalar la base.
+
+/respaldo → Copia de seguridad de la base de datos.
+
+⚙️ Parte 2: Instalación paso a paso (explicado para principiantes)
+🧱 Requisitos previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+Node.js (versión 18 o superior)
+
+MySQL
+
+XAMPP (opcional, si usas phpMyAdmin para ver la base)
+
+Git
+
+Visual Studio Code
+
+🚀 Paso 1: Clonar el repositorio
+
+Abre la terminal y ejecuta:
+
+cd Desktop
+git clone <URL_DEL_REPOSITORIO>
+
+
+Luego entra a la carpeta del proyecto:
+
+cd soal/SOAL
+
+🗃️ Paso 2: Instalar dependencias
+Backend:
+cd back-end
+npm install
+
+Frontend:
+cd ../frontend
+npm install
+
+🧠 Paso 3: Configurar variables de entorno
+
+En el archivo .env del backend, asegúrate de tener algo así:
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=soal
+PORT=3000
+
+
+Y en el .env del frontend (si existe):
+
+VITE_API_URL=http://localhost:3000
+
+🧩 Paso 4: Instalar la base de datos
+
+Abre phpMyAdmin desde XAMPP.
+
+Crea una base de datos llamada soal.
+
+Importa el script ubicado en:
+
+SOAL/db/scripts_db/script_instalacion.sql
+
+
+o el respaldo en
+
+SOAL/db/respaldo/
+
+▶️ Parte 3: Cómo ejecutar backend y frontend
+🖥️ Ejecutar el Backend:
+
+Desde la carpeta back-end, abre la terminal y corre:
+
+npm start
+
+
+El servidor debería levantarse en:
+
+http://localhost:3000
+
+🌐 Ejecutar el Frontend:
+
+Desde la carpeta frontend, abre la terminal y ejecuta:
+
+npm run dev
+
+
+La aplicación React se abrirá normalmente en:
+
+http://localhost:5173
+
+🧱 Parte 4: Explicación de carpetas y archivos más importantes
+🧩 Backend
+back-end/
+│
+├── src/
+│   ├── routes/        → Rutas de la API
+│   ├── controllers/   → Lógica de cada endpoint
+│   ├── models/        → Consultas SQL o estructuras de tablas
+│   ├── config/        → Conexión con MySQL y variables de entorno
+│   └── middleware/    → Validaciones, autenticación, etc.
+│
+├── server.js          → Punto de entrada del backend
+├── package.json       → Dependencias y scripts del backend
+└── .env               → Variables de entorno
+
+🧩 Frontend
+frontend/
+│
+├── src/
+│   ├── componentes/
+│   │   ├── Coordinador/       → Vistas y componentes del coordinador
+│   │   ├── Profesor/          → Vistas para profesores
+│   │   ├── PanelEstudiante/   → Vista del estudiante
+│   │   ├── Secretaria/        → Funciones de la secretaria
+│   │   ├── VistaAcudiente/    → Vistas de los acudientes
+│   │   ├── Login/             → Página de inicio de sesión
+│   │   └── ui/                → Componentes visuales reutilizables (botones, modales, etc)
+│   │
+│   ├── routes/                → Rutas internas de React (React Router)
+│   ├── assets/                → Imágenes, íconos, estilos globales
+│   ├── App.jsx                → Componente principal de la app
+│   ├── index.js               → Punto de inicio del frontend
+│   └── utils/                 → Funciones auxiliares
+│
+├── package.json               → Dependencias del frontend
+└── .env                       → URL del backend
+
+🤝 Parte 5: Cómo contribuir al proyecto
+💡 Reglas básicas de contribución:
+
+Clona el repositorio antes de hacer cambios.
+
+Crea una nueva rama para cada funcionalidad o corrección:
+
+git checkout -b nombre-rama
+
+
+Haz commits claros y cortos:
+
+git commit -m "Agregado módulo de observaciones para coordinador"
+
+
+Sigue la estructura del código existente:
+
+Archivos .jsx → Componentes React.
+
+Archivos .css → En la misma carpeta del componente.
+
+Archivos .js → Lógica del backend o funciones globales.
+
+Prueba tu código antes de subirlo (usa npm run dev o npm start).
+
+Evita subir archivos pesados o credenciales (.env, node_modules).
+
+🧭 Estilo de código
+
+Usa camelCase para nombres de variables y funciones.
+
+Usa PascalCase para componentes React.
+
+Sangría de 2 espacios.
+
+Siempre agrega comentarios claros en el código importante.
+
+Mantén los nombres descriptivos (nada de “prueba1.jsx” o “data2.js”).
+
+📤 Subir tus cambios al repositorio
+git add .
+git commit -m "Descripción clara del cambio"
+git push origin nombre-rama
+
+
+Luego, crea un Pull Request para revisión.
+
+🛠️ Contacto o soporte
+
+Si algo falla o no entiendes alguna parte del código:
+
+Verifica primero en el README.md.
+
+Consulta al coordinador del proyecto o revisa los comentarios dentro del código.
+
+En caso de error con la base de datos, revisa el archivo .env o el script SQL en /db/scripts_db.
+
+📘 Autor: Equipo de Desarrollo SOAL
+💻 Tecnologías: Node.js, Express, React, MySQL
+📅 Última actualización: 05/11/2025

@@ -1,0 +1,136 @@
+/* ⚠️ CASOS CRÍTICOS - ESTILO INSTITUCIONAL SOAL */
+
+.container {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  color: #333333;
+}
+
+/* Título principal */
+h2 {
+  color: #003366;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Texto de carga o vacío */
+.text-center,
+.mt-3 {
+  color: #333333;
+  font-size: 1.1rem;
+}
+
+/* Tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table thead {
+  background-color: #003366;
+  color: #ffffff;
+  text-align: left;
+}
+
+.table th {
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #00509e;
+}
+
+.table tbody tr {
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table tbody tr:hover {
+  background-color: #f2f8ff;
+  transform: translateY(-1px);
+}
+
+.table td {
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  color: #333333;
+  border-bottom: 1px solid #dddddd;
+}
+
+/* Gravedad visual (puedes usar clases dinámicas más adelante) */
+.table td:nth-child(4) {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Mensaje cuando no hay casos */
+p.mt-3 {
+  text-align: center;
+  background-color: #127c32;
+  color: #ffffff;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* 📱 RESPONSIVIDAD */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+}
+
+/* Vista móvil: tabla scrollable horizontal */
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+  }
+
+  .table thead {
+    font-size: 0.85rem;
+  }
+
+  .table td,
+  .table th {
+    white-space: nowrap;
+  }
+
+  p.mt-3 {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}

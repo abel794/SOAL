@@ -1,0 +1,23 @@
+HU-LOGIN — Inicio de sesión / Autenticación;;;;;;
+;;;;;;
+ID Flujo;Tipo;Descripción Paso a Paso;Resultado Esperado;Mensaje del Sistema;Actor;Estado
+HU-LOGIN-01;Flujo Normal;1. Usuario carga página de login según rol;Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-02;Flujo Normal;2. Ingresa email/usuario y contraseña;Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-03;Flujo Normal;"3. Pulsa ""Iniciar sesión""";Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-04;Flujo Normal;4. Frontend valida campos no vacíos;Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-05;Flujo Normal;5. Backend valida usuario y contraseña;Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-06;Flujo Normal;6. Genera sesión/JWT;Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-07;Flujo Normal;7. Redirige a dashboard;Usuario ingresa correctamente al sistema con su rol y permisos;"""Inicio de sesión correcto. Redirigiendo…""";Usuario autorizado;OK
+HU-LOGIN-02;Flujo Alterno;Usuario ingresa credenciales incorrectas;"Login denegado; contador de intentos fallidos +1";"""Usuario o contraseña incorrectos""";Usuario autorizado;X
+HU-LOGIN-03;Flujo Alterno;Usuario no registrado intenta login;Acceso denegado;"""El usuario no existe. Verifique sus datos.""";Usuario no registrado;X
+HU-LOGIN-04;Flujo Alterno;Cuenta inactiva o deshabilitada;Acceso denegado;"""Cuenta inactiva. Contacte al administrador.""";Usuario inactivo;X
+HU-LOGIN-05;Flujo Alterno;Usuario bloqueado por intentos fallidos;Acceso denegado temporalmente;"""Cuenta bloqueada .""";Usuario bloqueado;X
+HU-LOGIN-06;Flujo Alterno;Contraseña expirada;Forzar cambio de contraseña antes de login;"""Su contraseña ha expirado. Por favor cambie su contraseña.""";Usuario con contraseña expirada;X
+HU-LOGIN-07;Flujo Alterno;Email no verificado;Acceso denegado;"""Debe verificar su correo antes de iniciar sesión. Reenviar enlace.""";Usuario no verificado;X
+HU-LOGIN-08;Flujo Alterno;Usuario sin rol asignado;Acceso denegado;"""No tiene permisos para acceder.""";Usuario sin rol;X
+HU-LOGIN-09;Flujo Alterno;Rol sin permisos para módulo;Acceso denegado a módulo;"""No tiene permisos para acceder a este módulo.""";Usuario con rol limitado;X
+HU-LOGIN-10;Flujo Alterno;Sesión expirada al intentar acción;Redirige a login;"""Sesión expirada, por favor inicie sesión de nuevo.""";Usuario;X
+HU-LOGIN-11;Flujo Alterno;Login SSO/OAuth falla;Acceso denegado;"""No fue posible autenticarse con [Proveedor]. Intente nuevamente.""";Usuario con login SSO;X
+HU-LOGIN-12;Flujo Alterno;MFA requerido y no completado;Acceso denegado hasta ingresar código;"""Ingrese el código de autenticación.""";Usuario con MFA;X
+HU-LOGIN-13;Flujo Alterno;CAPTCHA requerido tras N intentos fallidos;Acceso bloqueado hasta completar CAPTCHA;"""Complete el CAPTCHA para continuar.""";Usuario;X
+HU-LOGIN-14;Flujo Alterno;Error de servidor o DB caída;No se puede autenticar;"""Error del sistema. Intente más tarde.""";Usuario;X

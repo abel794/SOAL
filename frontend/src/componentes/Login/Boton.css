@@ -1,0 +1,57 @@
+/* 🎨 Boton.css — Sistema SOAL (Módulo Secretaría)
+   Estilos basados en la paleta institucional documentada.
+   ------------------------------------------------------
+   Colores principales:
+   Azul primario: #003366
+   Azul secundario: #00509e
+   Azul alternativo: #3498db
+   Verde confirmación: #127c32
+   Gris claro: #dddddd
+   Gris medio: #bbbbbb
+   Blanco neutro: #ffffff
+   Gris oscuro texto: #333333
+*/
+
+.boton {
+  background-color: #00509e; /* Azul secundario: principal para botones */
+  color: #ffffff; /* Texto blanco para contraste */
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto hover con azul alternativo */
+.boton:hover {
+  background-color: #3498db; /* Azul alternativo */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estado activo: leve oscurecimiento */
+.boton:active {
+  background-color: #003366; /* Azul institucional primario */
+  transform: translateY(0);
+}
+
+/* Estado deshabilitado: gris claro */
+.boton:disabled {
+  background-color: #dddddd;
+  color: #333333;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.8;
+}
+
+/* Variación para botones de confirmación (si la usas en otros componentes) */
+.boton.confirmar {
+  background-color: #127c32; /* Verde confirmación */
+}
+
+.boton.confirmar:hover {
+  background-color: #0e682a;
+}

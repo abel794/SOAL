@@ -1,0 +1,13 @@
+Asignar grado a profesor;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+1;Flujo normal;Coordinador abre la página de asignación de grado;Se muestran los campos de búsqueda y lista de grados disponibles;Página cargada correctamente;Coordinador;ok
+2;Flujo normal;Coordinador ingresa nombre o documento del profesor y presiona buscar;Se muestra el profesor correspondiente encontrado;Profesor visible en tarjeta;Coordinador;ok
+3;Flujo alterno;No se encuentra ningún profesor con el criterio ingresado;Se muestra mensaje “No se encontró ningún profesor”;Lista de profesor vacía;Coordinador;x
+4;Flujo alterno;Error de conexión con el servidor al buscar;Se muestra mensaje de error;No se muestra profesor;Coordinador;x
+5;Flujo normal;Coordinador selecciona un grado de la lista desplegable;Grado seleccionado correctamente;Valor seleccionado en el select;Coordinador;ok
+6;Flujo alterno;Coordinador intenta asignar sin seleccionar profesor o grado;Se muestra advertencia de campos obligatorios;No se ejecuta asignación;Coordinador;x
+7;Flujo normal;Coordinador confirma asignación en modal;Modal se cierra y se ejecuta la asignación;Asignación registrada en backend y UI;Coordinador;ok
+8;Flujo alterno;Error al asignar el grado (servidor);Se muestra mensaje de error;No se asigna el grado;Coordinador;x
+9;Flujo normal;Asignación exitosa;Se limpia la búsqueda y la selección, y se muestra mensaje de éxito;UI lista para nueva asignación;Coordinador;ok
+10;Flujo alterno;Coordinador cancela la confirmación en el modal;No se asigna el grado;Estado del profesor y grado permanece igual;Coordinador;x

@@ -1,0 +1,52 @@
+/* ModalCerrarSesion.css — Sistema SOAL */
+
+/* Fondo del modal */
+.modal-content {
+  background-color: #ffffff; /* Blanco Neutro */
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Título */
+.modal-title {
+  color: #003366; /* Azul Institucional Primario */
+  font-weight: 600;
+}
+
+/* Texto del cuerpo */
+.modal-body {
+  color: #333333; /* Gris Oscuro Texto */
+  font-size: 1rem;
+}
+
+/* Botón "Cancelar" */
+.btn-secondary {
+  background-color: #dddddd; /* Gris Claro */
+  color: #333333;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #bbbbbb; /* Gris Medio */
+}
+
+/* Botón "Cerrar" */
+.btn-danger {
+  background-color: #003366; /* Azul Institucional Primario */
+  border: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-danger:hover {
+  background-color: #00509e; /* Azul Secundario */
+  transform: scale(1.05);
+}
+
+/* Fondo semitransparente del modal */
+.modal-backdrop.show {
+  background-color: rgba(0, 51, 102, 0.4); /* Azul institucional con transparencia */
+}

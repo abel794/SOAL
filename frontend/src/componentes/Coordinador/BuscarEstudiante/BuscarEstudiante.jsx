@@ -1,0 +1,381 @@
+import React, { useState, useCallback } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './BuscarEstudiante.css';
+import ModalMensaje from "../../ui/ModalMensaje";
+
+function BuscarEstudiante() {
+  const [nombre, setNombre] = useState('');
+  const [estudiantes, setEstudiantes] = useState([]);
+  const [mensaje, setMensaje] = useState('');
+  const [tipoMensaje, setTipoMensaje] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [usuarioGenerado, setUsuarioGenerado] = useState(null);
+
+  const ejecutarAccion = useCallback(() => {
+    console.log("Acción confirmada");
+  }, []);
+
+  // 🔍 Función principal de búsqueda optimizada
+  const buscar = useCallback(async () => {
+    try {
+      setMensaje('');
+      setTipoMensaje('');
+
+      if (!nombre.trim()) {
+        setMensaje('⚠️ Por favor, ingresa un nombre o documento para buscar.');
+        setTipoMensaje('error');
+        return;
+      }
+
+      setLoading(true);
+      setEstudiantes([]);
+
+      const url = `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(nombre.trim())}`;
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+      if (!token) {
+        setMensaje('⚠️ Necesitas iniciar sesión para buscar estudiantes.');
+        setTipoMensaje('error');
+        setLoading(false);
+        return;
+      }
+
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+
+      if (res.status === 401 || res.status === 403) {
+        setMensaje('🔐 Tu sesión ha expirado. Inicia sesión nuevamente.');
+        setTipoMensaje('error');
+        setLoading(false);
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        setEstudiantes(data);
+        setMensaje(`✅ Se encontraron ${data.length} estudiante(s)`);
+        setTipoMensaje('success');
+      } else {
+        setEstudiantes([]);
+        setMensaje('📭 No se encontraron estudiantes con ese criterio de búsqueda.');
+        setTipoMensaje('info');
+      }
+    } catch (err) {
+      console.error('❌ Error en búsqueda:', err);
+      setMensaje('🚨 Error al conectar con el servidor. Intenta nuevamente.');
+      setTipoMensaje('error');
+      setEstudiantes([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [nombre]);
+
+  const onSubmit = useCallback((e) => {
+    e.preventDefault();
+    buscar();
+  }, [buscar]);
+
+  const handleKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      buscar();
+    }
+  }, [buscar]);
+
+  const limpiarBusqueda = useCallback(() => {
+    setNombre('');
+    setEstudiantes([]);
+    setMensaje('');
+    setTipoMensaje('');
+  }, []);
+
+  return (
+    <div className="buscar-container">
+      <div className="buscar-card">
+        {/* Header */}
+        <div className="buscar-header">
+          <h1 className="titulo-principal">🔍 Buscar Estudiante</h1>
+          <p className="subtitulo">Instituto Renato Descartes</p>
+        </div>
+
+        {/* 🔸 Formulario de búsqueda */}
+        <form onSubmit={onSubmit} className="buscar-form">
+          <div className="form-container">
+            <div className="input-group-wrapper">
+              <label className="form-label">
+                Nombre o Documento del Estudiante <span className="required">*</span>
+              </label>
+              <div className="input-button-group">
+                <input
+                  type="text"
+                  className="input-busqueda"
+                  placeholder="Ej: Juan Pérez o 1012345678"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={loading}
+                />
+                <div className="botones-accion">
+                  <button
+                    type="submit"
+                    disabled={loading || !nombre.trim()}
+                    className="btn-buscar"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="spinner"></span>
+                        Buscando...
+                      </>
+                    ) : (
+                      <>
+                        <span className="icono-buscar">🔍</span>
+                        Buscar
+                      </>
+                    )}
+                  </button>
+                  {(nombre || estudiantes.length > 0) && (
+                    <button
+                      type="button"
+                      onClick={limpiarBusqueda}
+                      className="btn-limpiar"
+                      disabled={loading}
+                    >
+                      🗑️ Limpiar
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        {/* 🔹 Mensajes de estado */}
+        {mensaje && (
+          <div className={`mensaje-alerta ${tipoMensaje}`}>
+            <span className="icono-alerta">
+              {tipoMensaje === 'success' ? '✅' : 
+               tipoMensaje === 'error' ? '❌' : 
+               tipoMensaje === 'info' ? 'ℹ️' : '⚠️'}
+            </span>
+            <span>{mensaje}</span>
+          </div>
+        )}
+
+        {/* 📊 Resumen de resultados */}
+        {estudiantes.length > 0 && (
+          <div className="resumen-resultados">
+            <div className="contador-estudiantes">
+              <span className="numero">{estudiantes.length}</span>
+              <span className="texto">estudiante(s) encontrado(s)</span>
+            </div>
+          </div>
+        )}
+
+        {/* 🧭 Tabla desktop */}
+        {estudiantes.length > 0 && (
+          <div className="tabla-container desktop">
+            <div className="table-responsive">
+              <table className="tabla-estudiantes">
+                <thead>
+                  <tr>
+                    <th>Información del Estudiante</th>
+                    <th>Documento</th>
+                    <th>EPS</th>
+                    <th>Estado</th>
+                    <th>Acudiente</th>
+                    <th>Contacto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {estudiantes.map((est) => {
+                    const acudiente = est.acudientes?.[0];
+                    const personaEst = est.persona;
+                    const personaAcu = acudiente?.persona;
+                    
+                    return (
+                      <tr key={est.id_estudiante} className="fila-estudiante">
+                        <td>
+                          <div className="info-estudiante">
+                            <strong className="nombre">{personaEst?.nombre} {personaEst?.apellido}</strong>
+                            <span className="grado">Grado: {est.grado || 'No asignado'}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <span className="documento">{personaEst?.numero_documento || '—'}</span>
+                        </td>
+                        <td>
+                          <span className="eps">{est.eps?.nombre || '—'}</span>
+                        </td>
+                        <td>
+                          <span className={`estado ${est.estadoAcademico?.nombre?.toLowerCase() || 'sin-estado'}`}>
+                            {est.estadoAcademico?.nombre || '—'}
+                          </span>
+                        </td>
+                        <td>
+                          {acudiente ? (
+                            <div className="info-acudiente">
+                              <strong>{personaAcu?.nombre} {personaAcu?.apellido}</strong>
+                              <span>Doc: {acudiente.numero_documento || '—'}</span>
+                            </div>
+                          ) : (
+                            <span className="sin-acudiente">Sin acudiente</span>
+                          )}
+                        </td>
+                        <td>
+                          {acudiente ? (
+                            <div className="contacto-acudiente">
+                              <span className="telefono">📞 {personaAcu?.telefono || '—'}</span>
+                              <span className="email">📧 {personaAcu?.correo || '—'}</span>
+                              <span className="direccion">🏠 {personaAcu?.direccion || '—'}</span>
+                            </div>
+                          ) : (
+                            <span className="sin-contacto">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 📱 Tarjetas móviles */}
+        {estudiantes.length > 0 && (
+          <div className="tarjetas-container mobile">
+            {estudiantes.map((est) => {
+              const acudiente = est.acudientes?.[0];
+              const personaEst = est.persona;
+              const personaAcu = acudiente?.persona;
+              
+              return (
+                <div key={est.id_estudiante} className="tarjeta-estudiante">
+                  <div className="tarjeta-header">
+                    <h3 className="nombre-estudiante">{personaEst?.nombre} {personaEst?.apellido}</h3>
+                    <span className="grado-estudiante">Grado {est.grado || 'No asignado'}</span>
+                  </div>
+                  
+                  <div className="tarjeta-content">
+                    <div className="info-section">
+                      <h4>👤 Información Personal</h4>
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <span className="label">Documento:</span>
+                          <span className="value">{personaEst?.numero_documento || '—'}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">EPS:</span>
+                          <span className="value">{est.eps?.nombre || '—'}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Estado:</span>
+                          <span className={`value estado ${est.estadoAcademico?.nombre?.toLowerCase() || 'sin-estado'}`}>
+                            {est.estadoAcademico?.nombre || '—'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {acudiente ? (
+                      <div className="acudiente-section">
+                        <h4>👨‍👩‍👧‍👦 Acudiente</h4>
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="label">Nombre:</span>
+                            <span className="value">{personaAcu?.nombre} {personaAcu?.apellido}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Documento:</span>
+                            <span className="value">{acudiente.numero_documento || '—'}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Teléfono:</span>
+                            <span className="value">{personaAcu?.telefono || '—'}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Email:</span>
+                            <span className="value">{personaAcu?.correo || '—'}</span>
+                          </div>
+                          <div className="info-item full-width">
+                            <span className="label">Dirección:</span>
+                            <span className="value">{personaAcu?.direccion || '—'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="sin-acudiente-section">
+                        <span className="icono">👤</span>
+                        <p>Sin acudiente registrado</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Información cuando no hay búsquedas */}
+        {!estudiantes.length && !loading && !mensaje && (
+          <div className="estado-inicial">
+            <div className="estado-content">
+              <span className="icono-estado">🔍</span>
+              <h3>Buscar Estudiantes</h3>
+              <p>Ingresa el nombre o documento de un estudiante para comenzar la búsqueda</p>
+              <div className="tips-busqueda">
+                <div className="tip">
+                  <strong>📝 Por nombre</strong>
+                  <p>Busca por nombre completo o parcial</p>
+                </div>
+                <div className="tip">
+                  <strong>🆔 Por documento</strong>
+                  <p>Ingresa el número de documento</p>
+                </div>
+                <div className="tip">
+                  <strong>🎯 Resultados</strong>
+                  <p>Se mostrarán todos los estudiantes que coincidan</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Modales */}
+      <ModalMensaje
+        visible={showConfirm}
+        tipo="confirmacion"
+        titulo="Confirmación"
+        mensaje={confirmMessage}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={ejecutarAccion}
+      />
+
+      <ModalMensaje
+        visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
+        tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
+        titulo="Notificación"
+        mensaje={mensaje}
+        onClose={() => {
+          setMensaje("");
+          setUsuarioGenerado(null);
+        }}
+      />
+    </div>
+  );
+}
+
+export default BuscarEstudiante;

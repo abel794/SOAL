@@ -1,0 +1,121 @@
+/* 🎨 LoginFormulario.css — Sistema SOAL (Módulo Secretaría)
+   Basado en la paleta institucional:
+   Azul primario: #003366
+   Azul secundario: #00509e
+   Azul alternativo: #3498db
+   Gris claro: #dddddd
+   Gris medio: #bbbbbb
+   Blanco neutro: #ffffff
+   Gris oscuro texto: #333333
+*/
+
+.fondo-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Contenedor del formulario */
+.formulario-login {
+  background-color: #9d9d9d;
+  padding: 40px 35px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgb(162, 162, 162);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+/* Logo institucional */
+.logo-login {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* Título */
+.formulario-login h2 {
+  font-size: 24px;
+  color: #003366;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.formulario-login h2 span {
+  font-size: 22px;
+}
+
+.formulario-login p {
+  font-size: 15px;
+  color: #333333;
+  margin-bottom: 18px;
+}
+
+/* Enlace de recuperar contraseña */
+.enlace-texto {
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  color: #00509e;
+  transition: color 0.3s ease;
+}
+
+.enlace-texto:hover {
+  color: #3498db;
+}
+
+/* Botón de login */
+.boton {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* Texto pequeño al final */
+.texto-pequeño {
+  font-size: 12px;
+  color: #555;
+  margin-top: 18px;
+}
+
+.texto-pequeño a {
+  color: #00509e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.texto-pequeño a:hover {
+  text-decoration: underline;
+  color: #3498db;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsivo para móvil */
+@media (max-width: 480px) {
+  .formulario-login {
+    padding: 30px 25px;
+  }
+
+  .formulario-login h2 {
+    font-size: 20px;
+  }
+
+  .logo-login {
+    width: 75px;
+    height: 75px;
+  }
+}

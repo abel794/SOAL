@@ -1,0 +1,17 @@
+Responder PQR;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+1;Inicio;Coordinador abre la bandeja de PQR;Lista de PQRs cargada y visible;Pantalla lista;Coordinador-Secretaria;ok
+2;Selección;Selecciona una PQR para ver historial;Sistema muestra historial de la PQR;Historial cargado;Coordinador-Secretaria;ok
+3;Ver historial;Historial vacío;"Mensaje ""No hay respuestas aún""";Información visible;Coordinador-Secretaria;ok
+4;Ver historial;Historial con respuestas previas;Todas las respuestas previas se muestran;Historial cargado;Coordinador-Secretaria;ok
+5;Responder;Ingresa mensaje de respuesta;Campo de texto con contenido;Texto capturado;Coordinador-Secretaria;ok
+6;Responder;Selecciona nuevo estado;Estado seleccionado correctamente;Estado actualizado;Coordinador-Secretaria;ok
+7;Validación;No ingresa mensaje o no selecciona estado;Sistema bloquea envío y muestra advertencia;No se permite enviar;Coordinador-Secretaria;x
+8;Confirmación;Hace clic en enviar;Modal de confirmación aparece;Solicita confirmación;Coordinador-Secretaria;ok
+9;Cancelar envío;Cancela confirmación;Respuesta no se envía;Registro detenido;Coordinador-Secretaria;x
+10;Confirmar envío;Confirma envío;Respuesta enviada correctamente y mensaje de éxito mostrado;Estado de PQR actualizado y mensaje mostrado;Coordinador-Secretaria;ok
+11;Confirmar envío;Estado “Rechazado” seleccionado;Mensaje de rechazo mostrado;Sistema registra PQR como rechazada;Coordinador-Secretaria;ok
+12;Error de conexión;Problema al enviar respuesta;Sistema muestra mensaje de error;Respuesta no registrada;Coordinador-Secretaria;x
+13;Actualización;Respuesta enviada correctamente;Historial se actualiza con nueva respuesta;Nueva respuesta visible;Coordinador-Secretaria;ok
+14;Sin PQR seleccionada;Intenta escribir respuesta sin seleccionar PQR;Sistema bloquea acción;Debe seleccionar PQR primero;Coordinador-Secretaria;x

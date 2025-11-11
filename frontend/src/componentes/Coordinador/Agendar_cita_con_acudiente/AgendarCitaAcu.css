@@ -1,0 +1,389 @@
+/* 🎨 AGENDAR CITA - ESTILOS OPTIMIZADOS Y RESPONSIVE */
+
+/* === Variables CSS === */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --success-color: #198754;
+  --success-hover: #157347;
+  --info-color: #0dcaf0;
+  --info-hover: #0bb1d1;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border-color: #cbd5e1;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --radius: 1rem;
+  --radius-sm: 0.5rem;
+  --transition: all 0.3s ease;
+}
+
+/* === Contenedor Principal === */
+.agendar-cita-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+  background-color: var(--light-bg);
+  min-height: 100vh;
+}
+
+.agendar-card {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 700px;
+  transition: var(--transition);
+}
+
+.agendar-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* === Header === */
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--light-bg);
+}
+
+.titulo-cita {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo-cita {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* === Sección de Búsqueda === */
+.seccion-busqueda {
+  margin-bottom: 2rem;
+}
+
+.busqueda-container {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.input-busqueda {
+  flex: 1;
+  width: 2rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: var(--transition);
+  min-width: 0;
+}
+
+.input-busqueda:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.input-busqueda:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.btn-buscar {
+  width: 150px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-buscar:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-buscar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner para carga */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Información del Estudiante === */
+.info-estudiante {
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  padding: 1.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 2rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.info-titulo {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* === Formulario de Cita === */
+.formulario-cita {
+  margin-bottom: 2rem;
+}
+
+.form-titulo {
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contador-caracteres {
+  text-align: right;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* === Botones === */
+.btn-agendar {
+  width: 100%;
+  background: var(--success-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 1rem;
+}
+
+.btn-agendar:hover:not(:disabled) {
+  background: var(--success-hover);
+  transform: translateY(-2px);
+}
+
+.btn-agendar:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === Navegación === */
+.navegacion-citas {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--light-bg);
+}
+
+.btn-ver-citas {
+  background: var(--info-color);
+  color: white;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-ver-citas:hover {
+  background: var(--info-hover);
+  transform: translateY(-1px);
+}
+
+/* === Responsive Design === */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .agendar-cita-container {
+    padding: 1rem;
+  }
+
+  .agendar-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .titulo-cita {
+    font-size: 1.5rem;
+  }
+
+  .busqueda-container {
+    flex-direction: column;
+  }
+
+  .btn-buscar {
+    min-width: auto;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+  .agendar-cita-container {
+    padding: 0.5rem;
+  }
+
+  .agendar-card {
+    padding: 1.5rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .titulo-cita {
+    font-size: 1.3rem;
+  }
+
+  .subtitulo-cita {
+    font-size: 0.9rem;
+  }
+
+  .form-input,
+  .form-textarea,
+  .input-busqueda {
+    padding: 0.75rem;
+  }
+
+  .btn-buscar,
+  .btn-agendar,
+  .btn-ver-citas {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .agendar-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .titulo-cita {
+    font-size: 1.1rem;
+  }
+
+  .info-grid {
+    gap: 0.75rem;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .agendar-card,
+  .btn-buscar,
+  .btn-agendar,
+  .btn-ver-citas {
+    transition: none;
+  }
+}
+
+/* Estados de focus para accesibilidad */
+.btn-buscar:focus-visible,
+.btn-agendar:focus-visible,
+.btn-ver-citas:focus-visible,
+.form-input:focus-visible,
+.form-textarea:focus-visible,
+.input-busqueda:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

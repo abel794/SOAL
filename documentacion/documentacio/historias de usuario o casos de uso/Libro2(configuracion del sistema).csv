@@ -1,0 +1,18 @@
+configuracion del sistema;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+1;Flujo normal;Coordinador abre la página de configuración del sistema;Se muestran los formularios de colegio y panel de entidades;Página cargada correctamente;Coordinador;ok
+2;Flujo normal;"Coordinador ingresa información del colegio y presiona ""Guardar cambios""";Cambios guardados y modal de éxito mostrado;Configuración actualizada;Coordinador;ok
+3;Flujo alterno;Coordinador ingresa información incompleta o incorrecta en el formulario del colegio;Modal de error o advertencia mostrado;Configuración no guardada;Coordinador;x
+4;Flujo alterno;Fallo de conexión con el servidor al guardar la configuración del colegio;Modal de error de conexión mostrado;Configuración no guardada;Coordinador;x
+5;Flujo normal;Coordinador selecciona una entidad para agregar (grado, EPS, tipo de usuario, etc.);Se muestra el formulario de agregar nueva entidad;Formulario visible;Coordinador;ok
+6;Flujo normal;"Coordinador completa los campos de nueva entidad y presiona ""Agregar""";Entidad agregada y mensaje de éxito mostrado;Nueva entidad creada;Coordinador;ok
+7;Flujo alterno;Coordinador intenta agregar entidad sin completar los campos obligatorios;Modal de advertencia mostrado;Entidad no creada;Coordinador;x
+8;Flujo alterno;Fallo de conexión con el servidor al agregar nueva entidad;Modal de error de conexión mostrado;Entidad no creada;Coordinador;x
+9;Flujo normal;"Coordinador selecciona una entidad existente y presiona ""Eliminar""";Se muestra modal de confirmación antes de eliminar;Modal de confirmación visible;Coordinador;ok
+10;Flujo normal;Coordinador confirma la eliminación en el modal;Entidad eliminada y mensaje de éxito mostrado;Entidad eliminada;Coordinador;ok
+11;Flujo alterno;Coordinador cancela la eliminación en el modal;No se elimina la entidad;Modal cerrado, entidad intacta;Coordinador;x
+12;Flujo alterno;Fallo de conexión con el servidor al eliminar entidad;Modal de error de conexión mostrado;Entidad no eliminada;Coordinador;x
+13;Flujo alterno;Coordinador intenta eliminar una entidad sin seleccionar ninguna;Modal de advertencia mostrado;Entidad no eliminada;Coordinador;x
+14;Flujo normal;Coordinador sube un logo del colegio;Logo se guarda correctamente;Logo actualizado;Coordinador;ok
+15;Flujo alterno;Coordinador sube un archivo no válido como logo;Modal de error mostrado;Logo no guardado;Coordinador;x

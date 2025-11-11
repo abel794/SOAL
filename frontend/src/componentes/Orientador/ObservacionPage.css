@@ -1,0 +1,89 @@
+/* 🔹 Fondo semitransparente del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* 🔹 Tarjeta del modal */
+.modal-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 380px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+/* 🔹 Texto */
+.modal-card h3 {
+  font-weight: 600;
+  color: #0b2b80;
+  margin-bottom: 1.5rem;
+}
+
+/* 🔹 Botones */
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-confirmar {
+  background-color: #0047ab;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-confirmar:hover {
+  background-color: #002e7f;
+  transform: scale(1.05);
+}
+
+.btn-cancelar {
+  background-color: #ccc;
+  color: #222;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #b1b1b1;
+  transform: scale(1.05);
+}
+
+/* 🔹 Modal éxito */
+.modal-exito {
+  color: #0b8a2b;
+  font-weight: 600;
+  font-size: 1.1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ✨ Animación */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

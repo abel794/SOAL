@@ -1,0 +1,150 @@
+/* src/components/ui/ModalMensaje.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.modal-container {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-icon {
+  font-size: 1.5rem;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.modal-body {
+  padding: 20px 24px;
+}
+
+.modal-body p {
+  margin: 0;
+  line-height: 1.5;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 80px;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+/* Modal Types */
+.modal-success .modal-header {
+  color: #059669;
+}
+
+.modal-error .modal-header {
+  color: #dc2626;
+}
+
+.modal-warning .modal-header {
+  color: #d97706;
+}
+
+.modal-info .modal-header {
+  color: #2563eb;
+}
+
+.modal-confirm .modal-header {
+  color: #7c3aed;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal-container {
+    margin: 1rem;
+  }
+  
+  .modal-header {
+    padding: 20px 20px 12px;
+  }
+  
+  .modal-body {
+    padding: 16px 20px;
+  }
+  
+  .modal-footer {
+    padding: 12px 20px 20px;
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}

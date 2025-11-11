@@ -1,0 +1,99 @@
+/* ObservacionCard.css */
+
+/* Contenedor principal de todas las observaciones */
+.observaciones-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Cada tarjeta */
+.observacion-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 340px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.observacion-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Título de la observación */
+.observacion-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Descripción */
+.observacion-card .card-text {
+  font-size: 0.95rem;
+  color: #374151;
+  flex-grow: 1;
+  margin-bottom: 1rem;
+  word-break: break-word;
+}
+
+/* Footer de la tarjeta */
+.observacion-card .card-footer {
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-align: right;
+  margin-top: auto;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.5rem;
+}
+
+/* Loading y mensaje vacío */
+.estado-mensaje {
+  text-align: center;
+  color: #6b7280;
+  margin-top: 3rem;
+  font-size: 1rem;
+}
+
+/* Spinner minimalista */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsividad (por si quieres columnas) */
+@media (min-width: 600px) {
+  .observacion-card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+@media (min-width: 900px) {
+  .observacion-card {
+    flex: 1 1 calc(33.333% - 1rem);
+  }
+}

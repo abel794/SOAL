@@ -1,0 +1,66 @@
+/* PanelEstudiante.css */
+
+/* Estructura principal */
+.panel-estudiante {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .panel-estudiante {
+    flex-direction: row;
+  }
+}
+
+/* Contenedor del contenido principal */
+.panel-contenido {
+  flex-grow: 1;
+  margin-left: 0; /* En mobile, el sidebar está oculto */
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .panel-contenido {
+    margin-left: 240px; /* Espacio para el sidebar */
+  }
+}
+
+/* Área del contenido renderizado dinámicamente */
+.panel-main {
+  padding: 1.5rem;
+}
+
+.panel-main .contenido {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive ajustes si sidebar está cerrado */
+@media (max-width: 767px) {
+  .panel-contenido {
+    margin-left: 0;
+  }
+}
+
+/* Asegurar que el contenido no se solape con el sidebar en desktop */
+@media (min-width: 768px) {
+  .sidebar-visible + .panel-contenido {
+    margin-left: 240px;
+  }
+}
+
+/* Transiciones suaves al cambiar contenido */
+.panel-main .contenido {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Utilidades opcionales */
+.scroll-y {
+  overflow-y: auto;
+}

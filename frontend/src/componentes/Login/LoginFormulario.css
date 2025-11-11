@@ -1,0 +1,133 @@
+/* === Fondo general del login === */
+.fondo-login {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* ocupa toda la altura de la pantalla */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Imagen de fondo */
+.fondo-login img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* que la imagen cubra todo */
+  filter: brightness(0.4) blur(2px); /* oscurece un poco para destacar el formulario */
+  z-index: -1; /* detrás del formulario */
+}
+
+/* === Formulario === */
+.formulario-login {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 40px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Logo superior */
+.logo-login {
+  width: 100px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+}
+
+/* Campos de texto */
+.campo-texto {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.campo-texto label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #f1f1f1;
+}
+
+.campo-texto input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.campo-texto input:focus {
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Botón */
+.boton {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0066ff, #00ccff);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.boton:hover {
+  background: linear-gradient(135deg, #0052cc, #00aaff);
+  transform: scale(1.03);
+}
+
+.boton:disabled {
+  background: #777;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Enlace de olvidar contraseña */
+.enlace {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #d1eaff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.enlace:hover {
+  color: #00ccff;
+}
+
+/* Texto pequeño */
+.texto-pequeño {
+  font-size: 13px;
+  color: #ddd;
+  margin-top: 15px;
+  line-height: 1.5;
+}
+
+.texto-pequeño a {
+  color: #00ccff;
+  text-decoration: none;
+}
+
+.texto-pequeño a:hover {
+  text-decoration: underline;
+}

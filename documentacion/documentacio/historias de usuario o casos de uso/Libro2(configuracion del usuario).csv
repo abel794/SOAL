@@ -1,0 +1,13 @@
+Configuracion del usuario;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+1;Flujo normal;Usuario abre la página de Configuración de Cuenta;Se muestran todos los campos con los datos actuales cargados;Página cargada correctamente con datos del usuario;Usuario;ok
+2;Flujo normal;Usuario visualiza los campos de nombre, correo, teléfono, dirección, ciudad, ocupación y foto;Todos los campos muestran la información correcta del usuario;Campos visibles y con datos;Sistema;ok
+3;Flujo normal;Usuario modifica algún campo (ej. teléfono o dirección) y hace clic en “Guardar cambios”;Se envía la información actualizada y se recibe confirmación de éxito;Datos actualizados en la base y mensaje de confirmación mostrado;Usuario;ok
+4;Flujo normal;Usuario cambia la contraseña ingresando la actual, la nueva y la confirmación;Contraseña actualizada correctamente y mensaje de éxito mostrado;Contraseña modificada;Usuario;ok
+5;Flujo alterno;Usuario intenta cambiar la contraseña sin ingresar la contraseña actual;Se muestra mensaje “Debe ingresar su contraseña actual para cambiarla”;Cambio de contraseña no realizado;Sistema;x
+6;Flujo alterno;Usuario ingresa nueva contraseña y confirmación que no coinciden;Se muestra mensaje “La nueva contraseña no coincide con la confirmación”;Cambio de contraseña no realizado;Sistema;x
+7;Flujo alterno;Usuario hace clic en guardar sin modificar ningún campo;Se muestra mensaje “No hay cambios para guardar”;No se realiza ninguna actualización;Sistema;x
+8;Flujo normal;Usuario selecciona una foto de perfil nueva;Se muestra vista previa de la foto seleccionada;Imagen cargada y lista para guardar;Usuario;ok
+9;Flujo normal;Usuario hace clic en “Guardar cambios” con nueva foto;Foto subida correctamente y mensaje de confirmación mostrado;Foto actualizada en el sistema;Usuario;ok
+10;Flujo alterno;Error de conexión al guardar los cambios;Se muestra mensaje de error de conexión;Cambios no aplicados;Sistema;x

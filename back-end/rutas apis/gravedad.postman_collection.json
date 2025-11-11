@@ -1,0 +1,174 @@
+{
+  "info": {
+    "name": "API - Gravedad",
+    "_postman_id": "uuid",
+    "description": "Colecci\u00f3n de endpoints para el m\u00f3dulo de Gravedad",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar todas las gravedades",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Buscar gravedad por nombre",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades/buscar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades",
+            "buscar"
+          ],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "leve"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Contar gravedades",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades/contar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades",
+            "contar"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Porcentaje observaciones por gravedad",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades/porcentaje",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades",
+            "porcentaje"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Observaciones por gravedad",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades/:id/observaciones",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades",
+            ":id",
+            "observaciones"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Crear gravedad",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Actualizar gravedad",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades",
+            ":id"
+          ],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Eliminar gravedad",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/gravedades/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "gravedades",
+            ":id"
+          ],
+          "query": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+/* 🎨 CONFIGURACIÓN SISTEMA - ESTILOS OPTIMIZADOS Y RESPONSIVE */
+
+/* === Variables CSS === */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --success-color: #198754;
+  --success-hover: #157347;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --info-color: #0dcaf0;
+  --light-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --radius: 1.5rem;
+  --radius-sm: 0.75rem;
+  --transition: all 0.3s ease;
+}
+
+/* === Contenedor Principal === */
+.configuracion-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem 1rem;
+}
+
+.configuracion-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* === Header === */
+.configuracion-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.titulo-principal {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* === Secciones === */
+.seccion-configuracion,
+.seccion-entidades {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  transition: var(--transition);
+}
+
+.seccion-configuracion:hover,
+.seccion-entidades:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.seccion-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--light-bg);
+}
+
+.seccion-header h2 {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.seccion-header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.seccion-interna {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--light-bg);
+  border-radius: var(--radius-sm);
+}
+
+.seccion-interna h3 {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 1rem;
+}
+
+/* === Formularios === */
+.formulario-colegio,
+.formulario-entidad {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.required {
+  color: var(--danger-color);
+  font-weight: bold;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: var(--transition);
+  font-family: inherit;
+  background: white;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.input-help {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* === Checkbox Personalizado === */
+.checkbox-group {
+  margin-top: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.checkbox-input {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  background: white;
+  transition: var(--transition);
+  position: relative;
+}
+
+.checkbox-input:checked + .checkbox-custom {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.checkbox-input:checked + .checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* === Botones === */
+.btn-guardar,
+.btn-agregar {
+  background: var(--success-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.btn-guardar:hover,
+.btn-agregar:hover {
+  background: var(--success-hover);
+  transform: translateY(-2px);
+}
+
+/* === Gestión de Entidades === */
+.entidades-content {
+  
+  margin-top: 2rem;
+}
+
+.selector-entidad {
+  margin-bottom: 2rem;
+}
+
+.formulario-entidad {
+  background: var(--light-bg);
+  padding: 2rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 2rem;
+}
+
+.formulario-entidad h3 {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+.entidad-nombre{
+  width: 22rem;
+}
+
+.entidad-inputs {
+  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.entidad-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* === Lista de Entidades === */
+.lista-entidades {
+  margin-top: 2rem;
+}
+
+.lista-entidades h4 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.cargando-entidades {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.entidades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.entidad-card {
+  
+  background: white;
+  padding: 1.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.entidad-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.entidad-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.entidad-nombre {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.entidad-descripcion {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.btn-eliminar-entidad {
+  width: 10rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.btn-eliminar-entidad:hover {
+  background: var(--danger-color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.sin-entidades {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-muted);
+}
+
+.sin-entidades span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.sin-entidades p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* === Spinner === */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Responsive Design === */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .configuracion-header {
+    padding: 1.5rem;
+  }
+  
+  .titulo-principal {
+    font-size: 2rem;
+  }
+  
+  .seccion-configuracion,
+  .seccion-entidades {
+    padding: 2rem;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .entidad-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+  .configuracion-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .configuracion-header {
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .titulo-principal {
+    font-size: 1.75rem;
+  }
+  
+  .subtitulo {
+    font-size: 1rem;
+  }
+  
+  .seccion-configuracion,
+  .seccion-entidades {
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+  
+  .seccion-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .formulario-entidad {
+    padding: 1.5rem;
+  }
+  
+  .entidades-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .configuracion-container {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .seccion-configuracion,
+  .seccion-entidades {
+    padding: 1rem;
+  }
+  
+  .seccion-interna {
+    padding: 1rem;
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 0.75rem;
+  }
+  
+  .btn-guardar,
+  .btn-agregar {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .entidad-actions {
+    flex-direction: column;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .configuracion-container * {
+    transition: none;
+  }
+}
+
+/* Estados de focus para accesibilidad */
+.btn-guardar:focus-visible,
+.btn-agregar:focus-visible,
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

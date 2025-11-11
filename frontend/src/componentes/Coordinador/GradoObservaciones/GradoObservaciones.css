@@ -1,0 +1,313 @@
+/* GradoObservaciones.css */
+
+/* Estilos generales del dashboard */
+.container-fluid.py-4 {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header principal */
+.d-flex.justify-content-between.align-items-center h2 {
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.badge.bg-primary.fs-6 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Cards de resumen */
+.card {
+  border: none;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-body.d-flex.align-items-center {
+  padding: 1.5rem;
+}
+
+.card-body .fs-2 {
+  font-size: 2.5rem !important;
+  opacity: 0.9;
+}
+
+.card-body h6.text-muted {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #6c757d !important;
+}
+
+.card-body h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #2c3e50;
+}
+
+/* Colores de los iconos de las cards */
+.text-primary { color: #3498db !important; }
+.text-success { color: #27ae60 !important; }
+.text-info { color: #17a2b8 !important; }
+
+/* Filtros */
+.form-label.fw-semibold {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-select {
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.form-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Card de resumen por grado */
+.card-header.bg-white {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 15px 15px 0 0 !important;
+  padding: 1.25rem 1.5rem;
+}
+
+.card-header h5.mb-0 {
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.card-header .text-primary {
+  color: white !important;
+}
+
+/* Items de resumen por grado */
+.p-3.border.rounded {
+  border: 2px solid #e9ecef !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.p-3.border.rounded:hover {
+  border-color: #3498db !important;
+  background-color: #f8f9fa;
+}
+
+.p-3.border.rounded span:first-child {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.p-3.border.rounded .badge.bg-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 15px;
+}
+
+/* Tabla de detalles */
+.card-body.p-0 .table-responsive {
+  border-radius: 0 0 15px 15px;
+  overflow: hidden;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white;
+  font-weight: 600;
+  padding: 1rem 0.75rem;
+  border: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+  font-size: 0.95rem;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.01);
+}
+
+.table tbody tr td:first-child {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Badges de gravedad */
+.badge {
+  padding: 0.5rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge[style*="background-color"] {
+  color: white !important;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge.bg-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%) !important;
+  color: white;
+}
+
+/* Estado vacío */
+.text-center.py-4.text-muted {
+  padding: 3rem !important;
+  color: #6c757d !important;
+  font-style: italic;
+}
+
+.text-center.py-4.text-muted .fa-info-circle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Alert de recomendaciones */
+.alert.alert-info {
+  background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%) !important;
+  border: none;
+  border-radius: 15px;
+  color: #2c3e50;
+  border-left: 5px solid #17a2b8;
+  padding: 1.25rem 1.5rem;
+}
+
+.alert.alert-info strong {
+  color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container-fluid.py-4 {
+    padding: 1rem !important;
+  }
+  
+  .card-body.d-flex.align-items-center {
+    padding: 1rem;
+  }
+  
+  .card-body h3 {
+    font-size: 1.8rem;
+  }
+  
+  .card-body .fs-2 {
+    font-size: 2rem !important;
+  }
+  
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .d-flex.justify-content-between.align-items-center h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .row.mb-4 .col-md-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .card-header h5.mb-0 {
+    font-size: 1rem;
+  }
+  
+  .form-select {
+    font-size: 0.9rem;
+  }
+}
+
+/* Animaciones suaves */
+.card, .table tbody tr, .p-3.border.rounded {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efectos de profundidad */
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Mejora visual para los filtros */
+.form-select option {
+  padding: 0.5rem;
+}
+
+/* Estilo para cuando no hay datos */
+.table tbody tr td.text-center {
+  background-color: #f8f9fa;
+  font-style: italic;
+}
+
+/* Colores específicos para los tipos de gravedad */
+.badge[style*="#10B981"] { /* Leve */
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+}
+
+.badge[style*="#F59E0B"] { /* Moderada */
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+}
+
+.badge[style*="#EF4444"] { /* Grave */
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%) !important;
+}
+
+.badge[style*="#DC2626"] { /* Crítica */
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+}
+
+.badge[style*="#7C2D12"] { /* Muy Crítica */
+  background: linear-gradient(135deg, #7C2D12 0%, #431407 100%) !important;
+}

@@ -1,0 +1,28 @@
+Agendar Cita Acuduente;;;;;;
+;;;;;;
+ID Flujo;Tipo;Descripción Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-CITA-01;Flujo Normal;Usuario abre la página de agendar citas;Página carga correctamente con buscador y formulario;—;Coordinador;OK
+HU-CITA-02;Flujo Normal;Usuario busca estudiante existente;Se muestra información del estudiante y se completa el campo de acudiente;—;Coordinador;OK
+HU-CITA-03;Flujo Normal;Usuario selecciona fecha, hora y motivo;Datos se completan correctamente en el formulario;—;Coordinador;OK
+HU-CITA-04;Flujo Normal;Usuario confirma la cita;La cita se guarda correctamente;La cita fue agendada correctamente;Coordinador;OK
+HU-CITA-05;Flujo Alterno;Usuario busca estudiante no registrado;No se encuentra el estudiante;No se encontró ningún estudiante con ese nombre;Coordinador;X
+HU-CITA-06;Flujo Alterno;Usuario no ingresa texto en la búsqueda;No se realiza búsqueda;Ingresa un nombre para buscar;Coordinador;X
+HU-CITA-07;Flujo Alterno;Estudiante no tiene acudiente registrado;Se muestra estudiante pero sin acudiente;Este estudiante no tiene acudiente registrado;Coordinador;X
+HU-CITA-08;Flujo Alterno;Usuario deja campos vacíos al agendar;No se permite agendar;Completa todos los campos antes de continuar;Coordinador;X
+HU-CITA-09;Flujo Alterno;Error de conexión al buscar estudiante;No se realiza búsqueda;No se pudo conectar con el servidor;Coordinador;X
+HU-CITA-10;Flujo Alterno;Error de conexión al guardar cita;Cita no se guarda;Hubo un problema con el servidor;Coordinador;X
+HU-CITA-11;Flujo Alterno;Servidor devuelve error al guardar cita;Cita no se guarda;No se pudo crear la cita;Coordinador;X
+;;;;;;
+;;;;;;
+ID Flujo;Tipo;Descripción Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-VERCITAS-01;Flujo Normal;Usuario abre la página de ver citas;Página carga correctamente con la lista de todas las citas;—;Coordinador;OK
+HU-VERCITAS-02;Flujo Normal;Usuario filtra citas por nombre existente;Se muestran las citas filtradas correctamente;—;Coordinador;OK
+HU-VERCITAS-03;Flujo Normal;Usuario filtra citas por documento existente;Se muestran las citas filtradas correctamente;—;Coordinador;OK
+HU-VERCITAS-04;Flujo Normal;"Usuario selecciona ""Ver todas""";Se muestran todas las citas registradas;—;Coordinador;OK
+HU-VERCITAS-05;Flujo Normal;"Usuario selecciona ""Ver más"" en una cita";Se abre la vista de detalle de la cita seleccionada;—;Coordinador;OK
+HU-VERCITAS-06;Flujo Alterno;Usuario filtra con un nombre no existente;No se muestran resultados;No se encontraron citas;Coordinador;X
+HU-VERCITAS-07;Flujo Alterno;Usuario filtra con un documento no existente;No se muestran resultados;No se encontraron citas;Coordinador;X
+HU-VERCITAS-08;Flujo Alterno;Usuario intenta filtrar sin ingresar valor;No se realiza la búsqueda;Ingresa un valor para filtrar;Coordinador;X
+HU-VERCITAS-09;Flujo Alterno;Error de conexión al obtener todas las citas;No se muestran resultados;Error de conexión con el servidor;Coordinador;X
+HU-VERCITAS-10;Flujo Alterno;Usuario no tiene sesión activa;No se puede mostrar información;No tienes sesión activa. Inicia sesión;Coordinador;X
+HU-VERCITAS-11;Flujo Alterno;Error de conexión al filtrar citas;No se muestran resultados;Error de conexión con el servidor;Coordinador;X

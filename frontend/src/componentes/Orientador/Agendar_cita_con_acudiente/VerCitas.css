@@ -1,0 +1,456 @@
+/* 🎨 VER CITAS - ESTILOS OPTIMIZADOS Y RESPONSIVE */
+
+/* === Variables CSS === */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --secondary-color: #6c757d;
+  --secondary-hover: #5a6268;
+  --info-color: #0dcaf0;
+  --info-hover: #0bb1d1;
+  --success-color: #198754;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --radius: 1rem;
+  --radius-sm: 0.5rem;
+  --transition: all 0.3s ease;
+}
+
+/* === Contenedor Principal === */
+.ver-citas-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* === Header === */
+.citas-header {
+  padding: 2rem 2rem 1rem;
+  text-align: center;
+  border-bottom: 2px solid var(--light-bg);
+}
+
+.titulo {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* === Sección de Filtros === */
+.filtros-section {
+  padding: 1.5rem 2rem;
+  background: var(--light-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.filtros-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filtro-select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  font-size: 1rem;
+  min-width: 150px;
+  transition: var(--transition);
+}
+
+.filtro-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.filtro-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.filtro-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.botones-filtro {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-filtrar,
+.btn-todas {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-filtrar {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-filtrar:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-todas {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.btn-todas:hover {
+  background: var(--secondary-hover);
+  transform: translateY(-1px);
+}
+
+/* === Sección de Estado === */
+.estado-section {
+  padding: 1rem 2rem;
+}
+
+.mensaje-alerta {
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.mensaje-alerta.error {
+  background: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid var(--danger-color);
+}
+
+.mensaje-alerta.advertencia {
+  background: #fff3cd;
+  color: #856404;
+  border-left: 4px solid var(--warning-color);
+}
+
+.mensaje-alerta.info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border-left: 4px solid var(--info-color);
+}
+
+.cargando-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.contador-citas {
+  text-align: center;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.5rem;
+  background: var(--light-bg);
+  border-radius: var(--radius-sm);
+}
+
+/* === Sección de Tabla === */
+.tabla-section {
+  padding: 0 2rem 2rem;
+}
+
+.tabla-container {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.tabla-citas {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.tabla-citas thead {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+}
+
+.tabla-citas th {
+  padding: 1rem;
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  border: none;
+}
+
+.tabla-citas tbody tr {
+  transition: var(--transition);
+}
+
+.tabla-citas tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.tabla-citas td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+.fila-cita:last-child td {
+  border-bottom: none;
+}
+
+/* Celdas específicas */
+.motivo-cell {
+  max-width: 200px;
+}
+
+.motivo-cell span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Botón de detalle */
+.btn-detalle {
+  background: var(--info-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-detalle:hover {
+  background: var(--info-hover);
+  transform: translateY(-1px);
+}
+
+/* Estado vacío */
+.sin-citas {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.estado-vacio {
+  color: var(--text-muted);
+}
+
+.estado-vacio span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.estado-vacio p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.estado-vacio small {
+  font-size: 0.9rem;
+}
+
+/* === Spinner === */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Responsive Design === */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .ver-citas-container {
+    margin: 1rem;
+    border-radius: 0.75rem;
+  }
+  
+  .citas-header,
+  .filtros-section,
+  .estado-section,
+  .tabla-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .filtros-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .botones-filtro {
+    justify-content: stretch;
+  }
+  
+  .btn-filtrar,
+  .btn-todas {
+    flex: 1;
+  }
+  
+  .tabla-container {
+    border: none;
+    border-radius: 0;
+  }
+  
+  .tabla-citas {
+    min-width: 600px;
+  }
+}
+
+/* Móviles */
+@media (max-width: 640px) {
+  .ver-citas-container {
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .citas-header,
+  .filtros-section,
+  .estado-section,
+  .tabla-section {
+    padding: 1rem;
+  }
+  
+  .titulo {
+    font-size: 1.5rem;
+  }
+  
+  .subtitulo {
+    font-size: 1rem;
+  }
+  
+  .tabla-citas th,
+  .tabla-citas td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Tabla responsive para móviles */
+  .tabla-citas thead {
+    display: none;
+  }
+  
+  .tabla-citas tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+  
+  .tabla-citas td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid var(--light-bg);
+  }
+  
+  .tabla-citas td:last-child {
+    border-bottom: none;
+  }
+  
+  .tabla-citas td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-right: 1rem;
+    min-width: 100px;
+  }
+  
+  .motivo-cell span {
+    white-space: normal;
+    text-align: right;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .ver-citas-container {
+    margin: 0.25rem;
+  }
+  
+  .citas-header,
+  .filtros-section,
+  .estado-section,
+  .tabla-section {
+    padding: 0.75rem;
+  }
+  
+  .filtro-select,
+  .filtro-input {
+    padding: 0.625rem 0.75rem;
+  }
+  
+  .btn-filtrar,
+  .btn-todas {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .tabla-citas tbody tr,
+  .btn-filtrar,
+  .btn-todas,
+  .btn-detalle {
+    transition: none;
+  }
+}
+
+/* Estados de focus para accesibilidad */
+.btn-filtrar:focus-visible,
+.btn-todas:focus-visible,
+.btn-detalle:focus-visible,
+.filtro-select:focus-visible,
+.filtro-input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

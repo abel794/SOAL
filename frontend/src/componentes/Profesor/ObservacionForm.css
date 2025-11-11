@@ -1,0 +1,318 @@
+/* ObservacionForm.css */
+.observaciones-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Header */
+.observaciones-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-volver {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-volver:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+.observaciones-header h2 {
+  color: #1a237e;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+.linea {
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(135deg, #00bfff, #1e90ff);
+  margin: 0.5rem 0 2rem 0;
+  border-radius: 2px;
+}
+
+/* Información del estudiante */
+.estudiante-info-card {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border-left: 4px solid #00bfff;
+}
+
+.estudiante-info-card h3 {
+  color: #1a237e;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.estudiante-datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.estudiante-datos p {
+  margin: 0;
+  color: #555;
+}
+
+.estudiante-datos strong {
+  color: #333;
+}
+
+/* Formulario */
+.observacion-form {
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.caracteres-contador {
+  font-size: 0.85rem;
+  font-weight: normal;
+  color: #6c757d;
+}
+
+.form-select,
+.form-control {
+  width: 100%;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-select:focus,
+.form-control:focus {
+  outline: none;
+  border-color: #00bfff;
+  box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+}
+
+.form-select:disabled,
+.form-control:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Textarea específico */
+.descripcion-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.contador-advertencia {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  text-align: right;
+  height: 1.2rem;
+}
+
+.contador-advertencia.advertencia {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.contador-advertencia.peligro {
+  color: #dc3545;
+  font-weight: 700;
+}
+
+/* Botones */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.btn-primario, .btn-secundario {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+}
+
+.btn-primario {
+  background: linear-gradient(135deg, #00bfff, #1e90ff);
+  color: white;
+}
+
+.btn-primario:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+}
+
+.btn-primario:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.btn-secundario {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secundario:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Información de ayuda */
+.info-ayuda {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.info-ayuda h4 {
+  color: #1a237e;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.tip-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tip-card:nth-child(1) {
+  border-left-color: #28a745;
+}
+
+.tip-card:nth-child(2) {
+  border-left-color: #ffc107;
+}
+
+.tip-card:nth-child(3) {
+  border-left-color: #dc3545;
+}
+
+.tip-card strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.tip-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Estados de gravedad en select */
+.form-select option[value="Leve"] {
+  color: #28a745;
+}
+
+.form-select option[value="Moderado"] {
+  color: #ffc107;
+}
+
+.form-select option[value="Grave"] {
+  color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .observaciones-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .observaciones-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .estudiante-datos {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .observaciones-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .btn-primario, .btn-secundario {
+    padding: 1rem;
+    width: 100%;
+  }
+}

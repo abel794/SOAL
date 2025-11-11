@@ -1,0 +1,121 @@
+{
+  "info": {
+    "_postman_id": "a9e0d82b-63a5-47e8-a4e7-soal-estudiantes",
+    "name": "Estudiantes-SOAL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar todos los estudiantes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes"]
+        }
+      }
+    },
+    {
+      "name": "Buscar estudiante por nombre o documento",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes/buscar?filtro=Juan",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes", "buscar"],
+          "query": [
+            { "key": "filtro", "value": "Juan" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Contar estudiantes (opcional estado)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes/total?id_estado_academico=1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes", "total"],
+          "query": [
+            { "key": "id_estado_academico", "value": "1" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener estudiante por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear nuevo estudiante",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_documento\": \"12345678\",\n  \"id_usuario\": 3,\n  \"id_acudiente\": 2,\n  \"eps\": \"SURA\",\n  \"estado_salud\": \"Bueno\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes"]
+        }
+      }
+    },
+    {
+      "name": "Actualizar estudiante por ID",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"eps\": \"Nueva EPS\",\n  \"estado_salud\": \"Excelente\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar estudiante por ID",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantes/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantes", "1"]
+        }
+      }
+    }
+  ]
+}

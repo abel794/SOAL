@@ -1,0 +1,97 @@
+{
+  "info": {
+    "name": "Funcionario-Grado API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Colección para probar las rutas del controlador funcionarioGradoController",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Asignar grado a funcionario",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_funcionario\": 1,\n  \"id_grado\": 2,\n  \"rol\": \"Director\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/funcionariogrados",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionariogrados"]
+        }
+      }
+    },
+    {
+      "name": "Listar todos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionariogrados",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionariogrados"]
+        }
+      }
+    },
+    {
+      "name": "Filtrar por rol",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionariogrados/filtrar/rol?rol=Director",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionariogrados", "filtrar", "rol"],
+          "query": [{ "key": "rol", "value": "Director" }]
+        }
+      }
+    },
+    {
+      "name": "Contar por grado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionariogrados/contar?id_grado=2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionariogrados", "contar"],
+          "query": [{ "key": "id_grado", "value": "2" }]
+        }
+      }
+    },
+    {
+      "name": "Grados por funcionario",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionariogrados/1/grados",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionariogrados", "1", "grados"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar asignación",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/funcionariogrados/5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "funcionariogrados", "5"]
+        }
+      }
+    }
+  ]
+}

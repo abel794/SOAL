@@ -1,0 +1,164 @@
+.header-acudiente {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff8f;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Izquierda */
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 220px;
+}
+
+.icono-colegio {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0d6efd, #fff, #00509e);
+  color: white;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(13, 110, 253, 0.12);
+  user-select: none;
+}
+
+.nombre-colegio {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700;
+  color: #212529;
+}
+
+.subtitulo {
+  font-size: 0.75rem; /* 12px */
+  color: #6c757d;
+  user-select: none;
+}
+
+/* Derecha */
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1;
+  justify-content: flex-end;
+  min-width: 220px;
+  flex-wrap: nowrap;
+}
+
+.saludo-texto {
+  text-align: right;
+  min-width: 180px;
+}
+
+.greeting {
+  font-size: 0.875rem; /* 14px */
+  color: #495057;
+  font-weight: 600;
+}
+
+.nombre-usuario {
+  color: #0d6efd;
+}
+
+.bienvenida {
+  font-size: 0.8125rem; /* 13px */
+  color: #6c757d;
+  user-select: none;
+}
+
+/* Botón notificaciones */
+
+.btn-notificaciones {
+  position: relative;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #212529;
+  transition: background-color 0.2s ease;
+}
+
+.btn-notificaciones:hover {
+  background-color: #e2e6ea;
+}
+
+.icon-bell {
+  width: 20px;
+  height: 20px;
+}
+
+/* Badge notificaciones */
+
+.badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 9999px;
+  padding: 0 6px;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Avatar */
+
+.avatar-usuario {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0d6efd, #fff, #00509e);
+  color: #000000;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 576px) {
+  .header-acudiente {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-right {
+    justify-content: flex-start;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  .saludo-texto {
+    text-align: left;
+    min-width: auto;
+    flex-grow: 1;
+  }
+}

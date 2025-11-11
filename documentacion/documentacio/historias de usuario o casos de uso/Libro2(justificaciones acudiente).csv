@@ -1,0 +1,13 @@
+Enviar justificaciones acudiente;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+1;Flujo normal;El usuario abre la página de Enviar Justificación;Se muestran los campos: Fecha, Motivo y Adjuntar Archivo;Página cargada correctamente;Usuario;ok
+2;Flujo normal;Usuario selecciona la fecha de ausencia;Campo fecha actualizado correctamente;Fecha registrada en el formulario;Usuario;ok
+3;Flujo normal;Usuario ingresa motivo de la ausencia;Campo motivo actualizado correctamente;Motivo registrado en el formulario;Usuario;ok
+4;Flujo normal;Usuario adjunta un archivo válido (PDF o imagen, ? 5MB);Archivo se acepta y muestra el nombre y tamaño;Archivo listo para enviar;Usuario;ok
+5;Flujo alterno;Usuario adjunta un archivo no válido (tipo no permitido o >5MB);Se muestra mensaje de error “Formato no válido” o “Archivo excede tamaño máximo”;Archivo no aceptado;Sistema;x
+6;Flujo alterno;Usuario intenta enviar sin completar fecha, motivo o archivo;Se muestra mensaje de error indicando que el campo es obligatorio o inválido;Formulario no enviado;Sistema;x
+7;Flujo normal;Usuario hace clic en “Enviar Justificación” con todos los campos correctos;Se inicia la carga y se muestra barra de progreso;Formulario enviado al backend;Sistema;ok
+8;Flujo normal;Archivo se carga correctamente en el servidor;Se muestra mensaje “Justificación enviada correctamente” y campos se limpian;Formulario listo para nueva justificación;Sistema;ok
+9;Flujo alterno;Error de conexión o error del servidor durante envío;Se muestra mensaje de error con detalle del servidor;Formulario no enviado;Sistema;x
+10;Flujo normal;Usuario presiona “Ver Justificaciones Enviadas”;Se cambia la sección activa a la lista de justificaciones;Usuario puede visualizar justificaciones enviadas;Usuario;ok

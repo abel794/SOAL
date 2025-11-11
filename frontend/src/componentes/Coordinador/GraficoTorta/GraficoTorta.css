@@ -1,0 +1,223 @@
+/* === PorcentajePorGravedad – Sistema SOAL === */
+/* Paleta:
+   Azul Primario: #003366
+   Azul Secundario: #00509e
+   Azul Alternativo: #3498db
+   Verde Confirmación: #127c32
+   Gris Claro: #dddddd
+   Blanco Neutro: #ffffff
+   Gris Oscuro Texto: #333333
+*/
+
+/* 🌟 CONTENEDOR PRINCIPAL */
+.porcentaje-wrapper {
+  width: 100%;
+  max-width: 680px;
+  height: 300px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, #ffffff, #f5f8fb);
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  color: #333333;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1s ease both;
+  
+}
+
+/* ✨ EFECTO DE BRILLO DECORATIVO */
+.porcentaje-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #00509e33,
+    transparent,
+    #3498db33,
+    transparent
+  );
+  z-index: 0;
+  transform: rotate(0deg);
+  animation: rotateLight 10s linear infinite;
+  opacity: 0.3;
+}
+
+.porcentaje-wrapper > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 🧭 TÍTULO */
+.porcentaje-wrapper h2 {
+  color: #003366;
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease;
+}
+
+/* 🔄 ESTADO DE CARGA / SIN DATOS */
+.porcentaje-estado {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00509e;
+  font-weight: 600;
+  font-size: 1rem;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* ❌ MENSAJE DE ERROR */
+.porcentaje-error {
+  background: #fdecea;
+  color: #b10000;
+  border-left: 5px solid #b10000;
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: left;
+  font-weight: 500;
+  animation: shake 0.5s ease;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.1);
+}
+
+/* 📊 CONTENEDOR DEL GRÁFICO */
+.porcentaje-chart-box {
+  width: 90%;
+  height: 250px;
+  min-height: 240px;
+  transition: all 0.3s ease;
+  animation: fadeIn 1.2s ease;
+}
+
+/* 🧩 TOOLTIP (Recharts) */
+.recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border: 1px solid #dddddd !important;
+  border-radius: 8px !important;
+  color: #333333 !important;
+  padding: 10px !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* 📱 RESPONSIVE DESIGN */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 992px) {
+  .porcentaje-wrapper {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .porcentaje-wrapper h2 {
+    font-size: 1.4rem;
+  }
+
+  .porcentaje-chart-box {
+    height: 300px;
+  }
+}
+
+/* Móviles (pantallas pequeñas) */
+@media (max-width: 768px) {
+  .porcentaje-wrapper {
+    padding: 1.2rem;
+    border-radius: 14px;
+  }
+
+  .porcentaje-wrapper h2 {
+    font-size: 1.2rem;
+  }
+
+  .porcentaje-chart-box {
+    height: 260px;
+  }
+
+  .porcentaje-estado {
+    font-size: 0.95rem;
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 480px) {
+  .porcentaje-wrapper {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .porcentaje-wrapper h2 {
+    font-size: 1rem;
+  }
+
+  .porcentaje-chart-box {
+    height: 220px;
+  }
+}
+
+/* 🌙 MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+  .porcentaje-wrapper {
+    background: linear-gradient(145deg, #1a1c20, #111);
+    color: #f2f2f2;
+  }
+
+  .porcentaje-wrapper h2 {
+    color: #00bfff;
+    text-shadow: 0 0 6px rgba(0, 191, 255, 0.4);
+  }
+
+  .porcentaje-estado {
+    color: #66ccff;
+  }
+
+  .porcentaje-error {
+    background: #3a0000;
+    border-left-color: #ff4d4d;
+    color: #ffdddd;
+  }
+
+  .recharts-default-tooltip {
+    background-color: #1e1f23 !important;
+    border: 1px solid #333333 !important;
+    color: #e0e0e0 !important;
+  }
+}
+
+/* 🎬 ANIMACIONES */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rotateLight {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
+}

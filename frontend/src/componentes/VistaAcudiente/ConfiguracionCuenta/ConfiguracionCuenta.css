@@ -1,0 +1,122 @@
+/* ===== CONFIGURACIÓN DE CUENTA ===== */
+.container {
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== TÍTULO PRINCIPAL ===== */
+h4 {
+  font-weight: 700;
+  color: #0d6efd;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FORMULARIO ===== */
+form {
+  margin-top: 1rem;
+}
+
+label.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.4rem;
+}
+
+input.form-control {
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 6px rgba(13, 110, 253, 0.25);
+}
+
+/* ===== BOTÓN GUARDAR ===== */
+button.btn {
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 10px 28px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+button.btn-primary {
+  background: linear-gradient(135deg, #0d6efd, #007bff);
+  border: none;
+}
+
+button.btn-primary:hover {
+  background: linear-gradient(135deg, #0b5ed7, #0069d9);
+  transform: translateY(-1px);
+}
+
+/* ===== MENSAJES ===== */
+.alert {
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert-info {
+  background: #e9f4ff;
+  color: #0d6efd;
+  border: 1px solid #b6daff;
+}
+
+/* ===== FOTO DE PERFIL ===== */
+.img-thumbnail {
+  border: 3px solid #0d6efd;
+  transition: all 0.3s ease;
+}
+
+.img-thumbnail:hover {
+  transform: scale(1.05);
+  border-color: #0b5ed7;
+}
+
+/* ===== INPUT FILE ===== */
+input[type="file"] {
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #0b5ed7;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  button.btn {
+    width: 100%;
+  }
+}

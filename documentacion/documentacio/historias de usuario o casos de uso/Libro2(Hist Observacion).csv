@@ -1,0 +1,14 @@
+HistorialObservaciones;;;;;;
+;;;;;;
+ID Flujo;Tipo;Descripción Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-HIST-01;Flujo Normal;Usuario autorizado abre la página de historial;Página carga correctamente con buscador y tabla vacía;—;Coordinador/Profesor;OK
+HU-HIST-02;Flujo Normal;Usuario busca estudiante existente;Se muestra historial del estudiante;—;Coordinador/Profesor;OK
+HU-HIST-03;Flujo Normal;Usuario inicia edición de observación;Campo de descripción se vuelve editable;—;Coordinador/Profesor;OK
+HU-HIST-04;Flujo Normal;Usuario guarda cambios en observación;Observación actualizada correctamente y se agrega historial;""" Observación actualizada correctamente.""";Coordinador/Profesor;OK
+HU-HIST-05;Flujo Alterno;Usuario busca estudiante no registrado;No se encuentra historial;""" No se encontró historial para este estudiante.""";Usuario;X
+HU-HIST-06;Flujo Alterno;Error de conexión al buscar historial;Historial no se carga;""" Error al conectar con el servidor.""";Usuario;X
+HU-HIST-07;Flujo Alterno;Usuario guarda observación con campo vacío;No se permite guardar;""" La descripción no puede estar vacía.""";Usuario;X
+HU-HIST-08;Flujo Alterno;Error de conexión al guardar edición;Cambios no se guardan;""" Error al conectar con el servidor.""";Usuario;X
+HU-HIST-09;Flujo Alterno;Error del servidor al guardar edición;Cambios no se guardan;""" Error al guardar edición ([código])""";Usuario;X
+HU-HIST-10;Flujo Alterno;Usuario cancela edición;Campo vuelve a estado original;—;Usuario;OK
+HU-HIST-11;Flujo Alterno;Usuario no tiene token o sesión expirada;No puede realizar búsquedas ni ediciones;""" No hay token. Inicia sesión nuevamente."" / ""Token inválido o expirado.""";Usuario;X

@@ -1,0 +1,205 @@
+/* === Paleta institucional SOAL === */
+:root {
+  --azul-primario: #003366;
+  --azul-secundario: #00509e;
+  --azul-alternativo: #3498db;
+  --gris-fondo: #f4f6f9;
+  --gris-borde: #e0e0e0;
+  --blanco: #ffffff;
+  --texto-oscuro: #2c3e50;
+}
+
+/* === Contenedor principal === */
+.resumen-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--gris-fondo);
+  border-radius: 1rem;
+}
+
+/* === Tarjetas === */
+.resumen-card {
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resumen-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* === Títulos === */
+.resumen-card h5 {
+  color: var(--azul-primario);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* === Contenedor del gráfico === */
+.grafico-contenedor {
+  width: 100%;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Cargando === */
+.resumen-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--texto-oscuro);
+  font-weight: 500;
+}
+
+.spinner {
+  border: 4px solid var(--gris-borde);
+  border-top: 4px solid var(--azul-alternativo);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 0.75rem;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Error === */
+.resumen-error {
+  text-align: center;
+  color: var(--azul-secundario);
+  font-size: 1rem;
+  padding: 2rem;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .resumen-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .grafico-contenedor {
+    height: 280px;
+  }
+}
+/* ResumenObservaciones.css - Piezas de Lego */
+.resumen-observaciones {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.section-header {
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 1rem 1.5rem;
+  margin: 0;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.observaciones-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.observaciones-table th {
+  background: var(--secondary-color);
+  color: var(--white);
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.observaciones-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.observaciones-table tr:hover {
+  background: var(--light-color);
+}
+
+/* Badges que encajan en cualquier espacio */
+.badge-gravedad {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-leve {
+  background: #d4edda;
+  color: #155724;
+}
+
+.badge-moderado {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-grave {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* 📱 MÓVIL: Tabla scrollable */
+@media (max-width: 767px) {
+  .section-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .section-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .observaciones-table {
+    min-width: 500px;
+  }
+  
+  .observaciones-table th,
+  .observaciones-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* 🖥️ DESKTOP: Tabla completa */
+@media (min-width: 1024px) {
+  .observaciones-table {
+    min-width: auto;
+  }
+}

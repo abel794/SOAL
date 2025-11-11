@@ -1,0 +1,20 @@
+.grafico-container {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.grafico-title {
+  color: #007bff;
+  margin-bottom: 1rem;
+}
+
+/* Color de la barra con azul Bootstrap */
+.bar-azul > rect {
+  fill: #00bfff; /* Azul cielo */
+}
+
+.grafico-label {
+  font-weight: bold;
+  fill: #007bff;
+}

@@ -1,0 +1,652 @@
+/* BuscarEstudiante.css */
+
+.buscar-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+}
+
+.buscar-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Header */
+.buscar-header {
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  color: white;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  font-size: 3rem;
+  opacity: 0.9;
+}
+
+.header-content {
+  text-align: left;
+}
+
+.titulo-principal {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.subtitulo {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0.5rem 0 0 0;
+}
+
+/* Formulario */
+.buscar-form {
+  padding: 2rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.required {
+  color: #e74c3c;
+  margin-left: 0.25rem;
+}
+
+.input-button-group {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.input-busqueda {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.input-busqueda:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  outline: none;
+}
+
+.input-busqueda:disabled {
+  background-color: #f8f9fa;
+  opacity: 0.7;
+}
+
+.input-loading {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e9ecef;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.botones-accion {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-buscar {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.btn-buscar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-buscar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-limpiar {
+  background: #95a5a6;
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.btn-limpiar:hover:not(:disabled) {
+  background: #7f8c8d;
+  transform: translateY(-2px);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mensajes de alerta */
+.mensaje-alerta {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+}
+
+.mensaje-alerta.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.mensaje-alerta.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.mensaje-alerta.info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.icono-alerta {
+  font-size: 1.2rem;
+}
+
+/* Resumen de resultados */
+.resumen-resultados {
+  padding: 1.5rem 2rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.contador-estudiantes {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.numero {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.texto {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Tabla desktop */
+.tabla-container {
+  padding: 2rem;
+}
+
+.tabla-estudiantes {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.tabla-estudiantes thead {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+}
+
+.tabla-estudiantes th {
+  padding: 1.25rem 1rem;
+  font-weight: 600;
+  text-align: left;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tabla-estudiantes td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+}
+
+.fila-estudiante:hover {
+  background-color: #f8f9fa;
+}
+
+/* Estilos para la información */
+.info-estudiante {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.avatar-estudiante {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.nombre {
+  display: block;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.grado {
+  font-size: 0.9rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+}
+
+.documento-info,
+.eps-info {
+  display: flex;
+  align-items: center;
+  color: #495057;
+}
+
+.estado-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-acudiente {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.acudiente-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.acudiente-doc {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.sin-acudiente {
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contacto-acudiente {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contacto-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.sin-contacto {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Tarjetas móviles */
+.tarjetas-container.mobile {
+  display: none;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.tarjeta-estudiante {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.tarjeta-header {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.tarjeta-header .avatar-estudiante {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.nombre-estudiante {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.grado-estudiante {
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.estado-badge-mobile {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tarjeta-content {
+  padding: 1.5rem;
+}
+
+.info-section,
+.acudiente-section {
+  margin-bottom: 1.5rem;
+}
+
+.info-section h4,
+.acudiente-section h4 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.info-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-weight: 600;
+  color: #495057;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.value {
+  color: #2c3e50;
+  flex: 1;
+  text-align: right;
+}
+
+.sin-acudiente-section {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #dee2e6;
+}
+
+.sin-acudiente-section .icono {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Estado inicial */
+.estado-inicial {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.estado-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.icono-estado {
+  font-size: 4rem;
+  color: #3498db;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+.estado-inicial h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.estado-inicial p {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.tips-busqueda {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tip {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.tip:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.tip-icon {
+  font-size: 2rem;
+  color: #3498db;
+  margin-bottom: 1rem;
+}
+
+.tip-content strong {
+  display: block;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.tip-content p {
+  color: #6c757d;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .buscar-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .buscar-header {
+    padding: 2rem 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .header-content {
+    text-align: center;
+  }
+  
+  .titulo-principal {
+    font-size: 2rem;
+  }
+  
+  .buscar-form {
+    padding: 1.5rem 1rem;
+  }
+  
+  .input-button-group {
+    flex-direction: column;
+  }
+  
+  .botones-accion {
+    width: 100%;
+  }
+  
+  .btn-buscar,
+  .btn-limpiar {
+    flex: 1;
+  }
+  
+  .tabla-container.desktop {
+    display: none;
+  }
+  
+  .tarjetas-container.mobile {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .tips-busqueda {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .tarjeta-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .estado-badge-mobile {
+    align-self: center;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .value {
+    text-align: left;
+  }
+}

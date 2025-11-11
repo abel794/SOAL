@@ -1,0 +1,15 @@
+Activar y desactivar usuario;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+1;Flujo normal;Coordinador abre la página de gestión de usuarios;Se muestran todos los usuarios cargados con estado (Activo/Inactivo);Lista visible;Coordinador;ok
+2;Flujo normal;Coordinador filtra usuarios por nombre o documento y presiona buscar;Lista de usuarios filtrada correctamente;Lista actualizada;Coordinador;ok
+3;Flujo normal;Coordinador cambia la página usando la paginación;Página correcta mostrada con usuarios correspondientes;Lista actualizada;Coordinador;ok
+4;Flujo normal;Coordinador cambia número de usuarios por página;Lista actualizada según tamaño seleccionado;Lista actualizada;Coordinador;ok
+5;Flujo normal;Coordinador activa un usuario usando el toggle;Usuario pasa a estado “Activo”;Estado actualizado en UI y backend;Coordinador;ok
+6;Flujo normal;Coordinador desactiva un usuario usando el toggle;Usuario pasa a estado “Inactivo”;Estado actualizado en UI y backend;Coordinador;ok
+7;Flujo normal;Usuario confirma acción en modal (si aplica);Acción ejecutada;Estado actualizado;Coordinador;ok
+8;Flujo alterno;servudor falla al cambiar estado ;Estado no cambia y se muestra mensaje de error;Usuario conserva estado anterior;Coordinador;x
+9;Flujo alterno;No se encuentran usuarios con el filtro aplicado;Mensaje “No se encontraron usuarios”;Lista vacía;Coordinador;x
+10;Flujo alterno;Coordinador cancela acción en modal de confirmación;Acción no se ejecuta;Estado no cambia;Coordinador;x
+11;Flujo alterno;Error al cargar usuarios inicialmente;Lista vacía, mensaje de error mostrado;No se cargan usuarios;Coordinador;x
+12;Flujo alterno;Backend no devuelve total para paginación;Se activa paginación lado cliente;Lista visible con paginación local;Coordinador;ok

@@ -1,0 +1,13 @@
+historia de usuario para la búsqueda de estudiantes;;;;;;
+;;;;;;
+ID Flujo;Tipo;Descripción Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-BUSCAR-01;Flujo Normal;Usuario autorizado carga la página de búsqueda de estudiantes;Página carga correctamente;—;Coordinador/Profesor/Secretaria;OK
+HU-BUSCAR-02;Flujo Normal;"Usuario ingresa nombre o número de documento y pulsa ""Buscar""";Se muestran los estudiantes encontrados;""" N estudiante(s) encontrado(s).""";Coordinador/Profesor/Secretaria;OK
+HU-BUSCAR-03;Flujo Normal;Mostrar resultados en tabla o tarjetas según tamaño de pantalla;Estudiantes se muestran correctamente con información del estudiante y acudiente;—;Coordinador/Profesor/Secretaria;OK
+HU-BUSCAR-04;Flujo Alterno;"Usuario deja el campo de búsqueda vacío y pulsa ""Buscar""";Búsqueda no se realiza;"""Por favor, ingresa un nombre o documento para buscar.""";Usuario;X
+HU-BUSCAR-05;Flujo Alterno;Usuario sin sesión válida intenta buscar;Acceso denegado;"""?? Necesitas iniciar sesión para buscar estudiantes.""";Usuario no autenticado;X
+HU-BUSCAR-06;Flujo Alterno;Sesión expiró o token inválido;Redirige a login;"""Tu sesión ha expirado. Inicia sesión nuevamente.""";Usuario;X
+HU-BUSCAR-07;Flujo Alterno;No hay estudiantes que coincidan con el filtro;Mostrar mensaje de error;"""No se encontraron estudiantes con ese filtro.""";Usuario;X
+HU-BUSCAR-08;Flujo Alterno;Error al conectar con la base de datos o servidor;No se muestran resultados;"""Error al conectar con el servidor.""";Usuario;X
+HU-BUSCAR-09;Flujo Alterno;Estudiante no tiene acudiente registrado;Mostrar estudiante con mensaje alternativo;"""Sin acudiente registrado""";Usuario;X
+HU-BUSCAR-10;Flujo Alterno;Usuario no tiene permisos para buscar estudiantes;Acceso denegado;"""No tiene permisos para realizar esta acción.""";Usuario con rol restringido;X

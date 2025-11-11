@@ -1,0 +1,30 @@
+/* === LoaderBar – Estilos personalizados SOAL === */
+
+/* Estilo base de la barra */
+#nprogress .bar {
+  background: #00509e !important; /* Azul secundario institucional */
+  height: 4px !important;
+  box-shadow: 0 0 8px #00509e;
+}
+
+/* Spinner (opcional) */
+#nprogress .spinner-icon {
+  border-top-color: #3498db !important; /* Azul alternativo */
+  border-left-color: #3498db !important;
+}
+
+/* Fondo del spinner */
+#nprogress .spinner {
+  top: 10px;
+  right: 10px;
+}
+
+/* Para que se vea limpio en fondos claros */
+#nprogress .peg {
+  box-shadow: 0 0 10px #00509e, 0 0 5px #00509e;
+}
+
+/* Desactiva el texto (NProgress usa pseudo-elementos) */
+#nprogress .bar:before {
+  content: none;
+}

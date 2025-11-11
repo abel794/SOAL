@@ -1,0 +1,86 @@
+.grados-container {
+  text-align: center;
+  padding: 2rem;
+  background: #f8faff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.titulo-seccion {
+  color: #1a2b6d;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.icono {
+  color: #4a6cf7;
+  margin-right: 8px;
+}
+
+.linea {
+  width: 80px;
+  height: 3px;
+  background-color: #4a6cf7;
+  margin: 0.5rem auto 1.5rem;
+  border-radius: 10px;
+}
+
+.selector-grado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.label-grado {
+  font-weight: 600;
+  color: #333;
+}
+
+.select-grado {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  font-size: 1rem;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.select-grado:hover {
+  border-color: #4a6cf7;
+  box-shadow: 0 0 5px rgba(74, 108, 247, 0.3);
+}
+
+.mensaje-card {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.3s ease;
+}
+
+.mensaje-exito {
+  background: #e8fdf3;
+  border: 1px solid #2ecc71;
+  color: #2e7d32;
+}
+
+.mensaje-error {
+  background: #fff4f4;
+  border: 1px solid #e74c3c;
+  color: #c0392b;
+}
+
+.mensaje-texto {
+  font-weight: 500;
+  font-size: 1rem;
+}

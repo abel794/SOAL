@@ -1,0 +1,77 @@
+.fondo-login {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url(../../../assets/fondologin.jpg);
+  background-size: cover;       /* Hace que la imagen cubra todo el área */
+  background-position: center;  /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que se repita */
+}
+
+
+.formulario-login {
+  background: rgba(228, 9, 9, 0.884);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 480px;
+  box-shadow: 0 10px 25px rgb(123, 122, 122);
+  text-align: center;
+  z-index: 1;
+}
+
+.logo-login {
+  width: 180px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+
+
+.enlace-texto{
+  color: #007bff !important; /* Azul institucional */
+  text-decoration: none;
+}
+
+.enlace-texto:hover {
+  color: #0056b3 !important; /* Azul más oscuro al hacer hover */
+  text-decoration: underline;
+}
+
+
+.texto-pequeño {
+  font-size: 0.75rem;
+  margin-top: 1rem;
+}
+
+.texto-pequeño a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.texto-pequeño a:hover {
+  text-decoration: underline;
+}
+
+.boton-login {
+  background-color: #007bff;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.boton-login:hover {
+  background-color: #007bff;
+}
+
+img{
+  border-radius: 10px;
+}

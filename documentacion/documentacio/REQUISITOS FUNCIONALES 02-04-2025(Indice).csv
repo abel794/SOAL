@@ -1,0 +1,27 @@
+;INDICE  ;link;;
+;REQUISITOS FUNCIONALES;;;
+Nº Requisito;Detalle;;;
+1.1;Registro y Generación de Credenciales (Usuarios Administrativos);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.2;Gestión de Usuarios;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.3;Registro de Estudiantes y Acudiente (Matriculación);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.4;Asignación de Grados a Profesores;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.5;Generación de Credenciales (Estudiantes);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.6;Registro y Generación de Credenciales (Acudientes);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.7;Verificación de Cuenta y Activación de Usuario;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.8;Inicio de Sesión (Todos los Usuarios);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.9;Recuperación de Contraseña por Olvido;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.10;Panel de Observaciones al Alumno;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.11;Búsqueda y Consulta de Usuarios;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.12;Módulo de Agendamiento de Citas (Coordinador, Rector);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.13;Gestión y Filtrado de Observaciones (Coordinador, Rector, Profesor);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.14;Gestión de Notificaciones (Coordinador, Rector);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.15;Generación de PQR (Peticiones, Quejas y Reclamos);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.16;Justificación de Ausencia;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.17;Categoría de las Observaciones;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.18;Registro de Observaciones en el Sistema (Coordinador, Orientador, Secretaría y Profesores);REQUISITOS FUNCIONALES 02-04-2025.xlsx;;B
+1.19;Recepción de Notificaciones;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.20;Horario de Envío de Notificaciones;;;
+1.21;Historial y Estado de cada Notificación;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.22;Parámetros y Configuración General del Sistema;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.23;bloquear o desbloquear usuario;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;
+1.24;gestion cierre de seccion;REQUISITOS FUNCIONALES 02-04-2025.xlsx;;

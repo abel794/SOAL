@@ -1,0 +1,51 @@
+/* 🎯 useAutoLogout.css */
+/* Estilo general para el mensaje o alerta de cierre de sesión automático */
+
+.auto-logout-alert {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #222;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  animation: aparecer 0.3s ease forwards;
+  z-index: 9999;
+}
+
+/* Efecto visual de aparición */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estado de advertencia: antes del cierre */
+.auto-logout-warning {
+  background-color: #ff9800;
+  color: #111;
+  font-weight: 600;
+}
+
+/* Estado de cierre de sesión completado */
+.auto-logout-closed {
+  background-color: #e53935;
+  color: white;
+  animation: desaparecer 0.5s ease forwards;
+}
+
+/* Efecto de desaparición */
+@keyframes desaparecer {
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

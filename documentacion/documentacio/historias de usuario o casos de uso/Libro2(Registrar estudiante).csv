@@ -1,0 +1,23 @@
+Registrar estudiante;;;;;;
+;;;;;;
+ID Flujo;Tipo;Paso a Paso;Resultado Esperado;Sistema;Actor;Estado
+HU-REG-MS-01;Flujo Normal;Usuario abre la pantalla de registro estudiante/acudiente;Se cargan correctamente los catálogos (sexos, tipos de documento, EPS, estados académicos, grados, relaciones);Catálogos visibles en los select;Coordinador;OK
+HU-REG-MS-02;Flujo Normal;Usuario llena el formulario del estudiante (nombre, apellido, documento, correo, teléfono, dirección, ciudad, tipo sangre, discapacidad, ocupación, fecha de nacimiento, sexo, tipo de documento, EPS, estado académico, grado);Todos los campos visibles y editables, select llenos con opciones del catálogo;Formulario listo para continuar;Coordinador;OK
+HU-REG-MS-03;Flujo Normal;Usuario acepta el tratamiento de datos personales;Casilla de aceptación marcada;Permite avanzar al siguiente paso;Coordinador;OK
+HU-REG-MS-04;Flujo Normal;Usuario presiona “Siguiente” después de llenar estudiante y aceptar tratamiento;Validación de campos correcta, se avanza al paso 2;Muestra formulario del acudiente;Coordinador;OK
+HU-REG-MS-05;Flujo Normal;Usuario llena el formulario del acudiente (nombre, apellido, documento, correo, teléfono, dirección, ciudad, tipo sangre, discapacidad, ocupación, fecha de nacimiento, sexo, tipo de documento, parentesco);Todos los campos visibles y editables, select llenos con opciones del catálogo;Formulario listo para continuar;Coordinador;OK
+HU-REG-MS-06;Flujo Normal;Usuario presiona “Siguiente” después de llenar datos del acudiente;Validación de campos correcta, se avanza al paso 3;Muestra sección para subir archivos;Coordinador;OK
+HU-REG-MS-07;Flujo Normal;Usuario sube foto del estudiante;Archivo visible en el input de archivo;Permite enviar el formulario;Coordinador;OK
+HU-REG-MS-08;Flujo Normal;Usuario sube documento del estudiante;Archivo visible en el input de archivo;Permite enviar el formulario;Coordinador;OK
+HU-REG-MS-09;Flujo Normal;Usuario presiona “Finalizar Registro”;Se abre modal de confirmación para validar si realmente quiere enviar los datos;Modal visible con mensaje de confirmación;Coordinador;OK
+HU-REG-MS-10;Flujo Normal;Usuario confirma en el modal;Datos enviados al servidor, loader activo mientras procesa;Respuesta del servidor recibida;Coordinador;OK
+HU-REG-MS-11;Flujo Normal;Registro exitoso;Se muestra mensaje con datos del usuario estudiante y acudiente (usuario y contraseña), formularios reseteados, paso vuelve a 1;Confirmación visible en pantalla;Coordinador;OK
+HU-REG-MS-12;Flujo Alterno;Usuario intenta avanzar sin llenar campos obligatorios del estudiante o sin aceptar tratamiento;Se bloquea avance, se muestra mensaje de advertencia;Mensaje “Faltan campos” o “Debes aceptar tratamiento”;Coordinador;X
+HU-REG-MS-13;Flujo Alterno;Usuario intenta avanzar sin llenar campos obligatorios del acudiente;Se bloquea avance, se muestra mensaje de advertencia;Mensaje “Faltan campos en el formulario del acudiente”;Coordinador;X
+HU-REG-MS-14;Flujo Alterno;Usuario presiona finalizar sin subir ambos archivos;Se bloquea envío, se muestra mensaje de advertencia;Mensaje “Debes subir ambos archivos”;Coordinador;X
+HU-REG-MS-15;Flujo Alterno;Error de red al enviar el formulario;Se muestra mensaje de error, loader desactivado;Mensaje “Error de red al enviar el formulario”;Coordinador;X
+HU-REG-MS-16;Flujo Alterno;Error de servidor al registrar;Se muestra mensaje de error recibido del servidor;Mensaje “Error al registrar”;Coordinador;X
+HU-REG-MS-17;Flujo Alterno;Usuario cierra mensaje de confirmación o de éxito;Mensaje desaparece, modal cerrado, usuario generado limpio;Pantalla lista para nueva acción;Coordinador;OK
+HU-REG-MS-18;Flujo Normal;Usuario presiona “Anterior” en pasos 2 o 3;Se retrocede al paso anterior conservando los datos ingresados;Formulario muestra datos previamente escritos;Coordinador;OK
+HU-REG-MS-19;Flujo Normal;Usuario presiona “Siguiente” en pasos 1 o 2;Se avanza al siguiente paso si la validación pasa;Formulario muestra campos correspondientes al paso siguiente;Coordinador;OK
+HU-REG-MS-20;Flujo Normal;Mensajes automáticos de éxito o error desaparecen después de tiempo;Mensaje desaparece después de 6-8 segundos;Pantalla limpia de alertas;Coordinador;OK

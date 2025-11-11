@@ -1,0 +1,131 @@
+{
+  "info": {
+    "_postman_id": "estudiantegrado-api-collection",
+    "name": "Estudiantegrado API",
+    "description": "Colección para probar todas las rutas del módulo de estudiante-grado",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1️⃣ Listar todos los registros",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados"]
+        }
+      }
+    },
+    {
+      "name": "2️⃣ Asignar grado a estudiante",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_estudiante\": 1,\n  \"id_grado\": 2,\n  \"anio\": 2025\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados"]
+        }
+      }
+    },
+    {
+      "name": "3️⃣ Buscar por ID de estudiante",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/estudiante/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados", "estudiante", "1"]
+        }
+      }
+    },
+    {
+      "name": "4️⃣ Filtrar por año académico",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/anio?anio_academico=2025",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados", "anio"],
+          "query": [
+            { "key": "anio", "value": "2025" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "5️⃣ Activar o desactivar asignación",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"activo\": false\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/estado/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados", "1"]
+        }
+      }
+    },
+    {
+      "name": "6️⃣ Contar por grado (y opcional año)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/contar?id_grado=2&anio=2025",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados", "contar"],
+          "query": [
+            { "key": "id_grado", "value": "2" },
+            { "key": "anio", "value": "2025" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "7️⃣ Total estudiantes activos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/total",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados", "total"]
+        }
+      }
+    },
+    {
+      "name": "8️⃣ Contar por nombre del grado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estudiantegrados/count/grado/Sexto",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estudiantegrados", "count", "grado", "Sexto"]
+        }
+      }
+    }
+  ]
+}

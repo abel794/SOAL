@@ -1,0 +1,88 @@
+{
+  "info": {
+    "_postman_id": "estadoUsuario-collection-001",
+    "name": "EstadoUsuario API",
+    "description": "Colección para probar el módulo estadoUsuario",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1️⃣ Listar todos los estados",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-usuario/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-usuario"]
+        }
+      }
+    },
+    {
+      "name": "2️⃣ Buscar estado por nombre",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-usuario/buscar?nombre=Activo",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-usuario", "buscar"],
+          "query": [
+            { "key": "nombre", "value": "Activo" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3️⃣ Contar total de estados",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/estado-usuario/contar/total",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-usuario", "contar", "total"]
+        }
+      }
+    },
+    {
+      "name": "4️⃣ Crear nuevo estado",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Inactivo\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estado-usuario/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-usuario"]
+        }
+      }
+    },
+    {
+      "name": "5️⃣ Actualizar estado por ID",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Activo\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/estado-usuario/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "estado-usuario", "1"]
+        }
+      }
+    }
+  ]
+}

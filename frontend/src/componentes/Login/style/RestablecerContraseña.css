@@ -1,0 +1,134 @@
+.pagina-restablecer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+  width: 100%;
+  background-image: url(../../../assets/fondologin.jpg);
+  
+  background-size: cover;       /* Hace que la imagen cubra todo el área */
+  background-position: center;  /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que se repita */
+
+}
+
+.contenedor-formulario {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.801);
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.fondo-login {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  
+}
+
+.formulario {
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  width: 180px;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #ffffff;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:disabled {
+  background-color: #003366;
+  cursor: not-allowed;
+}
+
+.mensaje-verde {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.mensaje-rojo {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.info, .login-link {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 1rem;
+}
+
+.info a, .login-link a {
+  color: #003366;
+  text-decoration: none;
+}
+
+.exito {
+  text-align: center;
+}
+
+.exito img {
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+.exito h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.exito button {
+  background-color: #003366;
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.reenviar {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-decoration: underline;
+}
