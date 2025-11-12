@@ -23,7 +23,7 @@ const rutasCoordinador = [
   'grado_asistenciaRoutes',
   'gravedadObservacionRoutes',
   'historialObservacionRoutes',
-  'justuficacionRoutes',
+  'justificacionRoutes',
   'nivelEscolaridadRoutes',
   'notificacionRoutes',
   'observacionesRoutes',

@@ -1,0 +1,400 @@
+/* Estilos específicos para el modal de justificaciones */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1050;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-dialog-custom {
+  max-width: 95%;
+  max-height: 95vh;
+  margin: auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: modalAppear 0.3s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content-custom {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header-custom {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom: none;
+  padding: 1.5rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.modal-title-custom {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-title-custom small {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.modal-body-custom {
+  padding: 0;
+  background: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+  min-height: 400px;
+  position: relative;
+}
+
+.modal-image-container {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  cursor: grab;
+}
+
+.modal-image-container:active {
+  cursor: grabbing;
+}
+
+.modal-image {
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+}
+
+/* Estados de zoom */
+.modal-image.zoom-100 {
+  transform: scale(1);
+  cursor: zoom-in;
+}
+
+.modal-image.zoom-150 {
+  transform: scale(1.5);
+  cursor: zoom-out;
+}
+
+.modal-image.zoom-200 {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+/* Controles de zoom */
+.zoom-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.zoom-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 6px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.zoom-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.zoom-btn:active {
+  transform: scale(0.95);
+}
+
+.zoom-level {
+  color: white;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  min-width: 60px;
+  justify-content: center;
+}
+
+.modal-footer-custom {
+  background: white;
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Estados de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #ffffff;
+  background: #1a1a1a;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Scroll personalizado para modal */
+.modal-image-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.modal-image-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.modal-image-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.modal-image-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Efectos de hover para la imagen */
+.modal-image:hover {
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.5);
+}
+
+/* Responsive específico para desktop */
+@media (min-width: 992px) {
+  .modal-dialog-custom {
+    max-width: 85%;
+    max-height: 90vh;
+  }
+  
+  .modal-body-custom {
+    min-height: 600px;
+  }
+  
+  .modal-image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-dialog-custom {
+    max-width: 80%;
+  }
+  
+  .modal-body-custom {
+    min-height: 700px;
+  }
+}
+
+/* Para móviles */
+@media (max-width: 768px) {
+  .modal-dialog-custom {
+    max-width: 98%;
+    max-height: 98vh;
+    margin: 1%;
+  }
+  
+  .modal-body-custom {
+    min-height: 50vh;
+  }
+  
+  .zoom-controls {
+    bottom: 10px;
+    right: 10px;
+    padding: 0.25rem;
+  }
+  
+  .zoom-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+/* Asegurar que el modal esté por encima de todo */
+.modal-custom-override {
+  z-index: 1060 !important;
+}
+
+/* Tooltip para controles de zoom */
+.zoom-btn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  margin-bottom: 5px;
+}
+
+.zoom-btn[title] {
+  position: relative;
+}/* Justificaciones.css */
+.container-fluid {
+  padding: 20px;
+}
+
+.image-preview-card {
+  height: fit-content;
+  max-height: 500px;
+}
+
+.image-container {
+  background: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.image-container img {
+  transition: transform 0.3s ease;
+}
+
+.zoom-controls-small {
+  display: flex;
+  align-items: center;
+}
+
+.zoom-controls-small .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .image-preview-card {
+    margin-top: 1rem;
+  }
+  
+  .image-container {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container-fluid {
+    padding: 10px;
+  }
+  
+  .zoom-controls-small {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .zoom-controls-small span {
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Mejoras visuales para las cards */
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.table-responsive {
+  border-radius: 0.375rem;
+}
+
+/* Estilos para la tabla */
+.table th {
+  border-top: none;
+  font-weight: 600;
+}
+
+/* Efectos hover para botones */
+.btn-group .btn {
+  transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+  transform: translateY(-1px);
+}

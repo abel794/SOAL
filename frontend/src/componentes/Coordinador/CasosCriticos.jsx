@@ -30,7 +30,6 @@ function CasosCriticos() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Cálculo de casos a mostrar según la página
   const indiceUltimoCaso = paginaActual * casosPorPagina;
   const indicePrimerCaso = indiceUltimoCaso - casosPorPagina;
   const casosActuales = casos.slice(indicePrimerCaso, indiceUltimoCaso);
@@ -74,14 +73,34 @@ function CasosCriticos() {
             </tbody>
           </table>
 
-          {/* Paginación */}
-          <div className="pagination mt-3">
+          {/* 🔹 Paginación con botones numerados y color dinámico */}
+          <div className="pagination mt-3" style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
             <button onClick={() => cambiarPagina(paginaActual - 1)} disabled={paginaActual === 1}>
               « Anterior
             </button>
-            <span style={{ margin: '0 10px' }}>
-              Página {paginaActual} de {totalPaginas}
-            </span>
+
+            {[...Array(totalPaginas)].map((_, num) => {
+              const numero = num + 1;
+              return (
+                <button
+                  key={numero}
+                  onClick={() => cambiarPagina(numero)}
+                  className={paginaActual === numero ? 'activo' : ''}
+                  style={{
+                    backgroundColor: paginaActual === numero ? '#004aad' : '#f5f5f5',
+                    color: paginaActual === numero ? '#fff' : '#000',
+                    border: '1px solid #ccc',
+                    borderRadius: '6px',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    transition: '0.2s ease-in-out',
+                  }}
+                >
+                  {numero}
+                </button>
+              );
+            })}
+
             <button onClick={() => cambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas}>
               Siguiente »
             </button>

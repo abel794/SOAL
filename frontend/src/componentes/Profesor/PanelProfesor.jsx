@@ -7,7 +7,9 @@ import ObservacionPage from "./ObservacionPage";
 import ConfiguracionUsuario from "./ConfiguracionUsuario";
 import ModalMensaje from "../ui/ModalMensaje.jsx";
 import NotificacionesPorGrado from "./NotificacionesPorGrado"
+import Justificaciones from "./justificaciones/Justificaciones.jsx"; 
 import "./PanelProfesor.css";
+
 
 const PanelProfesor = () => {
   const [profesor, setProfesor] = useState({});
@@ -123,6 +125,7 @@ const PanelProfesor = () => {
     { id: "estudiantes", nombre: "👨‍🎓 Mis Estudiantes", descripcion: "Gestiona la lista de estudiantes asignados" },
     { id: "asistencias", nombre: "📊 Historial Asistencias", descripcion: "Consulta y edita el historial de asistencias" },
     { id: "masiva", nombre: "📋 Asistencia Masiva", descripcion: "Registra asistencia para todo un grado" },
+    { id: "Justificaciones", nombre:"📝 Todas Justificaciones", descripcion:" Vista para ver todas las justificaciones de tus estudiantes"},
     { id: "observaciones", nombre: "📝 Observaciones", descripcion: "Registra observaciones de conducta" },
     { id: "citas", nombre: "📅 Agendar Citas", descripcion: "Agenda citas con los acudientes de tus estudiantes" },
     { id: "configuracion", nombre: "⚙️ Configuración", descripcion: "Configura tu cuenta y preferencias" },
@@ -212,7 +215,9 @@ const PanelProfesor = () => {
           {profesor.id_funcionario && funcionSeleccionada === "estudiantes" && (
             <ListaEstudiantes idProfesor={profesor.id_funcionario} />
           )}
-
+          {profesor.id_funcionario && funcionSeleccionada === "Justificaciones" && (
+            <Justificaciones idProfesor={profesor.id_funcionario} />
+          )}
           {profesor.id_funcionario && funcionSeleccionada === "asistencias" && (
             <HistorialAsistenciasProfesor idProfesor={profesor.id_funcionario} />
           )}

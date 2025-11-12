@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import './VerJustificaciones.css';
+import './Justificaciones.css';
 
 const VerJustificacionesEstudiantes = () => {
   const [justificaciones, setJustificaciones] = useState([]);
@@ -17,7 +17,7 @@ const VerJustificacionesEstudiantes = () => {
         if (!token) throw new Error("No hay token de sesión");
 
         const response = await fetch(
-          "http://localhost:3000/api/coordinador/justificacion/mis-justificaciones",
+          "http://localhost:3000/api/coordinador/justificacion/justificaciones-grupo",
           {
             headers: {
               Authorization: `Bearer ${token}`,

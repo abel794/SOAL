@@ -159,11 +159,12 @@
 .user-info {
   display: flex;
   flex-direction: column;
+  color: black;
 }
 
 .user-name {
   font-weight: 600;
-  color: var(--dark-color);
+  color: black;
 }
 
 .descripcion-truncada {

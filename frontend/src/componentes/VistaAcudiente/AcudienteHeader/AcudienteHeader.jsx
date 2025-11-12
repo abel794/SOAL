@@ -51,10 +51,14 @@ const getFotoSrc = (foto) => {
 
 /* ----------------- componente ----------------- */
 export default function HeaderAcudiente({ setSeccionActiva }) {
-  const [nombreColegio, setNombreColegio] = useState("");
+  const [configuracion, setConfiguracion] = useState({
+    nombre_colegio: "",
+    logo: null
+  });
   const [usuario, setUsuario] = useState({ nombre: "", apellido: "", foto: "" });
   const [loadingUsuario, setLoadingUsuario] = useState(false);
   const [fotoError, setFotoError] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   const [notificaciones, setNotificaciones] = useState([]);
   const [notifCount, setNotifCount] = useState(0);
@@ -165,10 +169,21 @@ export default function HeaderAcudiente({ setSeccionActiva }) {
           "http://localhost:3000/api/coordinador/configuracionSistema",
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        if (mountedRef.current)
-          setNombreColegio(res.data?.nombre_colegio || "");
+        if (mountedRef.current && res.data) {
+          setConfiguracion({
+            nombre_colegio: res.data.nombre_colegio || "Colegio El Porvenir",
+            logo: res.data.logo || null
+          });
+        }
       } catch (err) {
         console.error("Error obtener configuración:", err?.message ?? err);
+        // Configuración por defecto en caso de error
+        if (mountedRef.current) {
+          setConfiguracion({
+            nombre_colegio: "Colegio El Porvenir",
+            logo: null
+          });
+        }
       }
     };
 
@@ -211,6 +226,9 @@ export default function HeaderAcudiente({ setSeccionActiva }) {
   const initials = makeInitials(usuario.nombre, usuario.apellido);
   const greeting = getGreeting();
   const fotoSrc = !fotoError ? getFotoSrc(usuario.foto) : null;
+  
+  // Obtener la URL del logo del colegio
+  const logoSrc = configuracion.logo ? getFotoSrc(configuracion.logo) : null;
 
   return (
     <>
@@ -218,12 +236,23 @@ export default function HeaderAcudiente({ setSeccionActiva }) {
       <header className="header-acudiente">
         {/* 🏫 Logo y nombre del colegio */}
         <div className="header-colegio">
-          <div className="icono-colegio" aria-hidden="true">
-            📚
+          <div className="logo-colegio-container">
+            {logoSrc && !logoError ? (
+              <img
+                src={logoSrc}
+                alt={`Logo de ${configuracion.nombre_colegio}`}
+                className="logo-colegio"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="icono-colegio" aria-hidden="true">
+                📚
+              </div>
+            )}
           </div>
           <div>
             <div className="ha-school">
-              {nombreColegio || "Colegio Renato Descartes"}
+              {configuracion.nombre_colegio || "Colegio El Porvenir"}
             </div>
             <div className="ha-sub">
               Observador Estudiantil • {new Date().toLocaleDateString('es-ES', { 

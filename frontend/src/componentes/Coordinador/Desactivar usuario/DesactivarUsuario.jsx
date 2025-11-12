@@ -289,7 +289,7 @@ const DesactivarUsuario = () => {
         <div className="paginacion-info">
           Página {pagina} de {totalPaginas}
         </div>
-        <div className="paginacion-botones">
+        <div className="paginacion-botones ">
           <button 
             onClick={() => cambiarPagina(1)} 
             disabled={pagina === 1 || loading}
@@ -307,15 +307,23 @@ const DesactivarUsuario = () => {
           
           {getVisiblePages().map(num => (
             <button
-              key={num}
-              className={pagina === num ? 'activo' : ''}
-              onClick={() => cambiarPagina(num)}
-              disabled={loading}
-              aria-label={`Página ${num}`}
-              aria-current={pagina === num ? 'page' : undefined}
-            >
-              {num}
-            </button>
+  key={num}
+  style={{
+    backgroundColor: pagina === num ? '#004aad' : '#f5f5f5',
+    color: pagina === num ? 'white' : '#333',
+    border: '1px solid #ccc',
+    borderRadius: '6px',
+    padding: '6px 12px',
+    margin: '0 4px',
+    cursor: 'pointer',
+    fontWeight: pagina === num ? '600' : 'normal',
+  }}
+  onClick={() => cambiarPagina(num)}
+  disabled={loading}
+>
+  {num}
+</button>
+
           ))}
           
           <button 

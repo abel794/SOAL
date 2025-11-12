@@ -1,46 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-/**
- * HistorialPQR
- * - Muestra la lista de PQRs del usuario (GET /api/pqr/mis-pqrs)
- * - Permite ver el historial de una PQR concreta (GET /api/pqr/:id/historial)
- *
- * Requisitos: bootstrap (o classes similares) para estilos rápidos.
- */
-
 const HistorialPQR = () => {
-  // Lista de PQRs del usuario
   const [misPqrs, setMisPqrs] = useState([]);
   const [loadingList, setLoadingList] = useState(true);
 
-  // Historial de la PQR seleccionada
   const [historial, setHistorial] = useState([]);
   const [loadingHistorial, setLoadingHistorial] = useState(false);
 
-  // UI / estado
   const [selectedPqr, setSelectedPqr] = useState(null);
   const [error, setError] = useState("");
   const [mensajeRespuesta, setMensajeRespuesta] = useState("");
-  const [tipoRespuesta, setTipoRespuesta] = useState(""); // 'success' | 'error' | ''
+  const [tipoRespuesta, setTipoRespuesta] = useState("");
 
-  // Helper: obtiene token y lo devuelve (o null)
   const getToken = () => localStorage.getItem("token");
 
-  // Función para formatear fecha (DD/MM/YYYY)
   const formatDate = (fecha) => {
     if (!fecha) return "-";
     const d = new Date(fecha);
-    if (isNaN(d.getTime())) return "-";
-    const dd = String(d.getDate()).padStart(2, "0");
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const yyyy = d.getFullYear();
-    return `${dd}/${mm}/${yyyy}`;
+    if (isNaN(d)) return "-";
+    return `${String(d.getDate()).padStart(2, "0")}/${String(
+      d.getMonth() + 1
+    ).padStart(2, "0")}/${d.getFullYear()}`;
   };
 
-  // Badge class simple (usa clases bootstrap)
-  const getBadgeClass = (estadoNombre) => {
-    switch ((estadoNombre || "").toString()) {
+  const getBadgeClass = (estado) => {
+    switch ((estado || "").toString()) {
       case "Pendiente":
         return "badge bg-warning text-dark";
       case "Respondido":
@@ -52,28 +37,17 @@ const HistorialPQR = () => {
     }
   };
 
-  // Normalizadores para campos que puedan venir anidados u objetos
-  const normalizarTextoAnidado = (campo) => {
-    if (campo == null) return null;
-    if (typeof campo === "object") return campo.nombre ?? campo.descripcion ?? campo.asunto ?? null;
+  const normalizarTexto = (campo) => {
+    if (!campo) return "-";
+    if (typeof campo === "object")
+      return campo.nombre || campo.descripcion || campo.asunto || "-";
     return String(campo);
   };
 
-  const normalizarEstado = (estado) => normalizarTextoAnidado(estado) ?? "-";
-  const normalizarTipo = (tipo) => normalizarTextoAnidado(tipo) ?? "-";
+  const getAsunto = (item) =>
+    item.asunto || item.descripcion || "Sin asunto";
 
-  // Obtener asunto/descripcion con fallback
-  const getAsunto = (item) => {
-    const cand =
-      item.descripcion ??
-      item.asunto ??
-      item.description ??
-      (item.raw && (item.raw.descripcion ?? item.raw.asunto)) ??
-      "";
-    return String(cand).trim() || "Sin asunto";
-  };
-
-  // Cargar lista de PQRs del usuario
+  // Cargar todas las PQR del usuario
   useEffect(() => {
     const fetchPqrs = async () => {
       setLoadingList(true);
@@ -85,33 +59,24 @@ const HistorialPQR = () => {
           return;
         }
 
-        const res = await axios.get('http://localhost:3000/api/acudientes/pqr/mis-pqrs', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "http://localhost:3000/api/acudientes/pqr/mis-pqrs",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-        // LOG para depurar la forma de la respuesta
-        console.log("listarMisPQR -> res.data:", res.data);
+        console.log("📦 PQRs recibidas:", res.data);
 
-        // Normalizar payload a array
-        let payload = [];
-        if (Array.isArray(res.data)) {
-          payload = res.data;
-        } else if (res.data && Array.isArray(res.data.mapped)) {
-          payload = res.data.mapped;
-        } else if (res.data && Array.isArray(res.data.raw)) {
-          payload = res.data.raw;
-        } else if (res.data && Array.isArray(res.data.result)) {
-          payload = res.data.result;
-        } else {
-          // intentar extraer primer array del objeto
-          const maybeArray = Object.values(res.data || {}).find((v) => Array.isArray(v));
-          payload = maybeArray || [];
-        }
+        let data = [];
+        if (Array.isArray(res.data)) data = res.data;
+        else data =
+          Object.values(res.data || {}).find((v) => Array.isArray(v)) || [];
 
-        setMisPqrs(payload || []);
+        setMisPqrs(data);
       } catch (err) {
-        console.error("Error cargando mis PQRs:", err);
-        setError("No se pudo cargar tus PQRs. Revisa la consola.");
+        console.error("Error cargando PQRs:", err);
+        setError("No se pudo cargar tus PQRs.");
       } finally {
         setLoadingList(false);
       }
@@ -120,87 +85,59 @@ const HistorialPQR = () => {
     fetchPqrs();
   }, []);
 
-  // Ver historial de una PQR concreta
-  // Ver historial de una PQR concreta (reemplaza la función actual)
-const verHistorial = async (idPqr) => {
-  // validación rápida
-  if (!idPqr) {
-    console.warn('verHistorial: idPqr inválido', idPqr);
-    setMensajeRespuesta('ID de PQR inválido.');
-    setTipoRespuesta('error');
-    return;
-  }
-
-  setSelectedPqr(idPqr);
-  setMensajeRespuesta('');
-  setTipoRespuesta('');
-  setHistorial([]);
-  setLoadingHistorial(true);
-
-  try {
-    const token = getToken(); // tu helper que lee localStorage
-
-    // URL CORRECTA: monta según server.js -> app.use('/api/acudientes/pqr', ...)
-    const url = `http://localhost:3000/api/acudientes/pqr/${idPqr}/historial`;
-    console.log('verHistorial -> solicitando URL:', url);
-
-    const res = await axios.get(url, {
-      // Si usas cookies de sesión activa: mantiene withCredentials: true
-      withCredentials: true,
-      // Y si además usas JWT en localStorage, envía header (no hace daño)
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    });
-
-    console.log('verHistorial -> res.data:', res.data);
-
-    // Normalizar respuesta a array (igual que en fetchPqrs)
-    let payload = [];
-    if (Array.isArray(res.data)) {
-      payload = res.data;
-    } else if (res.data && Array.isArray(res.data.mapped)) {
-      payload = res.data.mapped;
-    } else if (res.data && Array.isArray(res.data.raw)) {
-      payload = res.data.raw;
-    } else {
-      const maybeArray = Object.values(res.data || {}).find((v) => Array.isArray(v));
-      payload = maybeArray || [];
+  // Ver historial de una PQR
+  const verHistorial = async (idPqr) => {
+    if (!idPqr) {
+      setMensajeRespuesta("ID de PQR inválido.");
+      setTipoRespuesta("error");
+      return;
     }
 
-    setHistorial(payload);
-
-    if (!payload || payload.length === 0) {
-      setMensajeRespuesta('No hay historial para esta PQR.');
-      setTipoRespuesta('info');
-    } else {
-      setMensajeRespuesta('');
-      setTipoRespuesta('');
-    }
-  } catch (err) {
-    console.error('Error al cargar historial:', err);
-    if (err.response) {
-      // Mensajes útiles según status
-      if (err.response.status === 401) {
-        setMensajeRespuesta('No autorizado. Inicia sesión de nuevo.');
-        setTipoRespuesta('error');
-      } else if (err.response.status === 404) {
-        setMensajeRespuesta('Historial no encontrado para esta PQR.');
-        setTipoRespuesta('error');
-      } else {
-        setMensajeRespuesta('Error al cargar el historial de la PQR.');
-        setTipoRespuesta('error');
-      }
-    } else {
-      setMensajeRespuesta('Error de conexión al servidor.');
-      setTipoRespuesta('error');
-    }
+    setSelectedPqr(idPqr);
+    setMensajeRespuesta("");
+    setTipoRespuesta("");
     setHistorial([]);
-  } finally {
-    setLoadingHistorial(false);
-  }
-};
+    setLoadingHistorial(true);
 
+    try {
+      const token = getToken();
+      const url = `http://localhost:3000/api/acudientes/pqr/${idPqr}/historial`;
 
-  // Cerrar vista de historial
+      console.log("📄 Consultando historial:", url);
+
+      const res = await axios.get(url, {
+        withCredentials: true,
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      console.log("📜 Historial recibido:", res.data);
+
+      let data = [];
+      if (Array.isArray(res.data)) data = res.data;
+      else
+        data =
+          Object.values(res.data || {}).find((v) => Array.isArray(v)) || [];
+
+      setHistorial(data);
+
+      if (data.length === 0) {
+        setMensajeRespuesta("No hay historial para esta PQR.");
+        setTipoRespuesta("info");
+      }
+    } catch (err) {
+      console.error("Error al cargar historial:", err);
+      const status = err.response?.status;
+      if (status === 401)
+        setMensajeRespuesta("No autorizado. Inicia sesión de nuevo.");
+      else if (status === 404)
+        setMensajeRespuesta("Historial no encontrado.");
+      else setMensajeRespuesta("Error al cargar historial.");
+      setTipoRespuesta("error");
+    } finally {
+      setLoadingHistorial(false);
+    }
+  };
+
   const cerrarHistorial = () => {
     setSelectedPqr(null);
     setHistorial([]);
@@ -208,10 +145,9 @@ const verHistorial = async (idPqr) => {
     setTipoRespuesta("");
   };
 
-  // Render
   return (
     <div className="p-4 bg-white rounded shadow">
-      <h5 className="mb-3">Mis PQRs</h5>
+      <h5 className="mb-3">📋 Mis PQRs</h5>
 
       {loadingList ? (
         <p>Cargando tus PQRs...</p>
@@ -234,30 +170,25 @@ const verHistorial = async (idPqr) => {
             </thead>
             <tbody>
               {misPqrs.map((item, idx) => {
-                const asunto = getAsunto(item);
-                const tipoNombre = normalizarTipo(item.tipo);
-                const estadoNombre = normalizarEstado(item.estado);
-                const fecha = formatDate(item.fecha ?? item.createdAt ?? item.fecha_creacion);
-                const idPqr = item.id_pqr ?? item.id ?? item.idPqr ?? item.pqrId;
-                const key = idPqr ?? idx;
-
+                const idPqr = item.id_pqr || item.id || idx;
                 return (
-                  <tr key={key}>
+                  <tr key={idPqr}>
                     <td>{idx + 1}</td>
-                    <td>{asunto}</td>
-                    <td>{tipoNombre}</td>
+                    <td>{getAsunto(item)}</td>
+                    <td>{normalizarTexto(item.tipo)}</td>
                     <td>
-                      <span className={getBadgeClass(estadoNombre)}>{estadoNombre}</span>
+                      <span className={getBadgeClass(item.estado?.nombre)}>
+                        {normalizarTexto(item.estado)}
+                      </span>
                     </td>
-                    <td>{fecha}</td>
+                    <td>{formatDate(item.fecha || item.createdAt)}</td>
                     <td>
                       <button
-                        className="btn btn-sm btn-primary me-2 "
+                        className="btn btn-sm btn-primary"
                         onClick={() => verHistorial(idPqr)}
                       >
                         Ver historial
                       </button>
-                      
                     </td>
                   </tr>
                 );
@@ -267,21 +198,23 @@ const verHistorial = async (idPqr) => {
         </div>
       )}
 
-      {/* Sección de historial (solo si hay PQR seleccionada) */}
       {selectedPqr && (
         <div className="mt-4">
-          <div className="d-flex justify-content-between align-items-center ">
-            <h6>Historial de la PQR #{selectedPqr}</h6>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h6>📜 Historial de la PQR #{selectedPqr}</h6>
             <div>
-              <button className="btn btn-sm btn-outline-danger  me-2 w-100" onClick={cerrarHistorial}>
+              <button
+                className="btn btn-sm btn-outline-danger me-2"
+                onClick={cerrarHistorial}
+              >
                 Cerrar
               </button>
               <button
-                className="btn btn-sm btn-secondary mt-2 me-2 w-100"
+                className="btn btn-sm btn-secondary"
                 onClick={() => verHistorial(selectedPqr)}
                 disabled={loadingHistorial}
               >
-                {loadingHistorial ? "Recargando..." : "Recargar historial"}
+                {loadingHistorial ? "Recargando..." : "Recargar"}
               </button>
             </div>
           </div>
@@ -289,14 +222,16 @@ const verHistorial = async (idPqr) => {
           {loadingHistorial ? (
             <p>Cargando historial...</p>
           ) : mensajeRespuesta ? (
-            <div className={`alert ${tipoRespuesta === "error" ? "alert-danger" : "alert-info"}`}>
+            <div
+              className={`alert ${
+                tipoRespuesta === "error" ? "alert-danger" : "alert-info"
+              }`}
+            >
               {mensajeRespuesta}
             </div>
-          ) : historial.length === 0 ? (
-            <p>No hay entradas en el historial.</p>
           ) : (
             <div className="table-responsive">
-              <table className="table table-sm">
+              <table className="table table-sm table-hover">
                 <thead className="table-light">
                   <tr>
                     <th>#</th>
@@ -306,30 +241,35 @@ const verHistorial = async (idPqr) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {historial.map((h, i) => {
-                    const usuario = h.usuario_respuesta ?? h.usuario ?? h.user ?? null;
-                    const usuarioLabel =
-                      (usuario && (usuario.username ?? usuario.numero_documento ?? usuario.id_usuario)) ||
-                      "Sistema";
-                    const textoRespuesta = h.respuesta ?? h.descripcion ?? h.mensaje ?? "-";
-                    const estadoNombre = normalizarEstado(h.estado_historial ?? h.estado);
-                    const fecha = formatDate(h.fecha ?? h.createdAt ?? h.fecha_respuesta);
-                    const key = h.id_historial ?? h.id ?? i;
-
-                    return (
-                      <tr key={key}>
-                        <td>{i + 1}</td>
-                        <td>
-                          <strong>{usuarioLabel}</strong>
-                          <div style={{ whiteSpace: "pre-wrap" }}>{String(textoRespuesta)}</div>
-                        </td>
-                        <td>
-                          <span className={getBadgeClass(estadoNombre)}>{estadoNombre}</span>
-                        </td>
-                        <td>{fecha}</td>
-                      </tr>
-                    );
-                  })}
+                  {historial.map((h, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>
+                        <strong>
+                          {h.usuario?.username ||
+                            h.usuario?.numero_documento ||
+                            "Sistema"}
+                        </strong>
+                        <div style={{ whiteSpace: "pre-wrap" }}>
+                          {h.respuesta || h.descripcion || h.mensaje || "-"}
+                        </div>
+                      </td>
+                      <td>
+                        <span
+                          className={getBadgeClass(
+                            h.estado_historial?.nombre || h.estado
+                          )}
+                        >
+                          {normalizarTexto(h.estado_historial || h.estado)}
+                        </span>
+                      </td>
+                      <td>
+                        {formatDate(
+                          h.fecha || h.createdAt || h.fecha_respuesta
+                        )}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

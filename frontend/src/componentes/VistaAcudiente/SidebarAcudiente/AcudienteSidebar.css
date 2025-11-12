@@ -1,5 +1,5 @@
 /* ===================================================
-   🎯 SIDEBAR ACUDIENTE - COMPONENTE RESPONSIVE
+   🎯 SIDEBAR ACUDIENTE - COMPONENTE RESPONSIVE (MEJORADO)
    =================================================== */
 
 /* Variables CSS */
@@ -7,11 +7,13 @@
   --sidebar-width: 280px;
   --sidebar-width-collapsed: 80px;
   --sidebar-bg: linear-gradient(180deg, #003366 , #003366);
-  --sidebar-bg-hover: rgba(255, 255, 255, 0.1);
+  --sidebar-bg-hover: rgba(255, 255, 255, 0.06);
   --sidebar-text: #ffffff;
   --sidebar-active: #ffe14d;
-  --sidebar-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  --transition: all 0.3s ease;
+  --sidebar-shadow: 0 0 20px rgba(0, 0, 0, 0.12);
+  --transition: all 0.28s ease;
+  --muted: rgba(255,255,255,0.75);
+  --muted-2: rgba(255,255,255,0.6);
 }
 
 /* ===== SIDEBAR DESKTOP ===== */
@@ -27,12 +29,13 @@
   position: relative;
   z-index: 1000;
   transition: var(--transition);
+  overflow: hidden;
 }
 
 /* Header del Sidebar */
 .sidebar-header {
-  padding: 1.5rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-logo {
@@ -47,11 +50,14 @@
 }
 
 .sidebar-title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--sidebar-text);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Navegación */
@@ -61,6 +67,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  overflow-y: auto;
 }
 
 .nav-item {
@@ -76,7 +83,7 @@
   cursor: pointer;
   transition: var(--transition);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 500;
 }
 
@@ -86,7 +93,7 @@
 }
 
 .nav-item-active {
-  background: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 225, 77, 0.08) !important;
   color: var(--sidebar-active) !important;
   border-left: 4px solid var(--sidebar-active);
   font-weight: 600;
@@ -94,12 +101,12 @@
 
 .nav-item-logout {
   margin-top: auto;
-  background: rgba(220, 53, 69, 0.2);
-  border: 1px solid rgba(220, 53, 69, 0.3);
+  background: rgba(220, 53, 69, 0.12);
+  border: 1px solid rgba(220, 53, 69, 0.18);
 }
 
 .nav-item-logout:hover {
-  background: rgba(220, 53, 69, 0.3) !important;
+  background: rgba(220, 53, 69, 0.18) !important;
 }
 
 .nav-item-content {
@@ -107,12 +114,14 @@
   align-items: center;
   gap: 0.75rem;
   flex: 1;
+  min-width: 0;
 }
 
 .nav-item-content i {
   font-size: 1.1rem;
-  width: 20px;
+  width: 22px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .nav-item-text {
@@ -123,7 +132,7 @@
 
 .nav-item-arrow {
   font-size: 0.8rem;
-  opacity: 0.7;
+  opacity: 0.75;
   transition: var(--transition);
 }
 
@@ -135,42 +144,163 @@
 /* Footer del Sidebar */
 .sidebar-footer {
   padding: 1rem 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   margin-top: auto;
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), transparent);
 }
 
 .user-info {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
 .user-avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
   color: var(--sidebar-active);
+  flex-shrink: 0;
 }
 
 .user-details {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .user-name {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--sidebar-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-role {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--muted-2);
+}
+
+/* =====================
+   INFO DEL COLEGIO
+   ===================== */
+.colegio-info {
+  margin-top: 10px;
+  font-size: 0.86rem;
+  color: #eee;
+}
+
+/* separación */
+.colegio-info hr {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 8px 0;
+}
+
+/* Top con logo + texto */
+.colegio-top {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.colegio-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.03);
+  flex-shrink: 0;
+}
+
+.cole-icon-placeholder {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.03);
+  color: var(--sidebar-active);
+  font-size: 1.1rem;
+}
+
+.colegio-txt {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.colegio-nombre {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--sidebar-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.colegio-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.82rem;
+  color: var(--muted-2);
+  line-height: 1.1;
+}
+
+/* Datos adicionales */
+.colegio-datos {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.83rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  word-wrap: break-word;
+}
+
+.colegio-datos p {
+  margin: 0;
+  line-height: 1.15;
+  white-space: normal;
+}
+
+/* Mensaje institucional */
+.msg-inst {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--sidebar-active);
+  background: rgba(255,225,77,0.06);
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,225,77,0.06);
+}
+
+/* Fecha de actualización */
+.fecha-act {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: var(--muted-2);
+}
+
+/* Cargando / error */
+.cargando-config {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 8px;
 }
 
 /* ===== SIDEBAR MOBILE ===== */
@@ -179,7 +309,7 @@
   top: 0;
   left: -100%;
   width: 85%;
-  max-width: 300px;
+  max-width: 320px;
   height: 100vh;
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
@@ -187,7 +317,7 @@
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.32);
 }
 
 .sidebar-mobile-open {
@@ -198,12 +328,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.1rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-close-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
   border: none;
   color: var(--sidebar-text);
   width: 40px;
@@ -214,12 +344,18 @@
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 .sidebar-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.03);
+}
+
+/* Footer móvil con padding extra */
+.sidebar-mobile-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 /* Overlay para móviles */
@@ -232,7 +368,7 @@
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   z-index: 1099;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.28s ease;
 }
 
 @keyframes fadeIn {
@@ -255,8 +391,8 @@
   }
   
   .nav-item {
-    padding: 0.75rem 0.875rem;
-    font-size: 0.85rem;
+    padding: 0.72rem 0.875rem;
+    font-size: 0.88rem;
   }
 }
 
@@ -270,11 +406,11 @@
 /* Móviles pequeños */
 @media (max-width: 480px) {
   .sidebar-mobile {
-    width: 90%;
+    width: 92%;
   }
   
   .sidebar-mobile-header {
-    padding: 1rem 0.875rem;
+    padding: 0.9rem 0.75rem;
   }
   
   .sidebar-title {
@@ -282,19 +418,24 @@
   }
   
   .nav-item {
-    padding: 0.875rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.78rem 0.7rem;
+    font-size: 0.86rem;
   }
   
   .nav-item-content i {
     font-size: 1rem;
+  }
+
+  .colegio-logo, .cole-icon-placeholder {
+    width: 44px;
+    height: 44px;
   }
 }
 
 /* Modo oscuro del sistema */
 @media (prefers-color-scheme: dark) {
   .sidebar-overlay {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.72);
   }
 }
 
@@ -319,11 +460,11 @@
 /* Scroll personalizado para sidebar */
 .sidebar-nav {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
 }
 
 .sidebar-nav::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 .sidebar-nav::-webkit-scrollbar-track {
@@ -331,10 +472,161 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.28);
+}
+/* ==== SIDEBAR GENERAL ==== */
+.sidebar-desktop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, #002855, #004a99);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+}
+
+/* Logo y título */
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.2rem;
+}
+
+.sidebar-logo i {
+  font-size: 1.6rem;
+  color: #00c8ff;
+}
+
+.sidebar-title {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ==== NAVEGACIÓN ==== */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  padding: 0 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  color: #fff;
+  border: none;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
+
+.nav-item-active {
+  background: #00c8ff;
+  color: #002855;
+  font-weight: 600;
+}
+
+.nav-item-logout {
+  color: #ff4d4d;
+}
+
+.nav-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-item-content i {
+  font-size: 1.2rem;
+}
+
+.nav-item-text {
+  font-size: 0.95rem;
+}
+
+/* ==== FOOTER ==== */
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar i {
+  font-size: 2rem;
+  color: #00c8ff;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.colegio-info {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  opacity: 0.9;
+}
+
+/* ==== MOBILE ==== */
+.sidebar-mobile {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, #002855, #004a99);
+  color: #fff;
+  transition: left 0.3s ease;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-mobile-open {
+  left: 0;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 150;
 }

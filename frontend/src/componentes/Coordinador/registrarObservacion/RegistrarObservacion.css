@@ -279,3 +279,16 @@
     padding: 1.5rem;
   }
 }
+.textarea-container {
+  width: 300px;
+  position: relative;
+}
+
+.textarea-container small {
+  font-size: 12px;
+  position: absolute;
+  bottom: -18px;
+  right: 5px;
+  color: #666;
+  width: 30rem;
+}

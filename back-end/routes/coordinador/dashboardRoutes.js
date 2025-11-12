@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const dashboardController = require('../../controllers/controlador_coordinador/dashboardController.js');
+// 📦 Permite usar fetch en Node.js
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
 
 // 👨‍🏫 Profesores activos
 router.get('/profesores/activos', async (req, res) => {
@@ -80,5 +83,51 @@ router.get('/observacionesGrado', async (req, res) => {
     res.status(500).json({ error: 'Error en la ruta /observacionesGrado', detalle: error.message });
   }
 });
+// 💬 Frase del día (proxy para evitar CORS)
+// 💬 Frase del día (proxy para evitar CORS y errores HTML)
+router.get('/fraseDelDia', async (req, res) => {
+  try {
+    console.log('💡 Ruta GET /api/coordinador/dashboard/fraseDelDia');
+
+    const respuesta = await fetch('https://frasedeldia.azurewebsites.net/api/phrase', {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0', // 👈 evita que Azure devuelva HTML
+      },
+    });
+
+    const texto = await respuesta.text(); // leemos el texto crudo (puede ser JSON o HTML)
+    console.log('📩 Respuesta cruda de Azure:', texto.slice(0, 200)); // imprime los primeros 200 caracteres
+
+    let data;
+    try {
+      data = JSON.parse(texto); // intentamos parsear el JSON
+    } catch (error) {
+      console.error('⚠️ La respuesta NO era JSON válido. Posible HTML devuelto.');
+      return res.status(502).json({
+        error: 'La API no devolvió un JSON válido',
+        detalle: texto.slice(0, 200), // enviamos parte del HTML como pista
+      });
+    }
+
+    // Si todo bien, respondemos al frontend
+    res.json({
+      frase: data.phrase,
+      autor: data.author,
+      fuente: 'frasedeldia.azurewebsites.net',
+    });
+
+  } catch (error) {
+    console.error('❌ Error al obtener la frase del día:', error);
+    res.status(500).json({
+      error: 'No se pudo obtener la frase del día',
+      detalle: error.message,
+    });
+  }
+});
+
+
+
+
 
 module.exports = router;

@@ -20,6 +20,8 @@ const ObservacionesDashboard = () => {
   const [observaciones, setObservaciones] = useState([]);
   const [filtroGravedad, setFiltroGravedad] = useState('todos');
   const [filtroGrado, setFiltroGrado] = useState('todos');
+  const [recomendacionesLocal, setRecomendacionesLocal] = useState({});
+  const [recomendacion, setRecomendacion] = useState(""); // 👈 faltaba este estado
 
   // 🔹 Cargar datos al montar el componente
   useEffect(() => {
@@ -55,6 +57,17 @@ const ObservacionesDashboard = () => {
         });
 
         setObservaciones(data.detalle || []);
+
+        // 👇 genera las recomendaciones locales
+        const generadas = generarRecomendaciones(resumen);
+        setRecomendacionesLocal(generadas);
+
+        // 👇 muestra un consejo del día aleatorio
+        const frases = Object.values(generadas);
+        if (frases.length > 0) {
+          const random = frases[Math.floor(Math.random() * frases.length)];
+          setRecomendacion(random);
+        }
       } else {
         console.warn("⚠️ Estructura de API no reconocida:", data);
       }
@@ -62,10 +75,27 @@ const ObservacionesDashboard = () => {
       console.error("❌ Error cargando observaciones por grado:", err);
     }
   };
+  
+  // 🔹 Generar recomendaciones internas según la cantidad de observaciones
+  const generarRecomendaciones = (resumen) => {
+    const result = {};
+    Object.entries(resumen || {}).forEach(([grado, total]) => {
+      const n = Number(total) || 0;
+      if (n <= 3) {
+        result[grado] = "Buen comportamiento general: refuerza con elogios y mantenimiento de normas.";
+      } else if (n <= 7) {
+        result[grado] = "Alerta leve-moderada: revisa casos puntuales y refuerza seguimiento en clase.";
+      } else if (n <= 12) {
+        result[grado] = "Nivel alto: coordina reunión con padres y orientador; aplica medidas preventivas.";
+      } else {
+        result[grado] = "Situación crítica: intervención inmediata recomendada (orientador/coordinación).";
+      }
+    });
+    return result;
+  };
 
-  const { total_registros, resumenPorGrado, recomendaciones } = datos;
+  const { total_registros, resumenPorGrado } = datos;
 
-  // Colores para los tipos de gravedad
   const coloresGravedad = {
     1: { color: '#10B981', label: 'Leve' },
     2: { color: '#F59E0B', label: 'Moderada' },
@@ -74,7 +104,6 @@ const ObservacionesDashboard = () => {
     5: { color: '#7C2D12', label: 'Muy Crítica' }
   };
 
-  // Filtrar datos
   const datosFiltrados = observaciones.filter(item => {
     const cumpleGravedad =
       filtroGravedad === 'todos' || item.id_gravedad?.toString() === filtroGravedad;
@@ -82,7 +111,6 @@ const ObservacionesDashboard = () => {
     return cumpleGravedad && cumpleGrado;
   });
 
-  // Grados únicos
   const gradosUnicos = [...new Set(observaciones.map(item => item.grado))];
 
   return (
@@ -94,9 +122,6 @@ const ObservacionesDashboard = () => {
             <FaClipboardList className="me-2 text-primary" />
             Dashboard de Observaciones
           </h2>
-          <span className="badge bg-primary fs-6">
-            
-          </span>
         </div>
       </div>
 
@@ -180,6 +205,34 @@ const ObservacionesDashboard = () => {
         </div>
       </div>
 
+      {/* 💡 Recomendaciones locales */}
+      {Object.keys(recomendacionesLocal).length > 0 && (
+        <div className="card border-0 shadow-sm mb-4">
+          <div className="card-header bg-white">
+            <h5 className="mb-0">
+              <FaInfoCircle className="me-2 text-warning" /> Recomendaciones por Grado
+            </h5>
+          </div>
+          <div className="card-body">
+            <div className="row">
+              {Object.entries(recomendacionesLocal).map(([grado, texto]) => {
+                const total = resumenPorGrado[grado] || 0;
+                const bg = total > 12 ? '#fee2e2' : total > 7 ? '#fff7e6' : '#ecfdf5';
+                return (
+                  <div key={grado} className="col-md-6 col-lg-4 mb-3">
+                    <div className="p-3 border rounded h-100" style={{ backgroundColor: bg }}>
+                      <h6 className="text-primary fw-bold">{grado}</h6>
+                      <p className="mb-1 text-muted">Total observaciones: <strong>{total}</strong></p>
+                      <p className="mb-0">{texto}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tabla detalle */}
       <div className="card border-0 shadow-sm">
         <div className="card-header bg-white d-flex justify-content-between align-items-center">
@@ -233,11 +286,16 @@ const ObservacionesDashboard = () => {
         </div>
       </div>
 
-      {/* Recomendaciones */}
-      {recomendaciones?.mensaje && (
-        <div className="alert alert-info mt-4">
-          <FaInfoCircle className="me-2" />
-          <strong>Recomendaciones:</strong> {recomendaciones.mensaje}
+      {/* 🧠 Consejo del día */}
+      {!recomendacion ? (
+        <div className="alert alert-secondary mt-4 d-flex align-items-center">
+          <FaInfoCircle className="me-2 fs-5 text-muted" />
+          <span>Cargando recomendación del día...</span>
+        </div>
+      ) : (
+        <div className="alert alert-warning mt-4 d-flex align-items-center">
+          <FaInfoCircle className="me-2 fs-5 text-dark" />
+          <span><strong>Consejo del día:</strong> {recomendacion}</span>
         </div>
       )}
     </div>

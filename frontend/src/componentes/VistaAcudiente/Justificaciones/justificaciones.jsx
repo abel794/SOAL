@@ -9,6 +9,7 @@ const EnviarJustificacion = ({ setSeccionActiva, estudianteId: propEstudianteId 
   const [fecha, setFecha] = useState("");
   const [archivo, setArchivo] = useState(null);
   const [motivo, setMotivo] = useState("");
+  const [numero_documento, setNumero_documento]=useState("")
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -60,9 +61,13 @@ const EnviarJustificacion = ({ setSeccionActiva, estudianteId: propEstudianteId 
     const formData = new FormData();
     formData.append("fecha", fecha);
     formData.append("motivo", motivo);
+    formData.append("numero_documento", numero_documento);
+
+
     if (archivo) formData.append("archivo", archivo);
     // Si tienes el id de estudiante en props, lo añadimos; si no, el backend puede inferirlo por token
     if (propEstudianteId) formData.append("id_estudiante", propEstudianteId);
+    
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -75,10 +80,10 @@ const EnviarJustificacion = ({ setSeccionActiva, estudianteId: propEstudianteId 
 
     try {
       console.log("📤 Enviando justificación - payload FormData (oculto archivo en logs)...");
-      const res = await axios.post("http://localhost:3000/api/coordinador/justuficaciones", formData, {
+      const res = await axios.post("http://localhost:3000/api/coordinador/justificacion", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          // NO establezcas 'Content-Type' aquí; axios lo hará con boundary correcto
+          'Content-Type': 'multipart/form-data'
         },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
@@ -137,6 +142,18 @@ const EnviarJustificacion = ({ setSeccionActiva, estudianteId: propEstudianteId 
             disabled={submitting}
           />
         </div>
+        <div className="mb-3">
+  <label>Número de documento:</label>
+  <input
+    type="text"
+    className="form-control"
+    value={numero_documento}
+    onChange={(e) => setNumero_documento(e.target.value)}
+    required
+    disabled={submitting}
+  />
+</div>
+
 
         <div className="mb-3">
           <label>Adjuntar archivo (PDF o Imagen, máx 5MB):</label>
@@ -154,6 +171,7 @@ const EnviarJustificacion = ({ setSeccionActiva, estudianteId: propEstudianteId 
             </small>
           )}
         </div>
+
 
         {progress > 0 && (
           <div className="mb-2">

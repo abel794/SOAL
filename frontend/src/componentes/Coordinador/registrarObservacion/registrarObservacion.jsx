@@ -214,13 +214,27 @@ function RegistrarObservacion() {
           </select>
 
           <label>Observación:</label>
-          <textarea
-            placeholder="Escribe la observación..."
-            value={observacion}
-            onChange={(e) => setObservacion(e.target.value)}
-            required
-          />
-
+          <div className="textarea-container">
+            <textarea
+              placeholder="Escribe la observación..."
+              value={observacion}
+              onChange={(e) => {
+                if (e.target.value.length <= 100) {
+                  setObservacion(e.target.value);
+                }
+              }}
+              required
+            />
+            <small
+              style={{
+                display: "block",
+                textAlign: "right",
+                color: observacion.length >= 100 ? "red" : "#555",
+              }}
+            >
+              {observacion.length}/100 caracteres
+            </small>
+          </div>
           <button type="submit" className="btn-principal" disabled={cargando}>
             {cargando ? "Registrando..." : "Registrar observación"}
           </button>

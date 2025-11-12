@@ -399,7 +399,7 @@ const EstudiantesCards = () => {
                       <div className="info-content">
                         <strong>Documento:</strong>
                         <span>
-                          {estudiante.numero_documento || "No especificado"}
+                          {estudiante.documento || "No especificado"}
                         </span>
                       </div>
                     </li>

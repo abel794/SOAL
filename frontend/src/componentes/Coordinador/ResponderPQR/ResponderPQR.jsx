@@ -61,7 +61,7 @@ const PqrCard = ({ pqr, isSelected, onSelect }) => {
       <td className="fw-semibold">#{pqr.id_pqr}</td>
       <td>
         <div className="user-info">
-          <div className="user-name">
+          <div className="user-name text-body-secondary">
             {pqr.acudiente?.persona?.nombre} {pqr.acudiente?.persona?.apellido}
           </div>
           <small className="text-muted">{pqr.acudiente?.persona?.correo}</small>
