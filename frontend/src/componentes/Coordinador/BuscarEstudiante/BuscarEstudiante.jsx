@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './BuscarEstudiante.css';
 import ModalMensaje from "../../ui/ModalMensaje";
@@ -13,34 +13,36 @@ function BuscarEstudiante() {
   const [confirmMessage, setConfirmMessage] = useState("");
   const [usuarioGenerado, setUsuarioGenerado] = useState(null);
 
+  // paginación
+  const [paginaActual, setPaginaActual] = useState(1);
+  const itemsPorPagina = 10;
+
   const ejecutarAccion = useCallback(() => {
     console.log("Acción confirmada");
   }, []);
 
-  // 🔍 Función principal de búsqueda optimizada
-  const buscar = useCallback(async () => {
+  // helper para obtener token
+  const getToken = () => localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+
+  // Función para obtener estudiantes (si filtro vacío trae todo)
+  const fetchEstudiantes = useCallback(async (filtro = '') => {
     try {
       setMensaje('');
       setTipoMensaje('');
-
-      if (!nombre.trim()) {
-        setMensaje('⚠️ Por favor, ingresa un nombre o documento para buscar.');
-        setTipoMensaje('error');
-        return;
-      }
-
       setLoading(true);
       setEstudiantes([]);
 
-      const url = `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(nombre.trim())}`;
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-
+      const token = getToken();
       if (!token) {
         setMensaje('⚠️ Necesitas iniciar sesión para buscar estudiantes.');
         setTipoMensaje('error');
         setLoading(false);
         return;
       }
+
+      const url = filtro && filtro.trim()
+        ? `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro.trim())}`
+        : `http://localhost:3000/api/coordinador/estudiante/buscar`;
 
       const res = await fetch(url, {
         method: 'GET',
@@ -62,25 +64,46 @@ function BuscarEstudiante() {
       }
 
       const data = await res.json();
-
       if (Array.isArray(data) && data.length > 0) {
         setEstudiantes(data);
-        setMensaje(`✅ Se encontraron ${data.length} estudiante(s)`);
-        setTipoMensaje('success');
+        setPaginaActual(1); // reset paginación al traer nuevos datos
+        if (filtro && filtro.trim()) {
+          setMensaje(`✅ Se encontraron ${data.length} estudiante(s)`);
+          setTipoMensaje('success');
+        } else {
+          setMensaje(`📋 Se cargaron ${data.length} estudiante(s) en total`);
+          setTipoMensaje('info');
+        }
       } else {
         setEstudiantes([]);
-        setMensaje('📭 No se encontraron estudiantes con ese criterio de búsqueda.');
-        setTipoMensaje('info');
+        if (filtro && filtro.trim()) {
+          setMensaje('📭 No se encontraron estudiantes con ese criterio de búsqueda.');
+          setTipoMensaje('info');
+        } else {
+          setMensaje('📭 No hay estudiantes registrados actualmente.');
+          setTipoMensaje('info');
+        }
       }
     } catch (err) {
-      console.error('❌ Error en búsqueda:', err);
+      console.error('❌ Error en fetchEstudiantes:', err);
       setMensaje('🚨 Error al conectar con el servidor. Intenta nuevamente.');
       setTipoMensaje('error');
       setEstudiantes([]);
     } finally {
       setLoading(false);
     }
-  }, [nombre]);
+  }, []);
+
+  // Al montar, trae todos los estudiantes (modo "sin filtro")
+  useEffect(() => {
+    fetchEstudiantes('');
+  }, [fetchEstudiantes]);
+
+  // 🔍 Función principal de búsqueda optimizada (usa fetchEstudiantes)
+  const buscar = useCallback(async () => {
+    // si no hay texto, traer todos (ya lo maneja fetchEstudiantes)
+    await fetchEstudiantes(nombre);
+  }, [nombre, fetchEstudiantes]);
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
@@ -96,10 +119,25 @@ function BuscarEstudiante() {
 
   const limpiarBusqueda = useCallback(() => {
     setNombre('');
-    setEstudiantes([]);
     setMensaje('');
     setTipoMensaje('');
-  }, []);
+    setUsuarioGenerado(null);
+    fetchEstudiantes(''); // recargar todo
+  }, [fetchEstudiantes]);
+
+  // Paginación: calcular slice actual
+  const totalPaginas = Math.max(1, Math.ceil(estudiantes.length / itemsPorPagina));
+  const inicio = (paginaActual - 1) * itemsPorPagina;
+  const fin = inicio + itemsPorPagina;
+  const estudiantesPaginados = estudiantes.slice(inicio, fin);
+
+  const irPagina = (nuevaPagina) => {
+    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
+    setPaginaActual(nuevaPagina);
+    // scroll top de resultados si quieres:
+    const cont = document.querySelector('.tabla-container') || document.querySelector('.tarjetas-container');
+    if (cont) cont.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div className="buscar-container">
@@ -130,7 +168,7 @@ function BuscarEstudiante() {
                 <div className="botones-accion">
                   <button
                     type="submit"
-                    disabled={loading || !nombre.trim()}
+                    disabled={loading}
                     className="btn-buscar"
                   >
                     {loading ? (
@@ -165,8 +203,8 @@ function BuscarEstudiante() {
         {mensaje && (
           <div className={`mensaje-alerta ${tipoMensaje}`}>
             <span className="icono-alerta">
-              {tipoMensaje === 'success' ? '✅' : 
-               tipoMensaje === 'error' ? '❌' : 
+              {tipoMensaje === 'success' ? '✅' :
+               tipoMensaje === 'error' ? '❌' :
                tipoMensaje === 'info' ? 'ℹ️' : '⚠️'}
             </span>
             <span>{mensaje}</span>
@@ -184,7 +222,7 @@ function BuscarEstudiante() {
         )}
 
         {/* 🧭 Tabla desktop */}
-        {estudiantes.length > 0 && (
+        {estudiantesPaginados.length > 0 && (
           <div className="tabla-container desktop">
             <div className="table-responsive">
               <table className="tabla-estudiantes">
@@ -199,7 +237,7 @@ function BuscarEstudiante() {
                   </tr>
                 </thead>
                 <tbody>
-                  {estudiantes.map((est) => {
+                  {estudiantesPaginados.map((est) => {
                     const acudiente = est.acudientes?.[0];
                     const personaEst = est.persona;
                     const personaAcu = acudiente?.persona;
@@ -254,9 +292,9 @@ function BuscarEstudiante() {
         )}
 
         {/* 📱 Tarjetas móviles */}
-        {estudiantes.length > 0 && (
+        {estudiantesPaginados.length > 0 && (
           <div className="tarjetas-container mobile">
-            {estudiantes.map((est) => {
+            {estudiantesPaginados.map((est) => {
               const acudiente = est.acudientes?.[0];
               const personaEst = est.persona;
               const personaAcu = acudiente?.persona;
@@ -325,6 +363,29 @@ function BuscarEstudiante() {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* Paginación */}
+        {estudiantes.length > 0 && (
+          <div className="paginacion">
+            <button
+              onClick={() => irPagina(paginaActual - 1)}
+              disabled={paginaActual === 1}
+              className="btn-pagina"
+            >
+              ◀ Anterior
+            </button>
+
+            <span className="pagina-info">Página {paginaActual} de {totalPaginas}</span>
+
+            <button
+              onClick={() => irPagina(paginaActual + 1)}
+              disabled={paginaActual === totalPaginas}
+              className="btn-pagina"
+            >
+              Siguiente ▶
+            </button>
           </div>
         )}
 

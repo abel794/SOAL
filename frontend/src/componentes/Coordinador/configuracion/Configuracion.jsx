@@ -65,7 +65,7 @@ export default function ConfiguracionSistema() {
   const cargarConfiguracionExistente = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/configuracion', {
+      const res = await fetch('http://localhost:3000/api/coordinador/configuracionSistema', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -159,7 +159,7 @@ export default function ConfiguracionSistema() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/configuracion', {
+      const res = await fetch('http://localhost:3000/api/coordinador/configuracionSistema', {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData

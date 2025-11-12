@@ -46,68 +46,68 @@ module.exports = {
 
   // 2. Buscar con filtro (CORREGIDO)
   async buscar(req, res) {
-    try {
-      const { filtro } = req.query;
-      if (!filtro) {
-        console.warn('[buscar] Falta parámetro ?filtro=');
-        return res.status(400).json({ error: 'Debe enviar un nombre o documento para buscar' });
-      }
+  try {
+    const { filtro } = req.query;
 
-      console.log(`[buscar] Iniciando búsqueda con filtro = "${filtro}"`);
-      const estudiantes = await Estudiante.findAll({
-        where: {}, // sin condición adicional aquí
-        include: [
-          // Filtrar por nombre/apellido/documento en la persona del estudiante
-          {
-            model: Persona,
-            as: 'persona',
-            where: {
-              [Op.or]: [
-                { nombre:           { [Op.like]: `%${filtro}%` } },
-                { apellido:         { [Op.like]: `%${filtro}%` } },
-                { numero_documento: { [Op.like]: `%${filtro}%` } }
-              ]
+    console.log(`[buscar] Filtro recibido: "${filtro || 'sin filtro'}"`);
+
+    // 🔹 Base de la consulta (siempre incluye los mismos modelos)
+    const opcionesConsulta = {
+      where: {},
+      include: [
+        {
+          model: Persona,
+          as: 'persona',
+          attributes: ['nombre', 'apellido', 'numero_documento'],
+        },
+        { model: Usuario, as: 'usuario', attributes: ['id_usuario'] },
+        { model: Eps, as: 'eps', attributes: ['nombre'] },
+        { model: EstadoAcademico, as: 'estadoAcademico', attributes: ['nombre'] },
+        {
+          model: Acudiente,
+          as: 'acudientes',
+          through: { attributes: ['id_estudiante_acudiente'] },
+          attributes: ['id_acudiente', 'numero_documento'],
+          include: [
+            {
+              model: Persona,
+              as: 'persona',
+              attributes: ['nombre', 'apellido', 'telefono', 'direccion', 'correo'],
             },
-            required: true,
-            attributes: ['nombre','apellido','numero_documento']
-          },
-          { model: Usuario,         as: 'usuario',         attributes: ['id_usuario'] },
-          { model: Eps,             as: 'eps',             attributes: ['nombre'] },
-          { model: EstadoAcademico, as: 'estadoAcademico', attributes: ['nombre'] },
+            {
+              model: RelacionAcudiente,
+              as: 'relacion',
+              attributes: ['nombre'],
+            },
+          ],
+        },
+      ],
+    };
 
-          // Aquí incluimos directamente los acudientes
-          {
-            model: Acudiente,
-            as: 'acudientes',
-            through: { attributes: ['id_estudiante_acudiente'] }, 
-            attributes: ['id_acudiente','numero_documento'],
-            include: [
-              {
-                model: Persona,
-                as: 'persona',
-                attributes: ['nombre','apellido','telefono','direccion','correo']
-              },
-              {
-                model: RelacionAcudiente,
-                as: 'relacion',
-                attributes: ['nombre']
-              }
-            ]
-          }
-        ]
-      });
-
-      console.log(`[buscar] Estudiantes encontrados: ${estudiantes.length}`);
-      estudiantes.forEach(e =>
-        console.log('  • acudientes:', e.acudientes.map(a => a.id_acudiente))
-      );
-
-      return res.json(estudiantes);
-    } catch (error) {
-      console.error('[buscar] Error al buscar estudiante:', error);
-      return res.status(500).json({ error: 'Error al buscar estudiante' });
+    // 🔹 Si hay filtro, agregamos condición al include de Persona
+    if (filtro && filtro.trim() !== '') {
+      opcionesConsulta.include[0].where = {
+        [Op.or]: [
+          { nombre: { [Op.like]: `%${filtro}%` } },
+          { apellido: { [Op.like]: `%${filtro}%` } },
+          { numero_documento: { [Op.like]: `%${filtro}%` } },
+        ],
+      };
+      opcionesConsulta.include[0].required = true;
     }
-  },
+
+    // 🔹 Ejecutar búsqueda
+    const estudiantes = await Estudiante.findAll(opcionesConsulta);
+
+    console.log(`[buscar] Estudiantes encontrados: ${estudiantes.length}`);
+    return res.json(estudiantes);
+
+  } catch (error) {
+    console.error('[buscar] Error al buscar estudiante:', error);
+    return res.status(500).json({ error: 'Error al buscar estudiante' });
+  }
+}
+,
 
   // 3. Contar
   async contar(req, res) {

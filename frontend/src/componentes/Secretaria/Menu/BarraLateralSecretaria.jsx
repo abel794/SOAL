@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// src/componentes/Secretaria/BarraLateralSecretaria.jsx
+import React, { useState, useEffect } from "react";
 import './style/BarraLateralSecretaria.css';
 import {
   FaHome,
@@ -8,86 +9,154 @@ import {
   FaCog,
   FaBell,
   FaBars,
+  FaTimes,
+  FaChartBar,
+  FaComments,
+  FaUserCircle
 } from "react-icons/fa";
-import { HiChartBar, HiDocumentSearch } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import ModalMensaje from "../../ui/ModalMensaje"; // ✅ se importa tu componente
 
 const BarraLateralSecretaria = ({ setVista }) => {
   const navigate = useNavigate();
   const [menuAbierto, setMenuAbierto] = useState(true);
-  const [mostrarCard, setMostrarCard] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [activeItem, setActiveItem] = useState("inicio");
+  const [isMobile, setIsMobile] = useState(false);
+
+  const menuItems = [
+    { id: "inicio", icon: FaHome, label: "Inicio", vista: "inicio" },
+    { id: "dashboard", icon: FaChartBar, label: "Dashboard", vista: "Dashboard" },
+    { id: "matriculas", icon: FaClipboardList, label: "Matrículas", vista: "matriculas" },
+    { id: "estudiantes", icon: FaUserGraduate, label: "Buscar Estudiantes", vista: "estudiantes" },
+    { id: "pqr", icon: FaComments, label: "Gestión PQR", vista: "ResponderPQR" },
+    { id: "notificaciones", icon: FaBell, label: "Notificaciones", vista: "notificaciones" },
+    { id: "configuracion", icon: FaCog, label: "Configuración", vista: "configuracion" },
+  ];
 
   const cerrarSesion = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
+  const toggleMenu = () => setMenuAbierto(!menuAbierto);
+
+  const handleMenuClick = (vista, id) => {
+    setVista(vista);
+    setActiveItem(id);
+    if (isMobile) setMenuAbierto(false);
   };
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      setMenuAbierto(!mobile);
+    };
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   return (
     <>
-      <div className="encabezado">
-        <div className="hamburguesa" onClick={toggleMenu}>
-          <FaBars />
-        </div>
-        <h2 className="textomenu">Secretaría</h2>
-      </div>
-
-      <div className={`barra-lateral ${menuAbierto ? "abierto" : "cerrado"}`}>
-        <nav className="menu">
-          <button onClick={() => setVista("inicio")}>
-            <FaHome className="icono" />
-            <span>Inicio</span>
-          </button>
-          <button onClick={() => setVista("Dashboard")}>
-            <HiChartBar className="icono" />
-            <span>Dashboard</span>
-          </button>
-          <button onClick={() => setVista("matriculas")}>
-            <FaClipboardList className="icono" />
-            <span>Matrículas</span>
-          </button>
-          <button onClick={() => setVista("estudiantes")}>
-            <FaUserGraduate className="icono" />
-            <span className="textoacu">Buscar Estudiantes/Acudiente</span>
-          </button>
-          <button onClick={() => setVista("ResponderPQR")}>
-            <HiDocumentSearch className="icono" />
-            <span>PQR</span>
-          </button>
-          <button onClick={() => setVista("notificaciones")}>
-            <FaBell className="icono" />
-            <span>Notificaciones</span>
-          </button>
-          <button onClick={() => setVista("configuracion")}>
-            <FaCog className="icono" />
-            <span>Configuración</span>
-          </button>
-          <button onClick={() => setMostrarCard(true)}>
-            <FaSignOutAlt className="icono" />
-            <span>Cerrar sesión</span>
-          </button>
-        </nav>
-      </div>
-
-      {/* Card de confirmación */}
-      {mostrarCard && (
-        <div className="overlay">
-          <div className="card-confirmacion">
-            <h3>¿Seguro que deseas cerrar sesión?</h3>
-            <div className="acciones">
-              <button className="btn-cancelar" onClick={() => setMostrarCard(false)}>
-                Cancelar
-              </button>
-              <button className="btn-confirmar" onClick={cerrarSesion}>
-                Sí, cerrar
-              </button>
-            </div>
+      {isMobile && (
+        <div className="mobile-header">
+          <div className="hamburguesa" onClick={toggleMenu}>
+            {menuAbierto ? <FaTimes /> : <FaBars />}
+          </div>
+          <div className="mobile-title">
+            <span>Secretaría</span>
+          </div>
+          <div className="user-avatar-mobile">
+            <FaUserCircle />
           </div>
         </div>
       )}
+
+      {isMobile && menuAbierto && <div className="menu-overlay" onClick={toggleMenu}></div>}
+
+      <div className={`barra-lateral ${menuAbierto ? "abierto" : "cerrado"}`}>
+        <div className="sidebar-header">
+          <div className="logo-section">
+            <div className="logo">
+              <div className="logo-icon">🎓</div>
+            </div>
+            <div className="logo-text">
+              <h3>Sistema Escolar</h3>
+              <span>Panel Secretaría</span>
+            </div>
+          </div>
+          {isMobile && (
+            <button className="close-menu" onClick={toggleMenu}>
+              <FaTimes />
+            </button>
+          )}
+        </div>
+
+        <div className="user-info">
+          <div className="user-avatar">
+            <FaUserCircle />
+          </div>
+          <div className="user-details">
+            <h1>Secretaria</h1>
+          </div>
+        </div>
+
+        <nav className="menu-navegacion">
+          <div className="menu-section">
+            <span className="section-label">Navegación Principal</span>
+            <div className="menu-items">
+              {menuItems.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    className={`menu-item ${activeItem === item.id ? "active" : ""}`}
+                    onClick={() => handleMenuClick(item.vista, item.id)}
+                  >
+                    <div className="menu-item-content">
+                      <div className="icon-wrapper">
+                        <IconComponent className="menu-icon" />
+                      </div>
+                      <span className="menu-label">{item.label}</span>
+                    </div>
+                    <div className="active-indicator"></div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </nav>
+
+        <div className="logout-section">
+          <button 
+            className="logout-btn"
+            onClick={() => setMostrarModal(true)}
+          >
+            <div className="logout-icon">
+              <FaSignOutAlt />
+            </div>
+            <span className="logout-text">Cerrar Sesión</span>
+          </button>
+        </div>
+
+        <div className="version-info">
+          <span>v2.1.0</span>
+        </div>
+      </div>
+
+      {/* ✅ ModalMensaje integrado */}
+      <ModalMensaje
+        visible={mostrarModal}
+        tipo="confirmacion"
+        titulo="Cerrar Sesión"
+        mensaje="¿Estás seguro de que deseas cerrar la sesión? Tendrás que iniciar sesión nuevamente para acceder al sistema."
+        onClose={() => setMostrarModal(false)}
+        onConfirm={cerrarSesion}
+        confirmText="Sí, cerrar sesión"
+        cancelText="Cancelar"
+      />
     </>
   );
 };

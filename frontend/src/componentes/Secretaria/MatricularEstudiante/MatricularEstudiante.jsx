@@ -643,20 +643,29 @@ export default function RegistroMultistep() {
                 </div>
               </div>
 
-              <div className="tratamiento-datos">
-                <div className="checkbox-moderno">
-                  <input 
-                    id="chkTratamiento" 
-                    type="checkbox" 
-                    checked={aceptaTratamiento} 
-                    onChange={() => setAceptaTratamiento(prev => !prev)} 
-                  />
-                  <label htmlFor="chkTratamiento" className="checkbox-label">
-                    <FaShieldAlt className="checkbox-icon" />
-                    Acepto el tratamiento de mis datos personales según la ley de protección de datos <span className="required">*</span>
-                  </label>
-                </div>
-              </div>
+ <div className="tratamiento-datos">
+                   <div className="checkbox-moderno">
+                     <input 
+                       id="chkTratamiento" 
+                       type="checkbox" 
+                       checked={aceptaTratamiento} 
+                       onChange={() => setAceptaTratamiento(prev => !prev)} 
+                     />
+                     <label htmlFor="chkTratamiento" className="checkbox-label">
+                       <FaShieldAlt className="checkbox-icon" />
+                       Acepto el tratamiento de mis datos personales según la{" "}
+                       <a 
+                         href="/documentacion/tratamiento-de-datos.pdf" 
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         className="link-politica"
+                       >
+                         ley de protección de datos
+                       </a>
+                       <span className="required">*</span>
+                     </label>
+                   </div>
+                 </div>
             </motion.div>
           )}
 

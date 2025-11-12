@@ -5,26 +5,22 @@ const bcrypt = require('bcrypt');
 const zlib = require('zlib');
 const db = require('../../models');
 const { Op } = require('sequelize');
+const { enviarCorreo } = require('../../services/emailService');
 
 const { Persona, Usuario, Funcionario, Archivo, sequelize } = db;
 
-/**
- * Devuelve la ruta física del archivo multer, con varios fallbacks.
- * @param {Object} file - objeto file que retorna multer
- * @returns {string|null} ruta o null si no se puede determinar
- */
+/** ---------- HELPERS ---------- **/
+
 function getFilePath(file) {
   if (!file) return null;
-  if (file.path) return file.path; // normalmente con dest o multer.any()
+  if (file.path) return file.path;
   if (file.destination && file.filename) return path.join(file.destination, file.filename);
   if (file.fieldname && file.originalname) {
-    // último recurso (no siempre aplicable)
     return path.join('uploads', file.filename || file.originalname);
   }
   return null;
 }
 
-/** Eliminar archivo silenciosamente */
 function safeUnlinkSync(filePath) {
   try {
     if (!filePath) return;
@@ -34,7 +30,6 @@ function safeUnlinkSync(filePath) {
   }
 }
 
-/** Comprime buffer con gzip (devuelve buffer comprimido o el original si falla) */
 function compressBuffer(buffer) {
   try {
     return zlib.gzipSync(buffer);
@@ -44,12 +39,9 @@ function compressBuffer(buffer) {
   }
 }
 
-/** Helper: extrae archivo del req.files soportando upload.fields y upload.any */
 function extractFile(req, fieldName) {
   if (!req.files) return null;
-  // multer con fields() deja req.files como objeto { campo: [file] }
   if (Array.isArray(req.files)) {
-    // multer.any(): array de files
     return req.files.find(f => f.fieldname === fieldName) || null;
   } else if (typeof req.files === 'object') {
     const arr = req.files[fieldName];
@@ -59,31 +51,25 @@ function extractFile(req, fieldName) {
   return null;
 }
 
+/** ---------- CONTROLADOR ---------- **/
+
 const registrarFuncionarioCompleto = {
   async registrarTodo(req, res) {
-    // Crear transacción
     const t = await sequelize.transaction();
-    // track temporales para limpiar
     const archivosTemporales = [];
 
     try {
       console.log('--- Inicio registro funcionario ---');
 
-      // --- Parseo seguro de los objetos persona/usuario/funcionario ---
+      // Parseo robusto de los objetos persona/usuario/funcionario (pueden venir como JSON-string o campos sueltos)
       let personaObj = null;
       let usuarioObj = null;
       let funcionarioObj = null;
 
-      // Si vienen como strings JSON (caso esperado)
       if (req.body.persona) {
-        try {
-          personaObj = JSON.parse(req.body.persona);
-        } catch (e) {
-          // fallback: si por algún motivo no es JSON, intenta usar directamente
-          personaObj = req.body.persona;
-        }
+        try { personaObj = typeof req.body.persona === 'string' ? JSON.parse(req.body.persona) : req.body.persona; }
+        catch (e) { personaObj = req.body.persona; }
       } else {
-        // si front envió campos sueltos, intenta construir persona desde req.body
         personaObj = {
           numero_documento: req.body.numero_documento,
           nombre: req.body.nombre,
@@ -102,11 +88,8 @@ const registrarFuncionarioCompleto = {
       }
 
       if (req.body.usuario) {
-        try {
-          usuarioObj = JSON.parse(req.body.usuario);
-        } catch (e) {
-          usuarioObj = req.body.usuario;
-        }
+        try { usuarioObj = typeof req.body.usuario === 'string' ? JSON.parse(req.body.usuario) : req.body.usuario; }
+        catch (e) { usuarioObj = req.body.usuario; }
       } else {
         usuarioObj = {
           username: req.body.username,
@@ -116,11 +99,8 @@ const registrarFuncionarioCompleto = {
       }
 
       if (req.body.funcionario) {
-        try {
-          funcionarioObj = JSON.parse(req.body.funcionario);
-        } catch (e) {
-          funcionarioObj = req.body.funcionario;
-        }
+        try { funcionarioObj = typeof req.body.funcionario === 'string' ? JSON.parse(req.body.funcionario) : req.body.funcionario; }
+        catch (e) { funcionarioObj = req.body.funcionario; }
       } else {
         funcionarioObj = {
           cargo: req.body.cargo,
@@ -129,13 +109,12 @@ const registrarFuncionarioCompleto = {
         };
       }
 
-      // --- Quitar la propiedad foto del objeto persona antes de stringify en front (defensa) ---
-      // (si por alguna razón el front manda un File dentro del JSON)
-      if (typeof personaObj === 'object' && personaObj !== null && 'foto' in personaObj) {
+      // Defensa: si personaObj trae una propiedad 'foto' dentro del JSON, quitarla
+      if (personaObj && typeof personaObj === 'object' && 'foto' in personaObj) {
         delete personaObj.foto;
       }
 
-      // Guardar paths temporales listos para limpieza (si multer los colocó)
+      // Guardar rutas temporales provistas por multer (si las hay) para limpieza posterior
       if (req.files) {
         if (Array.isArray(req.files)) {
           req.files.forEach(f => archivosTemporales.push(getFilePath(f)));
@@ -146,9 +125,10 @@ const registrarFuncionarioCompleto = {
         }
       }
 
-      // Validaciones básicas
+      // Validaciones mínimas
       if (!personaObj || !personaObj.numero_documento) {
         await t.rollback();
+        archivosTemporales.forEach(p => safeUnlinkSync(p));
         return res.status(400).json({ mensaje: 'Falta información de persona (numero_documento).' });
       }
       const numeroDoc = personaObj.numero_documento;
@@ -165,7 +145,7 @@ const registrarFuncionarioCompleto = {
       const personaCreada = await Persona.create(personaObj, { transaction: t });
       console.log('Persona creada id:', personaCreada.id_persona || personaCreada.numero_documento);
 
-      // 2) Verificar usuario duplicado
+      // 2) Verificar datos de usuario y duplicados
       if (!usuarioObj || !usuarioObj.username || !usuarioObj.contrasena) {
         await t.rollback();
         archivosTemporales.forEach(p => safeUnlinkSync(p));
@@ -187,8 +167,9 @@ const registrarFuncionarioCompleto = {
         return res.status(400).json({ mensaje: 'El username o documento ya existe en Usuario' });
       }
 
-      // Encriptar contraseña
-      const hashedPassword = await bcrypt.hash(usuarioObj.contrasena, 10);
+      // Guardamos la contraseña en plano para usar en el email/response (si el front la envía)
+      const plainPassword = usuarioObj.contrasena;
+      const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
       const usuarioNuevo = await Usuario.create({
         ...usuarioObj,
@@ -223,11 +204,11 @@ const registrarFuncionarioCompleto = {
 
       console.log('Funcionario creado id:', funcionarioNuevo.id_funcionario);
 
-      // --- Guardar foto (si viene) ---
+      // 4) Guardar foto (si viene)
       const fotoFile = extractFile(req, 'foto');
       if (fotoFile) {
         const fotoPath = getFilePath(fotoFile);
-        if (fotoPath) {
+        if (fotoPath && fs.existsSync(fotoPath)) {
           const bufferFoto = fs.readFileSync(fotoPath);
           const bufferComprimido = compressBuffer(bufferFoto);
 
@@ -245,7 +226,7 @@ const registrarFuncionarioCompleto = {
         }
       }
 
-      // --- Archivos requeridos ---
+      // 5) Archivos requeridos: EPS, ARL, Hoja de Vida, Acta de Grado, RUT
       const camposArchivos = {
         archivo_eps: 'EPS',
         archivo_arl: 'ARL',
@@ -257,14 +238,13 @@ const registrarFuncionarioCompleto = {
       for (const [campo, tipo_documento] of Object.entries(camposArchivos)) {
         const archivo = extractFile(req, campo);
         if (!archivo) {
-          // Rollback y cleanup si falta uno de los obligatorios
           await t.rollback();
           archivosTemporales.forEach(p => safeUnlinkSync(p));
           return res.status(400).json({ mensaje: `Falta el archivo requerido: ${tipo_documento} (campo ${campo})` });
         }
 
         const archivoPath = getFilePath(archivo);
-        if (!archivoPath) {
+        if (!archivoPath || !fs.existsSync(archivoPath)) {
           await t.rollback();
           archivosTemporales.forEach(p => safeUnlinkSync(p));
           return res.status(500).json({ mensaje: `No se pudo determinar la ruta del archivo ${campo}` });
@@ -283,28 +263,61 @@ const registrarFuncionarioCompleto = {
           fecha_subida: new Date()
         }, { transaction: t });
 
-        // eliminar temporal del disco
         safeUnlinkSync(archivoPath);
       }
 
-      // --- Commit & respuesta ---
+      // 6) Commit
       await t.commit();
-
       console.log('Registro completado exitosamente para documento:', numeroDoc);
 
+      // Preparar datos para el correo
+      const nombrePersona = personaObj.nombre || '';
+      const apellidoPersona = personaObj.apellido || '';
+      const correoDestino = personaObj.correo || usuarioObj.correo || null;
+      const usernameParaEmail = usuarioObj.username || usuarioNuevo.username;
+      const passwordParaEmail = plainPassword || '';
+
+      const asunto = "Registro Exitoso - Instituto Renato Descartes";
+      const mensajeEmail = `
+Hola ${nombrePersona} ${apellidoPersona},
+
+Tu registro como funcionario en el sistema del Instituto Renato Descartes ha sido exitoso.
+
+Tus credenciales de acceso:
+  Usuario: ${usernameParaEmail}
+  Contraseña: ${passwordParaEmail}
+
+Por seguridad, cambia tu contraseña en el primer inicio de sesión.
+
+Atentamente,
+Instituto Renato Descartes
+      `;
+
+      // 7) Enviar correo (no bloqueante en el sentido de revertir, pero await para loguear resultado)
+      if (correoDestino) {
+        try {
+          await enviarCorreo(correoDestino, asunto, mensajeEmail);
+          console.log(`📩 Correo enviado a ${correoDestino}`);
+        } catch (emailErr) {
+          console.error('Error al enviar correo (registro ya realizado):', emailErr);
+        }
+      } else {
+        console.warn('No se encontró correo destino para el funcionario, no se envió email.');
+      }
+
+      // 8) Responder al cliente (incluye contraseña en plano si así lo requieres)
       return res.status(201).json({
         mensaje: '✅ Funcionario registrado con éxito',
         usuario: {
           username: usuarioNuevo.username,
-          contrasena: usuarioObj.contrasena // devolver original (si esa es tu necesidad)
+          contrasena: passwordParaEmail
         },
-        id_funcionario: funcionarioNuevo.id_funcionario
+        id_funcionario: funcionarioNuevo.id_funcionario || funcionarioNuevo.id
       });
     } catch (error) {
-      // rollback seguro
+      // Rollback y limpieza de temporales
       try { await t.rollback(); } catch (e) { /* ignore */ }
 
-      // limpiar temporales
       if (req.files) {
         if (Array.isArray(req.files)) {
           req.files.forEach(f => safeUnlinkSync(getFilePath(f)));
@@ -316,7 +329,6 @@ const registrarFuncionarioCompleto = {
       }
 
       console.error('❌ Error al registrar funcionario:', error);
-      // si error tiene detalle de sequelize, devuelve mensaje legible
       const msg = error && error.message ? error.message : 'Error interno';
       return res.status(500).json({ mensaje: 'Error al registrar funcionario', error: msg });
     }
