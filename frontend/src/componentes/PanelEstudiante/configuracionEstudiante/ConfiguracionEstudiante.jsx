@@ -1,8 +1,9 @@
+// src/componentes/configuracionEstudiante/ConfiguracionEstudiante.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ModalMensaje from "../../ui/ModalMensaje"; // asumo que ya lo tienes
+import ModalMensaje from "../../ui/ModalMensaje";
 
-const ConfiguracionCuenta = () => {
+const ConfiguracionCuenta = ({ userData, onActualizarUserData }) => {
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
@@ -19,22 +20,42 @@ const ConfiguracionCuenta = () => {
 
   const [datosOriginales, setDatosOriginales] = useState({});
   const [fotoPreview, setFotoPreview] = useState(null);
-
-  // Mensajes visibles en el formulario (alert)
   const [mensaje, setMensaje] = useState("");
-
-  // Modal: confirmación de "¿estás seguro?"
   const [modalVisible, setModalVisible] = useState(false);
-
-  // Modal: resultado (éxito / error / info)
   const [resultadoModal, setResultadoModal] = useState({
     visible: false,
-    tipo: "info", // "exito" | "error" | "info"
+    tipo: "info",
     titulo: "",
     mensaje: "",
   });
 
-  // === Función que hace el PUT al backend (se llama cuando confirman) ===
+  // 🔄 Inicializar con datos del userData
+  useEffect(() => {
+    if (userData) {
+      const datosIniciales = {
+        nombre: userData.nombre || "",
+        apellido: userData.apellido || "",
+        correo: userData.email || "",
+        telefono: userData.telefono || "",
+        direccion: userData.direccion || "",
+        ciudad_residencia: userData.ciudad_residencia || "",
+        ocupacion: userData.ocupacion || "",
+        foto: userData.foto || null,
+        passwordActual: "",
+        passwordNueva: "",
+        passwordConfirm: "",
+      };
+      
+      setFormData(datosIniciales);
+      setDatosOriginales(datosIniciales);
+      
+      if (userData.foto) {
+        setFotoPreview(userData.foto);
+      }
+    }
+  }, [userData]);
+
+  // === Función que hace el PUT al backend ===
   const ejecutarSubmit = async () => {
     const token = localStorage.getItem("token");
     const documento = localStorage.getItem("documento");
@@ -48,7 +69,7 @@ const ConfiguracionCuenta = () => {
       }
     }
 
-    // Detectar cambios (excluimos campos de password temporal)
+    // Detectar cambios
     const hayCambios =
       Object.keys(formData).some(
         (key) =>
@@ -61,7 +82,6 @@ const ConfiguracionCuenta = () => {
     if (!hayCambios) {
       setMensaje("⚠️ No hay cambios para guardar");
       setModalVisible(false);
-      // mostramos modal de resultado tipo info (opcional)
       setResultadoModal({
         visible: true,
         tipo: "info",
@@ -72,11 +92,9 @@ const ConfiguracionCuenta = () => {
     }
 
     try {
-      // construimos payload (mapeo passwordNueva -> contrasena)
       const payload = { ...formData };
       if (formData.passwordNueva) payload.contrasena = formData.passwordNueva;
 
-      // quitamos campos que no espera backend
       delete payload.passwordActual;
       delete payload.passwordNueva;
       delete payload.passwordConfirm;
@@ -87,7 +105,20 @@ const ConfiguracionCuenta = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Actualizamos estados locales
+      // ✅ Actualizar datos globales
+      if (onActualizarUserData) {
+        onActualizarUserData({
+          nombre: formData.nombre,
+          apellido: formData.apellido,
+          email: formData.correo,
+          telefono: formData.telefono,
+          direccion: formData.direccion,
+          ciudad_residencia: formData.ciudad_residencia,
+          ocupacion: formData.ocupacion,
+          foto: formData.foto
+        });
+      }
+
       setDatosOriginales(formData);
       setFormData((prev) => ({
         ...prev,
@@ -98,7 +129,6 @@ const ConfiguracionCuenta = () => {
 
       setMensaje("✅ Datos actualizados correctamente");
 
-      // mostramos modal de resultado con estilo éxito
       setResultadoModal({
         visible: true,
         tipo: "exito",
@@ -106,7 +136,6 @@ const ConfiguracionCuenta = () => {
         mensaje: "✅ Datos actualizados correctamente",
       });
 
-      // auto-cerrar modal de éxito después de 3.5s
       setTimeout(() => {
         setResultadoModal((prev) => ({ ...prev, visible: false }));
       }, 3500);
@@ -123,66 +152,20 @@ const ConfiguracionCuenta = () => {
         mensaje: texto,
       });
     } finally {
-      // cerramos modal de confirmación (si estaba abierto)
       setModalVisible(false);
     }
   };
 
-  // Cuando el usuario hace submit en el formulario: abrimos modal de confirmación
   const handleSubmit = (e) => {
     e.preventDefault();
     setModalVisible(true);
   };
 
-  // Fetch inicial de datos
-  useEffect(() => {
-    const fetchDatos = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const documento = localStorage.getItem("documento");
-
-        const res = await axios.get(
-          `http://localhost:3000/api/coordinador/persona/${documento}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        const data = res.data;
-        setFormData((prev) => ({
-          ...prev,
-          nombre: data.nombre || "",
-          apellido: data.apellido || "",
-          correo: data.correo || "",
-          telefono: data.telefono || "",
-          direccion: data.direccion || "",
-          ciudad_residencia: data.ciudad_residencia || "",
-          ocupacion: data.ocupacion || "",
-          foto: data.foto || null,
-        }));
-
-        setDatosOriginales(data);
-
-        if (data.foto) setFotoPreview(data.foto);
-      } catch (err) {
-        setMensaje("❌ Error al cargar los datos");
-        setResultadoModal({
-          visible: true,
-          tipo: "error",
-          titulo: "Error",
-          mensaje: "❌ Error al cargar tus datos. Revisa la conexión al servidor.",
-        });
-      }
-    };
-
-    fetchDatos();
-  }, []);
-
-  // Manejo de inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Manejo imagen local -> base64 preview
   const handleFotoChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -199,7 +182,31 @@ const ConfiguracionCuenta = () => {
       <h4 className="mb-4 text-center">Configuración de Cuenta</h4>
 
       <form onSubmit={handleSubmit} className="row g-3">
-        {/* Correo */}
+        {/* Campos del formulario (igual que antes) */}
+        <div className="col-md-6">
+          <label className="form-label">Nombre</label>
+          <input
+            type="text"
+            className="form-control"
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="col-md-6">
+          <label className="form-label">Apellido</label>
+          <input
+            type="text"
+            className="form-control"
+            name="apellido"
+            value={formData.apellido}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
         <div className="col-md-6">
           <label className="form-label">Correo electrónico</label>
           <input
@@ -212,7 +219,6 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Teléfono */}
         <div className="col-md-6">
           <label className="form-label">Teléfono</label>
           <input
@@ -226,7 +232,6 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Dirección */}
         <div className="col-md-12">
           <label className="form-label">Dirección</label>
           <input
@@ -238,7 +243,6 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Ciudad */}
         <div className="col-md-12">
           <label className="form-label">Ciudad de residencia</label>
           <input
@@ -250,7 +254,6 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Ocupación */}
         <div className="col-md-12">
           <label className="form-label">Ocupación</label>
           <input
@@ -262,7 +265,6 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Contraseñas */}
         <div className="col-md-12">
           <label className="form-label">Contraseña actual</label>
           <input
@@ -299,7 +301,6 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Foto */}
         <div className="col-md-12">
           <label className="form-label">Foto de perfil</label>
           <input
@@ -320,7 +321,6 @@ const ConfiguracionCuenta = () => {
           )}
         </div>
 
-        {/* Mensaje y botón */}
         <div className="col-12 text-center mt-4">
           {mensaje && <div className="alert alert-info text-center">{mensaje}</div>}
 
@@ -330,7 +330,6 @@ const ConfiguracionCuenta = () => {
         </div>
       </form>
 
-      {/* Modal de confirmación (antes de ejecutar) */}
       <ModalMensaje
         visible={modalVisible}
         tipo="confirmacion"
@@ -340,7 +339,6 @@ const ConfiguracionCuenta = () => {
         onConfirm={ejecutarSubmit}
       />
 
-      {/* Modal de resultado (éxito / error / info) */}
       <ModalMensaje
         visible={resultadoModal.visible}
         tipo={resultadoModal.tipo}

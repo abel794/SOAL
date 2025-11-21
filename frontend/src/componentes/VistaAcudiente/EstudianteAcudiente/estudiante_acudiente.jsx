@@ -30,6 +30,7 @@ const EstudiantesCards = () => {
   const [observaciones, setObservaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [menuActivo, setMenuActivo] = useState("dashboard");
 
   // CARGAR TODOS LOS DATOS
   useEffect(() => {
@@ -42,7 +43,6 @@ const EstudiantesCards = () => {
           return;
         }
 
-        // Endpoint que proporciona estudiantes con observaciones y asistencias reales
         const res = await axios.get(
           "http://localhost:3000/api/acudientes/informacion/estudiantes",
           {
@@ -50,8 +50,6 @@ const EstudiantesCards = () => {
             timeout: 10000,
           }
         );
-
-        console.log("📡 Datos para dashboard:", res.data);
 
         if (res.data && res.data.success) {
           setEstudiantes(res.data.estudiantes || []);
@@ -75,417 +73,321 @@ const EstudiantesCards = () => {
     fetchData();
   }, []);
 
-  // Función para contar observaciones por estudiante
-  const getObservacionesPorEstudiante = (idEstudiante) => {
-    return observaciones.filter((obs) => obs.id_estudiante === idEstudiante);
-  };
-
-  // Función para calcular estadísticas generales
-  const calcularEstadisticas = () => {
-    if (estudiantes.length === 0)
-      return {
-        totalObservaciones: 0,
-        estudiantesConObservaciones: 0,
-        promedioObservaciones: 0,
-      };
-
-    const totalObservaciones = observaciones.length;
-    const estudiantesConObservaciones = estudiantes.filter(
-      (est) => getObservacionesPorEstudiante(est.id_estudiante).length > 0
-    ).length;
-    const promedioObservaciones = Math.round(
-      totalObservaciones / estudiantes.length
-    );
-
-    return {
-      totalObservaciones,
-      estudiantesConObservaciones,
-      promedioObservaciones,
-    };
-  };
-
   if (loading) {
     return (
-      <div className="container mt-4 w-100 h-100 d-flex justify-content-center align-items-center">
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{ height: "200px" }}
-        >
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Cargando...</span>
-          </div>
-          <span className="ms-3">Cargando información de estudiantes...</span>
-        </div>
+      <div className="acudiente-loading">
+        <div className="loading-spinner"></div>
+        <p>Cargando información de estudiantes...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mt-4">
-        <div className="alert alert-danger text-center" role="alert">
-          <i className="bi bi-exclamation-triangle-fill me-2"></i>
-          {error}
-        </div>
+      <div className="acudiente-error">
+        <div className="error-icon">⚠️</div>
+        <h3>Error al cargar los datos</h3>
+        <p>{error}</p>
+        <button className="retry-btn" onClick={() => window.location.reload()}>
+          Reintentar
+        </button>
       </div>
     );
   }
 
   if (estudiantes.length === 0) {
     return (
-      <div className="container mt-4 w-100 h-100 d-flex justify-content-center align-items-center">
-        <div className="text-center py-5">
-          <i className="bi bi-person-x display-1 text-muted"></i>
-          <h3 className="mt-3 text-muted">No hay estudiantes registrados</h3>
-          <p className="text-muted">
-            No se encontraron estudiantes asociados a su cuenta.
-          </p>
-        </div>
+      <div className="acudiente-empty">
+        <div className="empty-icon">👨‍🎓</div>
+        <h3>No hay estudiantes registrados</h3>
+        <p>No se encontraron estudiantes asociados a su cuenta.</p>
       </div>
     );
   }
 
-  const {
-    totalObservaciones,
-    estudiantesConObservaciones,
-    promedioObservaciones,
-  } = calcularEstadisticas();
-
   return (
-    <div className="container mt-4">
-    {/* Header con estadísticas generales */}
-<div className="row mb-4">
-  <div className="col-12">
-    <div className="dashboard-header p-4 rounded-3">
-      <div className="row text-center">
-        {/* Total de estudiantes */}
-        <div className="col-md-3">
-          <div className="stat-card">
-            <i className="bi bi-people display-4 text-primary"></i>
-            <h3 className="mt-2">{estudiantes.length}</h3>
-            <p className="text-muted">Estudiantes</p>
+    <div className="acudiente-panel">
+      {/* Header Principal */}
+      <header className="acudiente-header">
+        <div className="header-content">
+          <div className="header-title">
+            <h1>Panel Acudiente</h1>
+            <p>Gestión y seguimiento de estudiantes</p>
+          </div>
+          <div className="user-info">
+            <div className="user-avatar">
+              <span>CD</span>
+            </div>
+            <div className="user-details">
+              <span className="user-name">Camilo Descartes</span>
+              <span className="user-email">correo@camilo.es</span>
+            </div>
           </div>
         </div>
+      </header>
 
-        {/* Promedio de observaciones */}
-        <div className="col-md-3">
-          <div className="stat-card">
-            <i className="bi bi-check-circle display-4 text-success"></i>
-            <h3 className="mt-2">
-              {(
-                estudiantes.reduce((acc, e) => acc + e.observaciones, 0) /
-                (estudiantes.length || 1)
-              ).toFixed(1)}
-            </h3>
-            <p className="text-muted">Obs. Promedio</p>
-          </div>
-        </div>
-
-        {/* Total de observaciones */}
-        <div className="col-md-3">
-          <div className="stat-card">
-            <i className="bi bi-exclamation-triangle display-4 text-warning"></i>
-            <h3 className="mt-2">
-              {estudiantes.reduce((acc, e) => acc + e.observaciones, 0)}
-            </h3>
-            <p className="text-muted">Observaciones Totales</p>
-          </div>
-        </div>
-
-        {/* Estudiantes con al menos una observación */}
-        <div className="col-md-3">
-          <div className="stat-card">
-            <i className="bi bi-graph-up display-4 text-info"></i>
-            <h3 className="mt-2">
-              {estudiantes.filter((e) => e.observaciones > 0).length}
-            </h3>
-            <p className="text-muted">Con Observaciones</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      {/* Sección de Gráficos */}
-      <div className="row mb-5">
-        <div className="col-12 ">
-          <h2 className="section-title mb-4">
-            <i className="bi bi-bar-chart-fill me-2"></i>
-            Resumen Gráfico
-          </h2>
-        </div>
-
-        {estudiantes.map((estudiante) => {
-          const observacionesEstudiante = getObservacionesPorEstudiante(
-            estudiante.id_estudiante
-          );
-          const observacionesCount = estudiante.observaciones || 0;
-          const asistenciasCount = estudiante.asistencias || 0;
-
-          // Datos para gráfico de barras
-          const barChartData = {
-            labels: ["Observaciones", "Asistencias"],
-            datasets: [
-              {
-                label: "Cantidad",
-                data: [observacionesCount, asistenciasCount],
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.8)",
-                  "rgba(54, 162, 235, 0.8)",
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                ],
-                borderWidth: 1,
-              },
-            ],
-          };
-
-          // Datos para gráfico de doughnut
-          const total = observacionesCount + asistenciasCount;
-          const doughnutData = {
-            labels: ["Observaciones", "Asistencias"],
-            datasets: [
-              {
-                data:
-                  total > 0 ? [observacionesCount, asistenciasCount] : [1],
-                backgroundColor:
-                  total > 0
-                    ? [
-                        "rgba(255, 99, 132, 0.8)",
-                        "rgba(54, 162, 235, 0.8)",
-                      ]
-                    : ["rgba(200, 200, 200, 0.5)"],
-                borderColor:
-                  total > 0
-                    ? [
-                        "rgba(255, 99, 132, 1)",
-                        "rgba(54, 162, 235, 1)",
-                      ]
-                    : ["rgba(150, 150, 150, 1)"],
-                borderWidth: 1,
-              },
-            ],
-          };
-
-          return (
-            <div
-              key={estudiante.id_estudiante}
-              className="col-lg-6 col-md-6 mb-4"
+      {/* Menú de Navegación */}
+      <nav className="acudiente-nav">
+        <div className="nav-container">
+          <div className="nav-items">
+            <button 
+              className={`nav-item ${menuActivo === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setMenuActivo('dashboard')}
             >
-              <div className="chart-card card h-100 shadow-sm">
-                <div className="card-header bg-transparent">
-                  <h5 className="card-title mb-0">
-                    {estudiante.nombre} {estudiante.apellido}
-                  </h5>
-                  <small className="text-muted">{estudiante.grado}</small>
-                </div>
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="chart-container">
-                        <Bar
-                          data={barChartData}
-                          options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                              legend: { display: false },
-                              title: {
-                                display: true,
-                                text: "Rendimiento",
-                                font: { size: 14 },
-                              },
-                            },
-                            scales: {
-                              y: {
-                                beginAtZero: true,
-                                title: { display: true, text: "Cantidad" },
-                                ticks: { stepSize: 5 },
-                              },
-                            },
-                          }}
-                          height={200}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="chart-container">
-                        <Doughnut
-                          data={doughnutData}
-                          options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                              legend: {
-                                position: "bottom",
-                                labels: { font: { size: 12 } },
-                              },
-                              tooltip: {
-                                callbacks: {
-                                  label: function (context) {
-                                    const label = context.label || "";
-                                    const value = context.parsed;
-                                    const total = context.dataset.data.reduce(
-                                      (a, b) => a + b,
-                                      0
-                                    );
-                                    const percentage = Math.round(
-                                      (value / total) * 100
-                                    );
-                                    return `${label}: ${value} (${percentage}%)`;
-                                  },
-                                },
-                              },
-                            },
-                            cutout: "60%",
-                          }}
-                          height={200}
-                        />
-                      </div>
-                    </div>
-                  </div>
+              <span className="nav-icon">📊</span>
+              <span className="nav-text">Dashboard</span>
+            </button>
+            <button 
+              className={`nav-item ${menuActivo === 'notificaciones' ? 'active' : ''}`}
+              onClick={() => setMenuActivo('notificaciones')}
+            >
+              <span className="nav-icon">🔔</span>
+              <span className="nav-text">Notificaciones</span>
+            </button>
+            <button 
+              className={`nav-item ${menuActivo === 'por' ? 'active' : ''}`}
+              onClick={() => setMenuActivo('por')}
+            >
+              <span className="nav-icon">📨</span>
+              <span className="nav-text">Enviar POR</span>
+            </button>
+            <button 
+              className={`nav-item ${menuActivo === 'justificaciones' ? 'active' : ''}`}
+              onClick={() => setMenuActivo('justificaciones')}
+            >
+              <span className="nav-icon">📝</span>
+              <span className="nav-text">Justificaciones</span>
+            </button>
+            <button 
+              className={`nav-item ${menuActivo === 'historial' ? 'active' : ''}`}
+              onClick={() => setMenuActivo('historial')}
+            >
+              <span className="nav-icon">📋</span>
+              <span className="nav-text">Historial</span>
+            </button>
+            <button 
+              className={`nav-item ${menuActivo === 'configuracion' ? 'active' : ''}`}
+              onClick={() => setMenuActivo('configuracion')}
+            >
+              <span className="nav-icon">⚙️</span>
+              <span className="nav-text">Configuración</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Contenido Principal */}
+      <main className="acudiente-main">
+        {/* Resumen General */}
+        <section className="resumen-section">
+          <div className="section-header">
+            <h2>Resumen General</h2>
+            <p>Vista completa del rendimiento de tus estudiantes</p>
+          </div>
+          
+          <div className="stats-cards">
+            <div className="stat-card">
+              <div className="stat-content">
+                <div className="stat-icon estudiantes">👥</div>
+                <div className="stat-data">
+                  <h3>{estudiantes.length}</h3>
+                  <p>Total Estudiantes</p>
                 </div>
               </div>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Sección de Lista de Estudiantes */}
-      <div className="row">
-        <div className="col-12">
-          <h2 className="section-title mb-4">
-            <i className="bi bi-people-fill me-2"></i>
-            Mis Estudiantes
-          </h2>
-        </div>
-
-        {estudiantes.map((estudiante) => {
-          const observacionesEstudiante = getObservacionesPorEstudiante(
-            estudiante.id_estudiante
-          );
-          const observacionesCount = estudiante.observaciones || 0;
-          const asistenciasCount = estudiante.asistencias || 0;
-
-          return (
-            <div
-              key={estudiante.id_estudiante}
-              className="col-lg-6 col-md-12 mb-4"
-            >
-              <div className="estudiante-card card h-100 w-100 shadow-sm">
-                <div className="card-header estudiante-header">
-                  <div className="estudiante-avatar">
-                    {estudiante.nombre?.charAt(0)}
-                    {estudiante.apellido?.charAt(0)}
-                  </div>
-                  <div className="estudiante-titles">
-                    <h5 className="card-title mb-1">
-                      {estudiante.nombre} {estudiante.apellido}
-                    </h5>
-                    <p className="card-subtitle text-muted mb-0">
-                      {estudiante.grado}
-                    </p>
-                  </div>
+            
+            <div className="stat-card">
+              <div className="stat-content">
+                <div className="stat-icon asistencias">✅</div>
+                <div className="stat-data">
+                  <h3>{estudiantes.reduce((acc, e) => acc + (e.asistencias || 0), 0)}</h3>
+                  <p>Asistencias Totales</p>
                 </div>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-content">
+                <div className="stat-icon observaciones">📝</div>
+                <div className="stat-data">
+                  <h3>{estudiantes.reduce((acc, e) => acc + (e.observaciones || 0), 0)}</h3>
+                  <p>Observaciones Totales</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-content">
+                <div className="stat-icon rendimiento">📊</div>
+                <div className="stat-data">
+                  <h3>{estudiantes.filter(e => e.observaciones > 0).length}</h3>
+                  <p>Con Observaciones</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                <div className="card-body">
-                  <ul className="estudiante-info list-unstyled">
-                    <li>
-                      <i className="bi bi-person-badge"></i>
-                      <div className="info-content">
-                        <strong>Documento:</strong>
-                        <span>
-                          {estudiante.documento || "No especificado"}
-                        </span>
-                      </div>
-                    </li>
-                    <li>
-                      <i className="bi bi-calendar"></i>
-                      <div className="info-content">
-                        <strong>Edad:</strong>
-                        <span>{estudiante.edad || "N/A"} años</span>
-                      </div>
-                    </li>
-                    <li>
-                      <i className="bi bi-exclamation-circle"></i>
-                      <div className="info-content">
-                        <strong>Observaciones:</strong>
-                        <span
-                          className={
-                            observacionesCount > 0
-                              ? "text-warning"
-                              : "text-success"
-                          }
-                        >
-                          {observacionesCount}
-                        </span>
-                      </div>
-                    </li>
-                    <li>
-                      <i className="bi bi-check-circle"></i>
-                      <div className="info-content">
-                        <strong>Asistencias:</strong>
-                        <span
-                          className={
-                            asistenciasCount > 0
-                              ? "text-success"
-                              : "text-secondary"
-                          }
-                        >
-                          {asistenciasCount}
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
+        {/* Análisis Individual por Estudiante */}
+        <section className="analisis-section">
+          <div className="section-header">
+            <h2>Análisis Individual</h2>
+            <p>Rendimiento detallado de cada estudiante</p>
+          </div>
 
-                  {/* Indicador de rendimiento */}
-                  <div className="rendimiento-indicator mt-3">
-                    <div className="progress" style={{ height: "8px" }}>
-                      <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{
-                          width: `${Math.min(
-                            (asistenciasCount /
-                              Math.max(
-                                asistenciasCount + observacionesCount,
-                                1
-                              )) *
-                              100,
-                            100
-                          )}%`,
-                        }}
+          <div className="estudiantes-analisis">
+            {estudiantes.map((estudiante) => {
+              const observacionesCount = estudiante.observaciones || 0;
+              const asistenciasCount = estudiante.asistencias || 0;
+              const total = observacionesCount + asistenciasCount;
+              const rendimiento = Math.round((asistenciasCount / Math.max(total, 1)) * 100);
+
+              return (
+                <div key={estudiante.id_estudiante} className="analisis-card">
+                  {/* Header del Estudiante */}
+                  <div className="estudiante-header">
+                    <div className="estudiante-avatar">
+                      {estudiante.nombre?.charAt(0)}{estudiante.apellido?.charAt(0)}
+                    </div>
+                    <div className="estudiante-info">
+                      <h3>{estudiante.nombre} {estudiante.apellido}</h3>
+                      <div className="estudiante-meta">
+                        <span className="grado">{estudiante.grado || "Sin grado asignado"}</span>
+                        <span className="documento">Doc: {estudiante.documento || "N/A"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Estadísticas Principales */}
+                  <div className="estadisticas-principales">
+                    <div className="estadistica">
+                      <div className="estadistica-icon observaciones">📝</div>
+                      <div className="estadistica-data">
+                        <span className="valor">{observacionesCount}</span>
+                        <span className="label">Observaciones</span>
+                      </div>
+                    </div>
+                    
+                    <div className="estadistica">
+                      <div className="estadistica-icon asistencias">✅</div>
+                      <div className="estadistica-data">
+                        <span className="valor">{asistenciasCount}</span>
+                        <span className="label">Asistencias</span>
+                      </div>
+                    </div>
+                    
+                    <div className="estadistica">
+                      <div className="estadistica-icon rendimiento">📊</div>
+                      <div className="estadistica-data">
+                        <span className={`valor ${rendimiento >= 80 ? 'excelente' : rendimiento >= 60 ? 'bueno' : 'bajo'}`}>
+                          {rendimiento}%
+                        </span>
+                        <span className="label">Rendimiento</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Gráficos */}
+                  <div className="charts-container">
+                    <div className="chart-wrapper">
+                      <h4>Comparación Directa</h4>
+                      <div className="chart-inner">
+                        <Bar
+                          data={{
+                            labels: ['Observaciones', 'Asistencias'],
+                            datasets: [{
+                              data: [observacionesCount, asistenciasCount],
+                              backgroundColor: ['#ff6b6b', '#51cf66'],
+                              borderColor: ['#ff6b6b', '#51cf66'],
+                              borderWidth: 2,
+                              borderRadius: 6,
+                            }]
+                          }}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                              y: { 
+                                beginAtZero: true, 
+                                ticks: { stepSize: 1 },
+                                grid: { color: 'rgba(0,0,0,0.1)' }
+                              },
+                              x: { 
+                                grid: { display: false }
+                              }
+                            }
+                          }}
+                          height={120}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="chart-wrapper">
+                      <h4>Distribución</h4>
+                      <div className="chart-inner">
+                        <Doughnut
+                          data={{
+                            labels: ['Observaciones', 'Asistencias'],
+                            datasets: [{
+                              data: total > 0 ? [observacionesCount, asistenciasCount] : [1],
+                              backgroundColor: total > 0 ? ['#ff6b6b', '#51cf66'] : ['#e9ecef'],
+                              borderWidth: 2,
+                            }]
+                          }}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { 
+                                position: 'bottom',
+                                labels: { usePointStyle: true, padding: 15 }
+                              }
+                            },
+                            cutout: '60%'
+                          }}
+                          height={120}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Barra de Progreso */}
+                  <div className="progreso-section">
+                    <div className="progreso-header">
+                      <span>Progreso Académico</span>
+                      <span className={`progreso-porcentaje ${rendimiento >= 80 ? 'excelente' : rendimiento >= 60 ? 'bueno' : 'bajo'}`}>
+                        {rendimiento}%
+                      </span>
+                    </div>
+                    <div className="progreso-bar">
+                      <div 
+                        className={`progreso-fill ${rendimiento >= 80 ? 'excelente' : rendimiento >= 60 ? 'bueno' : 'bajo'}`}
+                        style={{ width: `${rendimiento}%` }}
                       ></div>
                     </div>
-                    <small className="text-muted">
-                      Rendimiento:{" "}
-                      {Math.round(
-                        (asistenciasCount /
-                          Math.max(asistenciasCount + observacionesCount, 1)) *
-                          100
-                      )}
-                      %
-                    </small>
+                    <div className="progreso-labels">
+                      <span>0%</span>
+                      <span>50%</span>
+                      <span>100%</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="card-footer bg-transparent">
-                  <div className="d-grid">
-                    <button className="btn btn-outline-primary btn-sm">
-                      <i className="bi bi-eye me-1"></i>
-                      Ver Detalles
+                  {/* Acciones */}
+                  <div className="acciones-section">
+                    <button className="btn-primario">
+                      <span>👁️ Ver Detalles Completos</span>
+                    </button>
+                    <button className="btn-secundario">
+                      <span>📧 Contactar Colegio</span>
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </section>
+      </main>
     </div>
   );
 };

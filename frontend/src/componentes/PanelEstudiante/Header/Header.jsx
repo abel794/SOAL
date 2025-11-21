@@ -155,14 +155,9 @@ export default function HeaderEstudianteFB() {
         return s;
       });
 
-      // reducir contador local a cero (Facebook hace esto al abrir)
+      // reducir contador local a cero 
       setNotifCount(0);
 
-      /* Si algún día decides permitir que el estudiante marque en la DB, descomenta:
-      if (pendientes.length > 0) {
-        await axios.put("/api/notificaciones/marcar-varias", { ids: pendientes }, { headers });
-      }
-      */
     } catch (err) {
       console.error("Error cargar notifs:", err);
       setError("No se pudieron cargar notificaciones");
