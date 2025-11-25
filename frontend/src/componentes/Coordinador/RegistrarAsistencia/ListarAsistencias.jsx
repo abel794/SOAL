@@ -262,7 +262,7 @@ const ListarAsistencias = () => {
       {!cargando && asistencias.length > 0 ? (
         <div className="table-responsive tabla-asistencias">
           <table className="table table-bordered table-hover align-middle text-center">
-            <thead className="table-dark">
+            <thead className="tabla_asistencia">
               <tr>
                 <th>📅 Fecha</th>
                 <th>👩‍🎓 Estudiante</th>

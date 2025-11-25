@@ -44,18 +44,22 @@
   box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.2);
 }
 
-/* === Tabla === */
-.tabla-asistencias table {
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: #fff;
-  font-size: 1rem;
+
+/* Encabezado de tabla de asistencias con gradient azul */
+.table.tabla_asistencia thead {
+  background: linear-gradient(90deg, #0d47a1, #1976d2) !important;
+  color: white !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  border: none !important;
 }
 
-.table-dark {
-  background-color: var(--azul-oscuro) !important;
-  color: #fff !important;
+
+/* Opcional: quitar bordes grises del thead */
+.table thead th {
+  border-bottom: none !important;
 }
+
 
 .table tbody tr:hover {
   background-color: rgba(0, 119, 204, 0.08);

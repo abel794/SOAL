@@ -1,6 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './style/BuscarEstudiantes.css';
 import ModalMensaje from "../../ui/ModalMensaje";
 
 function BuscarEstudiante() {

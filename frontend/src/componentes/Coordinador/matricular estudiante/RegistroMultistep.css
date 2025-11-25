@@ -7,8 +7,8 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.registro-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.registro_header {
+  background: linear-gradient(135deg, #0080ff 0%, #d1ecf1 100%, #00b7ff 100%);
   color: white;
   padding: 30px;
   border-radius: 15px;

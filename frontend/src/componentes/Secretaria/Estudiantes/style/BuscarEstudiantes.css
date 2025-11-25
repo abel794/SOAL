@@ -24,7 +24,7 @@
 /* === Contenedor Principal === */
 .buscar-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #0080ff 0%, #ff0000 100%);
   padding: 2rem 1rem;
 }
 

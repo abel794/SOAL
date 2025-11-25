@@ -5,7 +5,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #003366, #00509e);
   font-family: "Poppins", sans-serif;
   padding: 20px;
 }

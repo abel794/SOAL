@@ -484,7 +484,7 @@ export default function RegistroMultistep() {
   return (
     <div className="registro-moderno-container">
       <motion.div 
-        className="registro-header"
+        className="registro_header"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
