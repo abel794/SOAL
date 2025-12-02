@@ -25,15 +25,18 @@
 
 /* === Contenedor Principal === */
 .agendar-cita-container {
+    background: linear-gradient(135deg, #0080ff 0%, #d1ecf1 100%, #00b7ff 100%);
+
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items:center;
   padding: 2rem 1rem;
   background-color: var(--light-bg);
   min-height: 100vh;
 }
 
 .agendar-card {
+  justify-content: center;
   background: var(--card-bg);
   padding: 2.5rem;
   border-radius: var(--radius);
