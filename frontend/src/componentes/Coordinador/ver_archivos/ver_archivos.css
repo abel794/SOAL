@@ -1,4 +1,4 @@
-/* === CONTENEDOR GENERAL === */
+/* ver_archivos.css */
 .ver-archivos-container {
   background-color: #ffffff;
   padding: 2rem;
@@ -15,8 +15,20 @@
   text-align: center;
 }
 
-/* === TARJETAS DE ARCHIVO === */
-.card {
+/* Filtros y búsqueda */
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Tarjetas de archivo */
+.file-card {
   border: none;
   border-radius: 12px;
   overflow: hidden;
@@ -24,65 +36,94 @@
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
+.file-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
 }
 
-/* Imagen de archivo (solo si es imagen) */
-.card-img-top {
-  object-fit: cover;
+/* Contenedores de imagen/icono */
+.file-image-container {
   height: 180px;
+  overflow: hidden;
+  background-color: #f8f9fa;
 }
 
-/* === CUERPO DE LA TARJETA === */
-.card-body {
-  background-color: #ffffff;
-  text-align: center;
+.file-image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.file-card:hover .file-image {
+  transform: scale(1.05);
+}
+
+.file-icon-container {
+  height: 180px;
+  border-bottom: 2px solid #007bff20;
+  transition: background-color 0.3s ease;
+}
+
+.file-card:hover .file-icon-container {
+  background-color: #e3f2fd !important;
+}
+
+/* Información del archivo */
+.file-info {
+  margin: 0.5rem 0;
 }
 
 .card-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #333;
   margin-bottom: 0.5rem;
 }
 
-.text-muted {
-  font-size: 0.85rem;
+.user-info {
+  font-size: 0.8rem;
 }
 
-/* === BOTÓN DESCARGAR === */
+/* Botones */
 .btn-outline-primary {
   color: #007bff;
   border: 1.8px solid #007bff;
   border-radius: 8px;
   padding: 0.4rem 1rem;
   transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-.btn-outline-primary:hover {
+.btn-outline-primary:hover:not(:disabled) {
   background-color: #007bff;
   color: #fff;
+  transform: translateY(-1px);
 }
 
-/* === ICONO PARA PDFs U OTROS ARCHIVOS === */
-.bg-light {
-  background-color: #f0f2f5 !important;
-  border-bottom: 2px solid #007bff20;
+.btn-outline-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* === RESPONSIVE === */
+/* Estados de carga */
+.spinner-border-sm {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .ver-archivos-container {
     padding: 1rem;
   }
 
-  .card {
+  .file-card {
     margin-bottom: 1rem;
   }
 
-  .card-img-top {
+  .file-image-container,
+  .file-icon-container {
     height: 150px;
   }
 
@@ -90,4 +131,38 @@
     width: 100%;
     font-size: 0.9rem;
   }
+
+  .row.mb-4 {
+    margin-bottom: 1rem !important;
+  }
+
+  .col-md-4, .col-md-3, .col-md-2 {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .ver-archivos-container {
+    padding: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.file-card {
+  animation: fadeIn 0.5s ease;
 }

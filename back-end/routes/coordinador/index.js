@@ -46,7 +46,7 @@ rutasCoordinador.forEach((archivo) => {
   const ruta = require(`./${archivo}`);
   const base = `/${archivo.replace('Routes', '').replace('_coordinador', '')}`;
   router.use(base, ruta);
-  console.log(`🔹 Ruta cargada: ${base} → ${archivo}`);
+  //console.log(`🔹 Ruta cargada: ${base} → ${archivo}`);
 });
 
 // 🔴 Ruta crítica de observaciones críticas

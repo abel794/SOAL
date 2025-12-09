@@ -17,6 +17,16 @@ router.get('/profesores/activos', async (req, res) => {
   }
 });
 
+router.get('/funcionarios/completos', async (req, res) => {
+  try {
+    console.log('📊 Ruta GET /api/coordinador/dashboard/funcionarios/activos');
+    await dashboardController.profesoresCompletos(req, res);
+  } catch (error) {
+    console.error('❌ Error en /funcionarios/activos:', error);
+    res.status(500).json({ error: 'Error en la ruta /funcionarios/activos', detalle: error.message });
+  }
+});
+
 // 📨 PQR pendientes
 router.get('/pqrs/SinResponder', async (req, res) => {
   try {

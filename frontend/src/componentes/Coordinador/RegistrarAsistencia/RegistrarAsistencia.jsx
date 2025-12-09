@@ -90,7 +90,7 @@ const RegistrarAsistencia = () => {
 
     setCargando(true);
     axios
-      .get(`http://localhost:3000/api/coordinador/estudiantegrado/por-grado/${gradoSeleccionado}`)
+      .get(`http://localhost:3000/api/coordinador/estudiantegrado/grado/${gradoSeleccionado}`)
       .then((res) => {
         const inicialAsis = {};
         const inicialObs = {};

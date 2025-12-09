@@ -14,31 +14,89 @@ const ObtenerUsuarios1=async(req,res)=>{
         res.json({error:error.message})
     }
 }
-const obtenerArchivo = async (req, res) => {
+const obtenerArchivos = async (req, res) => {
   try {
-    console.log("obteniendo archivo");
+    console.log("Obteniendo archivos con información de usuarios");
 
-    // Traes todos los registros
-    const archivos = await db.Archivo.findAll();
+    const archivos = await db.Archivo.findAll({
+      include: [
+        {
+          model: db.Usuario,
+          attributes: ['id_usuario', 'username', 'numero_documento'],
+          include: [
+            {
+              model: db.Persona,
+              attributes: ['nombre', 'apellido', 'correo', 'numero_documento']
+            }
+          ]
+        }
+      ],
+      order: [['fecha_subida', 'DESC']]
+    });
 
-    // Convertimos cada archivo a base64
     const archivosConBase64 = archivos.map((archivo) => {
-      const buffer = archivo.contenido; // el campo BLOB
+      const buffer = archivo.contenido;
       const base64 = buffer ? buffer.toString("base64") : null;
+      
+      // Calcular tamaño del archivo
+      const tamaño = buffer ? buffer.length : 0;
 
       return {
         id_archivo: archivo.id_archivo,
         nombre_original: archivo.nombre_original,
         nombre_sistema: archivo.nombre_sistema,
         tipo: archivo.tipo,
+        tipo_documento: archivo.tipo_documento,
         contenido_base64: base64 ? `data:${archivo.tipo};base64,${base64}` : null,
+        tamaño: tamaño,
+        fecha_subida: archivo.fecha_subida,
+        usuario: {
+          id_usuario: archivo.Usuario?.id_usuario,
+          username: archivo.Usuario?.username,
+          persona: {
+            nombre: archivo.Usuario?.Persona?.nombre,
+            apellido: archivo.Usuario?.Persona?.apellido,
+            correo: archivo.Usuario?.Persona?.correo,
+            numero_documento: archivo.Usuario?.Persona?.numero_documento
+          }
+        }
       };
     });
 
-    // Enviamos ya todo convertido
     res.json(archivosConBase64);
   } catch (err) {
-    console.log("error al obtener archivo");
+    console.error("Error al obtener archivos:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Controlador para descargar archivo individual
+const descargarArchivo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const archivo = await db.Archivo.findOne({
+      where: { id_archivo: id },
+      include: [
+        {
+          model: db.Usuario,
+          include: [db.Persona]
+        }
+      ]
+    });
+
+    if (!archivo) {
+      return res.status(404).json({ error: "Archivo no encontrado" });
+    }
+
+    // Configurar headers para descarga
+    res.setHeader('Content-Type', archivo.tipo);
+    res.setHeader('Content-Disposition', `attachment; filename="${archivo.nombre_original}"`);
+    
+    // Enviar el buffer directamente
+    res.send(archivo.contenido);
+  } catch (err) {
+    console.error("Error al descargar archivo:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -83,4 +141,9 @@ const reportesAsistencia = async (req, res) => {
 
 
 
-module.exports={ ObtenerUsuarios1, obtenerArchivo, reportesAsistencia}
+module.exports = { 
+  ObtenerUsuarios1, 
+  obtenerArchivos, 
+  descargarArchivo,
+  reportesAsistencia 
+};

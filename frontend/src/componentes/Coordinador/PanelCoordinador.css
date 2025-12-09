@@ -163,3 +163,13 @@ body.sidebar-open {
   z-index: 1000;
   backdrop-filter: blur(2px);
 }
+.cards-panel {
+  background-color: #ffffff;       /* Fondo blanco */
+  padding: 30px;                   /* Espacio dentro del panel */
+  border-radius: 12px;             /* Bordes redondeados */
+  max-width: 1200px;               /* Máximo ancho */
+  width: 95%;                       /* Ocupa casi todo el ancho */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra sutil */
+  margin-left: auto;                /* Centrar horizontalmente */
+  margin-right: auto;
+}

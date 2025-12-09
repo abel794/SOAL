@@ -1,29 +1,1185 @@
-.tabla-pqr {
-  border-collapse: collapse;
+/* 🔥 PROFESORES ACTIVOS CSS - ULTRA PREMIUM EDITION 🔥 */
+
+/* ========== ANIMACIONES ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
+.profesores-container-ultra {
+  min-height: 100vh;
+  padding: 2rem;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ========== HEADER ULTRA ========== */
+.profesores-header-ultra {
+  background: linear-gradient(135deg, #eeeeee 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 200%;
+  animation: shimmer 10s ease infinite;
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.profesores-header-ultra::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  background-size: 200% 200%;
+  animation: shimmer 3s infinite;
+}
+
+.header-content-ultra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.header-title-ultra h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: #050404;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-title-ultra p {
+  margin: 0.5rem 0 0 0;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(7, 6, 6, 0.9);
+}
+
+.header-badge-ultra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: float 3s ease-in-out infinite;
+}
+
+.badge-number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #040404;
+  line-height: 1;
+}
+
+.badge-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(9, 8, 8, 0.9);
+}
+
+/* ========== ESTADÍSTICAS MINI ========== */
+.stats-section-ultra {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card-mini {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.6s ease;
+}
+
+.stat-card-mini:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.stat-icon-mini {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.stat-data-mini h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #060505;
+}
+
+.stat-data-mini p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.85rem;
+  color: #0a0b0b;
+  font-weight: 600;
+}
+
+/* ========== CONTROLES ULTRA ========== */
+.controles-section-ultra {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box-ultra,
+.filter-box-ultra {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.search-box-ultra {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-box-ultra:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+}
+
+.search-icon,
+.filter-icon {
+  font-size: 1.25rem;
+}
+
+.search-input-ultra {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #060505;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-input-ultra::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search-clear {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #090808;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.search-clear:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.filter-box-ultra {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+}
+
+.filter-select-ultra {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #040404;
+  font-size: 0.95rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.filter-select-ultra option {
+  background: #f8f8fa;
+  color: #090808;
+}
+
+/* ========== TOGGLE VISTA ========== */
+.vista-toggle-ultra {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.vista-btn-ultra {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: #080808;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vista-btn-ultra:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #090909;
+}
+
+.vista-btn-ultra.active {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #0b0b0b;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ========== GRID DE CARDS ULTRA ========== */
+.profesores-grid-ultra {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
+  animation: fadeIn 0.6s ease;
+}
+
+.profesor-card-ultra {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profesor-card-ultra::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease infinite;
+}
+
+.profesor-card-ultra:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ========== HEADER DE CARD ========== */
+.profesor-header-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.profesor-avatar-ultra {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #090909;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.profesor-info-card {
+  flex: 1;
+  min-width: 0;
+}
+
+.profesor-info-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #050505;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profesor-cargo-badge {
+  display: inline-block;
+  padding: 0.375rem 0.875rem;
+  background: rgba(99, 102, 241, 0.2);
+  color: #080808;
+  border: 2px solid rgba(99, 102, 241, 0.4);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.profesor-numero {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: #0c0c0c;
+  font-size: 1.1rem;
+}
+
+/* ========== DETALLES DE CARD ========== */
+.profesor-details-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.detail-item.full-width {
+  flex-direction: column;
+}
+
+.detail-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.detail-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #0a0a0a;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  display: block;
+  color: #080808;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.email-link {
+  color: #060606;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.email-link:hover {
+  color: #060606;
+  text-decoration: underline;
+}
+
+.documento-code {
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+  display: inline-block;
+  color: #011006;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+/* ========== GRADOS ========== */
+.grados-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.grado-badge-ultra {
+  padding: 0.5rem 1rem;
+  background: rgba(34, 197, 94, 0.2);
+  color: #0a0a0a;
+  border: 2px solid rgba(34, 197, 94, 0.4);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sin-grados-text {
+  color: #0e0f11;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* ========== ACCIONES DE CARD ========== */
+.profesor-actions-card {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-action-primary,
+.btn-action-secondary {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-action-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #0c0c0c;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-action-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.btn-action-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #050505;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-action-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ========== TABLA ULTRA ========== */
+.tabla-container-ultra {
+  animation: fadeIn 0.6s ease;
+}
+
+.tabla-wrapper-ultra {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.tabla-profesores-ultra {
   width: 100%;
-  margin-top: 1rem;
+  border-collapse: collapse;
 }
 
-.tabla-pqr th,
-.tabla-pqr td {
-  border: 1px solid #ddd;
-  padding: 12px;
+.tabla-profesores-ultra thead {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.tabla-profesores-ultra th {
+  padding: 1.25rem 1rem;
   text-align: left;
+  font-weight: 800;
+  color: #0d0c0c;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.tabla-pqr th {
-  background-color: #f5f5f5;
-  font-weight: bold;
+.tabla-profesores-ultra tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.error-alerta {
-  color: #d32f2f;
-  background-color: #ffebee;
-  padding: 12px;
-  border-radius: 4px;
+.tabla-profesores-ultra tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.cargando {
-  padding: 20px;
+.tabla-profesores-ultra td {
+  padding: 1.25rem 1rem;
+  color: #101011;
+  vertical-align: middle;
+}
+
+/* Celdas específicas */
+.td-numero {
+  width: 60px;
+}
+
+.numero-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(102, 126, 234, 0.2);
+  color: #030303;
+  border-radius: 10px;
+  font-weight: 900;
+  border: 2px solid rgba(102, 126, 234, 0.4);
+}
+
+.nombre-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-mini {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #070707;
+  flex-shrink: 0;
+}
+
+.correo-link {
+  color: #050505;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.correo-link:hover {
+  color: #070708;
+  text-decoration: underline;
+}
+
+.cargo-badge-tabla {
+  display: inline-block;
+  padding: 0.375rem 0.875rem;
+  background: rgba(251, 146, 60, 0.2);
+  color: #4c2302;
+  border: 2px solid rgba(251, 146, 60, 0.4);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.grados-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.grado-mini-badge {
+  padding: 0.25rem 0.625rem;
+  background: rgba(34, 197, 94, 0.2);
+  color: #01250e;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.grado-more {
+  padding: 0.25rem 0.625rem;
+  background: rgba(148, 163, 184, 0.2);
+  color: #020304;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sin-grados-tabla {
+  color: #080a0c;
+  font-style: italic;
+}
+
+.documento-code-tabla {
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.acciones-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-tabla-primary,
+.btn-tabla-secondary {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.btn-tabla-primary {
+  background: rgba(102, 126, 234, 0.2);
+  border: 2px solid rgba(102, 126, 234, 0.4);
+}
+
+.btn-tabla-primary:hover {
+  background: rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-tabla-secondary {
+  background: rgba(148, 163, 184, 0.2);
+  border: 2px solid rgba(148, 163, 184, 0.4);
+}
+
+.btn-tabla-secondary:hover {
+  background: rgba(148, 163, 184, 0.3);
+  transform: translateY(-2px);
+}
+
+.tabla-footer-ultra {
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  color: #0b0c0d;
+  font-weight: 600;
   text-align: center;
+  font-size: 0.9rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state-ultra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty-icon-ultra {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-state-ultra h3 {
+  color: #290101;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.empty-state-ultra p {
+  color: #1f2834;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-clear-filters {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #2a0505;
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-clear-filters:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+}
+
+/* ========== LOADING STATE ========== */
+.profesores-loading-ultra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1.5rem;
+}
+
+.loading-spinner-ultra {
+  width: 70px;
+  height: 70px;
+  border: 5px solid rgba(255, 255, 255, 0.1);
+  border-top: 5px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+}
+
+.loading-text-ultra {
+  color: #310101;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .profesores-container-ultra {
+    padding: 1rem;
+  }
+
+  .profesores-header-ultra {
+    padding: 1.5rem;
+  }
+
+  .header-content-ultra {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .controles-section-ultra {
+    flex-direction: column;
+  }
+
+  .search-box-ultra,
+  .filter-box-ultra {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .profesores-grid-ultra {
+    grid-template-columns: 1fr;
+  }
+
+  .tabla-wrapper-ultra {
+    overflow-x: auto;
+  }
+
+  .tabla-profesores-ultra {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-section-ultra {
+    grid-template-columns: 1fr;
+  }
+
+  .profesor-actions-card {
+    flex-direction: column;
+  }
+
+  .vista-toggle-ultra {
+    width: 100%;
+  }
+
+  .vista-btn-ultra {
+    flex: 1;
+  }
+}
+
+/* Fin del CSS - ULTRA PREMIUM EDITION 🔥 */
+/* Modal Ultra - Estilo Moderno */
+.modal-overlay-ultra {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content-ultra {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 900px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e8f0;
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f1f5f9;
+}
+
+.modal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Header */
+.modal-header-ultra {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px 30px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  position: relative;
+}
+
+.modal-header-ultra h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.modal-close-ultra {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.modal-close-ultra:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Body */
+.modal-body-ultra {
+  padding: 30px;
+  flex: 1;
+}
+
+.modal-body-ultra p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #4a5568;
+}
+
+.modal-body-ultra strong {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.modal-body-ultra hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  margin: 30px 0;
+}
+
+/* Secciones */
+.modal-body-ultra h3 {
+  color: #2d3748;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-body-ultra h3::before {
+  font-size: 1.2rem;
+}
+
+/* Lista de grados */
+.modal-body-ultra ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-body-ultra ul li {
+  background: #f7fafc;
+  padding: 12px 20px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  font-weight: 500;
+  color: #4a5568;
+  transition: all 0.3s ease;
+}
+
+.modal-body-ultra ul li:hover {
+  background: #edf2f7;
+  transform: translateX(5px);
+}
+
+/* Tablas */
+.tabla-modal {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.tabla-modal thead {
+  background: linear-gradient(135deg, #4c51bf 0%, #667eea 100%);
+  color: white;
+}
+
+.tabla-modal th {
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tabla-modal tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.3s ease;
+}
+
+.tabla-modal tbody tr:hover {
+  background: #f7fafc;
+}
+
+.tabla-modal td {
+  padding: 12px;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.tabla-modal tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Estados y badges */
+.text-muted {
+  color: #a0aec0 !important;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 12px;
+  border: 2px dashed #e2e8f0;
+}
+
+/* Footer */
+.modal-footer-ultra {
+  padding: 20px 30px;
+  background: #f8fafc;
+  border-radius: 0 0 20px 20px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-action-secondary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-action-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-action-secondary:active {
+  transform: translateY(0);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-overlay-ultra {
+    padding: 10px;
+  }
+  
+  .modal-content-ultra {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .modal-header-ultra {
+    padding: 20px;
+  }
+  
+  .modal-header-ultra h2 {
+    font-size: 1.4rem;
+  }
+  
+  .modal-body-ultra {
+    padding: 20px;
+  }
+  
+  .tabla-modal {
+    font-size: 0.8rem;
+  }
+  
+  .tabla-modal th,
+  .tabla-modal td {
+    padding: 8px 6px;
+  }
+  
+  .modal-footer-ultra {
+    padding: 15px 20px;
+  }
+}
+
+/* Efectos de profundidad */
+.modal-content-ultra::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 25px;
+  z-index: -1;
+  opacity: 0.1;
+  filter: blur(15px);
 }

@@ -1,162 +1,278 @@
-/* DashboardCards.css - Versión Mejorada con Alineación Perfecta */
+/* ======================================================
+   🎨 DASHBOARD MEJORADO - VERSIÓN LIMPIA Y PROFESIONAL
+   ====================================================== */
 
-/* Cards principales - ALTURAS IGUALES */
+/* Contenedor principal */
+.dashboard-container {
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+/* ======================================================
+   📊 GRID DE CARDS - ALINEACIÓN PERFECTA
+   ====================================================== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* ======================================================
+   🎴 CARDS PRINCIPALES - DISEÑO MODERNO
+   ====================================================== */
 .dashboard-card.elegant-card {
-  background: white;
+  background: #ffffff;
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  height: 100%; /* 🔥 Asegura altura igual */
+  height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.dashboard-card.elegant-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, currentColor, currentColor);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .dashboard-card.elegant-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
+.dashboard-card.elegant-card:hover::before {
+  opacity: 1;
+}
+
+/* Body de la card */
 .dashboard-card .card-body {
-  background-color: #2c3e50;
-  padding: 1.5rem;
-  flex: 1; /* 🔥 Ocupa todo el espacio disponible */
+  padding: 1.75rem;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  background: #ffffff;
 }
 
 .dashboard-card .card-content {
-  flex: 1; /* 🔥 Empuja el botón hacia abajo */
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
+/* Subtítulo */
 .dashboard-card .card-subtitle {
-  
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.75rem;
-  min-height: 40px; /* 🔥 Altura fija para títulos */
-  display: flex;
-  align-items: center;
-}
-
-.dashboard-card .card-count {
-  font-size: 2.5rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  margin: 0.5rem 0;
-  line-height: 1;
-  min-height: 100px; /* 🔥 Altura fija para números */
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #6b7280;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  min-height: 45px;
 }
 
+.dashboard-card .card-subtitle svg {
+  font-size: 1.1rem;
+}
+
+/* Número principal */
+.dashboard-card .card-count {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0.75rem 0;
+  line-height: 1;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, currentColor, currentColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Texto adicional (nombre del grado) */
+.card-grado {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: #f3f4f6;
+  border-radius: 6px;
+  display: inline-block;
+  max-width: fit-content;
+}
+
+/* Ícono de la card */
 .dashboard-card .card-icon {
-  font-size: 2rem;
-  opacity: 0.8;
-  flex-shrink: 0;
+  font-size: 2.5rem;
+  opacity: 0.15;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  transition: all 0.3s ease;
 }
 
+.dashboard-card:hover .card-icon {
+  opacity: 0.25;
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Botón de acción */
 .dashboard-card .card-btn {
   border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  font-size: 0.875rem;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  width: 100%; /* 🔥 Ancho completo */
-  margin-top: auto; /* 🔥 Empuja hacia abajo */
+  letter-spacing: 1px;
+  width: 100%;
+  margin-top: auto;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card .card-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s ease;
+}
+
+.dashboard-card .card-btn:hover::before {
+  left: 100%;
 }
 
 .dashboard-card .card-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(243, 241, 241, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Contenedores de gráficos */
+/* ======================================================
+   📈 CONTENEDORES DE GRÁFICOS
+   ====================================================== */
 .chart-container {
-  background: white;
+  background: #ffffff;
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 1.75rem;
   margin-bottom: 1.5rem;
-  height: 100%; /* 🔥 Altura consistente */
+  height: 100%;
+  transition: all 0.3s ease;
 }
 
+.chart-container:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Header del gráfico */
 .chart-header {
-  
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #f8fafc;
-  min-height: 50px; /* 🔥 Altura fija para headers */
+  border-bottom: 3px solid #f3f4f6;
 }
 
 .chart-header h5 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   color: #1f2937;
   font-size: 1.1rem;
   display: flex;
   align-items: center;
+  letter-spacing: 0.3px;
 }
 
 .chart-icon {
-  font-size: 1.25rem;
-  color: #3b82f6;
+  font-size: 1.5rem;
+  color: #667eea;
   flex-shrink: 0;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #667eea20, #764ba220);
+  border-radius: 10px;
 }
 
-/* Grid system mejorado */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.full-width-chart {
-  grid-column: 1 / -1;
-}
-
-/* Tooltip personalizado */
+/* ======================================================
+   📊 TOOLTIP PERSONALIZADO
+   ====================================================== */
 .custom-tooltip {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 .tooltip-label {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #fbfbfb;
-  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #111827;
+  font-size: 0.9rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
 }
 
 .tooltip-item {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Responsive */
+.tooltip-item::before {
+  content: '●';
+  font-size: 1.2rem;
+}
+
+/* ======================================================
+   🎯 LOADING STATE
+   ====================================================== */
+.loading-container {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3rem;
+}
+
+/* ======================================================
+   📱 RESPONSIVE DESIGN
+   ====================================================== */
 @media (max-width: 1200px) {
   .charts-grid {
     grid-template-columns: 1fr;
@@ -164,246 +280,196 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem 0.5rem;
+  }
+
   .cards-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
   .dashboard-card .card-count {
-    font-size: 2rem;
-    min-height: 50px;
-  }
-  
-  .dashboard-card .card-icon {
-    font-size: 1.5rem;
-  }
-  
-  .dashboard-card .card-subtitle {
-    min-height: 35px;
-    font-size: 0.8rem;
-  }
-  
-  .chart-container {
-    padding: 1rem;
-  }
-  
-  .chart-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    font-size: 2.5rem;
     min-height: 60px;
   }
   
+  .dashboard-card .card-icon {
+    font-size: 2rem;
+  }
+  
+  .dashboard-card .card-subtitle {
+    min-height: 40px;
+    font-size: 0.7rem;
+  }
+
+  .dashboard-card .card-body {
+    padding: 1.25rem;
+  }
+  
+  .chart-container {
+    padding: 1.25rem;
+  }
+  
+  .chart-header {
+    flex-direction: row;
+    align-items: center;
+  }
+  
   .chart-header h5 {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .chart-icon {
+    font-size: 1.2rem;
+    padding: 0.4rem;
   }
 }
 
 @media (max-width: 576px) {
-  .dashboard-card .card-body {
-    padding: 1rem;
-  }
-  
   .dashboard-card .card-count {
-    font-size: 1.75rem;
-    min-height: 45px;
+    font-size: 2rem;
+    min-height: 50px;
   }
   
   .dashboard-card .card-subtitle {
-    min-height: 30px;
+    font-size: 0.65rem;
+    min-height: 35px;
+  }
+
+  .dashboard-card .card-btn {
+    padding: 0.625rem 1rem;
     font-size: 0.75rem;
   }
 }
 
-/* Mejoras para los gráficos de recharts */
+/* ======================================================
+   🎨 MEJORAS VISUALES PARA RECHARTS
+   ====================================================== */
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
-  stroke: #f1f5f9;
-  
+  stroke: #f3f4f6;
+  stroke-opacity: 0.6;
 }
 
 .recharts-legend-wrapper {
-  padding-top: 1rem !important;
+  padding-top: 1.5rem !important;
 }
 
 .recharts-default-legend {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .recharts-legend-item {
   cursor: pointer;
   font-size: 0.875rem;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
 }
 
-/* Scroll suave para contenedores */
-.chart-container {
-  scroll-margin-top: 2rem;
+.recharts-legend-item:hover {
+  opacity: 0.7;
 }
 
-/* Estados hover para gráficos */
+/* Animaciones suaves para barras y áreas */
 .recharts-bar-rectangle:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
 }
 
 .recharts-area-curve:hover {
   opacity: 0.9;
 }
 
-/* Asegurar que las rows tengan altura consistente */
+/* ======================================================
+   🔄 ANIMACIONES Y TRANSICIONES
+   ====================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-card.elegant-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.chart-container {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Animar cards una por una */
+.dashboard-card.elegant-card:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-card.elegant-card:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-card.elegant-card:nth-child(3) { animation-delay: 0.3s; }
+.dashboard-card.elegant-card:nth-child(4) { animation-delay: 0.4s; }
+.dashboard-card.elegant-card:nth-child(5) { animation-delay: 0.5s; }
+.dashboard-card.elegant-card:nth-child(6) { animation-delay: 0.6s; }
+.dashboard-card.elegant-card:nth-child(7) { animation-delay: 0.7s; }
+.dashboard-card.elegant-card:nth-child(8) { animation-delay: 0.8s; }
+
+/* ======================================================
+   ✨ EFECTOS ADICIONALES
+   ====================================================== */
 .row {
-  align-items: stretch; /* 🔥 Estira los elementos hijos */
+  align-items: stretch;
 }
 
-/* Contenedor principal mejorado */
-.dashboard-container {
-  
-  padding: 1rem 0;
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
 }
 
-/* Loading states */
-.loading-container {
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-/* Ajustes específicos para el gráfico de pie */
-.pie-chart-container {
-  display: flex;
-  flex-direction: column;
-  
-  height: 100%;
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
 }
 
-.pie-chart-container .recharts-wrapper {
-  flex: 1;
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
-/* Asegurar que todos los gráficos tengan altura consistente */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2, #667eea);
+}
+
+/* Asegurar que los contenedores tengan altura consistente */
 .recharts-responsive-container {
   height: 100% !important;
-}
-/* 🎨 Contenedor general de gráficos */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
+  min-height: 300px;
 }
 
-/* 🧭 Contenedor elegante y compacto */
-.elegant-card.chart-container {
-  background-color:   #2c3e50;
-  border-radius: 1rem;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-  padding: 1rem 1.2rem;
-  transition: all 0.25s ease;
-  height: 100%;
-}
-
-.elegant-card.chart-container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
-}
-
-/* 🧩 Encabezado del gráfico */
-.chart-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
-  border-bottom: 1px solid #f0f0f0;
-  padding-bottom: 0.4rem;
-}
-
-.chart-header h5 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1f2937; /* Gris oscuro elegante */
-  margin: 0;
-}
-
-.chart-icon {
-  color: #007bff;
-  font-size: 1.1rem;
-}
-
-/* 📊 Tamaños ajustados */
-.chart-container .recharts-wrapper {
-  margin: auto;
-}
-
-/* 📈 Ajustes visuales para gráficos */
-.recharts-tooltip-wrapper {
-  font-size: 0.8rem;
-}
-
-.recharts-legend-wrapper {
-  font-size: 0.8rem;
-}
-
-/* 📉 Responsivo: reducir tamaño en pantallas pequeñas */
-/* ======================================================
-   🧩 ALINEACIÓN PERFECTA DE CARDS Y GRÁFICOS
-   ====================================================== */
-.Asistencias{
-  width: 100rem;
-}
-/* 🔹 Grid para las cards del dashboard */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 1.2rem;
-  align-items: stretch; /* 🔥 Todas las cards misma altura */
-}
-
-/* 🔹 Contenedor de los gráficos */
+/* Ajustes finales para alineación perfecta */
 .charts-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1.2rem;
-  align-items: stretch; /* 🔥 Misma altura entre gráficos */
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
 }
 
-/* 🔹 Gráfico que ocupa todo el ancho */
 .full-width-chart {
   grid-column: 1 / -1;
-  background-color: #1f2937;
 }
 
-/* 🔹 Asegura que todos los elementos dentro crezcan igual */
-.dashboard-card,
-.chart-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
-
-/* 🔹 Alineación interna de los gráficos */
-.recharts-responsive-container {
-  flex: 1;
-  min-height: 200px;
-}
-
-/* 🔹 Ajustes para pantallas medianas y móviles */
-@media (max-width: 1200px) {
+/* Para dispositivos muy pequeños */
+@media (max-width: 576px) {
   .charts-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .charts-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
   }
 }

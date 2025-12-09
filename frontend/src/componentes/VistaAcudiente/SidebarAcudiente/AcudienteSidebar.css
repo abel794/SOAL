@@ -1,12 +1,11 @@
 /* ===================================================
-   🎯 SIDEBAR ACUDIENTE - COMPONENTE RESPONSIVE (MEJORADO)
+   🎯 SIDEBAR ACUDIENTE - COMPONENTE RESPONSIVE (CORREGIDO)
    =================================================== */
 
 /* Variables CSS */
 :root {
   --sidebar-width: 280px;
-  --sidebar-width-collapsed: 80px;
-  --sidebar-bg: linear-gradient(180deg, #003366 , #003366);
+  --sidebar-bg: linear-gradient(180deg, #003366, #003366);
   --sidebar-bg-hover: rgba(255, 255, 255, 0.06);
   --sidebar-text: #ffffff;
   --sidebar-active: #ffe14d;
@@ -198,14 +197,12 @@
   color: #eee;
 }
 
-/* separación */
 .colegio-info hr {
   border: 0;
   border-top: 1px solid rgba(255,255,255,0.06);
   margin: 8px 0;
 }
 
-/* Top con logo + texto */
 .colegio-top {
   display: flex;
   gap: 0.75rem;
@@ -261,7 +258,6 @@
   line-height: 1.1;
 }
 
-/* Datos adicionales */
 .colegio-datos {
   margin-top: 6px;
   color: var(--muted);
@@ -278,7 +274,6 @@
   white-space: normal;
 }
 
-/* Mensaje institucional */
 .msg-inst {
   margin-top: 6px;
   font-size: 0.8rem;
@@ -289,14 +284,12 @@
   border: 1px solid rgba(255,225,77,0.06);
 }
 
-/* Fecha de actualización */
 .fecha-act {
   margin-top: 6px;
   font-size: 0.72rem;
   color: var(--muted-2);
 }
 
-/* Cargando / error */
 .cargando-config {
   font-size: 0.82rem;
   color: rgba(255,255,255,0.6);
@@ -321,7 +314,7 @@
 }
 
 .sidebar-mobile-open {
-  left: 0;
+  left: 0 !important; /* IMPORTANTE: Forzar que se muestre cuando está abierto */
 }
 
 .sidebar-mobile-header {
@@ -352,13 +345,12 @@
   transform: scale(1.03);
 }
 
-/* Footer móvil con padding extra */
 .sidebar-mobile-footer {
   padding: 1rem;
   border-top: 1px solid rgba(255,255,255,0.04);
 }
 
-/* Overlay para móviles */
+/* Overlay para móviles - CORREGIDO */
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -380,8 +372,26 @@
    📱 RESPONSIVE DESIGN
    ================================ */
 
+/* Ocultar sidebar desktop en móviles */
+@media (max-width: 768px) {
+  .sidebar-desktop {
+    display: none !important;
+  }
+}
+
+/* Mostrar sidebar móvil solo cuando está abierto */
+@media (min-width: 769px) {
+  .sidebar-mobile {
+    display: none !important;
+  }
+  
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+
 /* Tablets */
-@media (max-width: 1024px) {
+@media (max-width: 1024px) and (min-width: 769px) {
   .sidebar-desktop {
     width: 240px;
   }
@@ -393,13 +403,6 @@
   .nav-item {
     padding: 0.72rem 0.875rem;
     font-size: 0.88rem;
-  }
-}
-
-/* Móviles - Ocultar sidebar desktop */
-@media (max-width: 768px) {
-  .sidebar-desktop {
-    display: none;
   }
 }
 
@@ -432,32 +435,7 @@
   }
 }
 
-/* Modo oscuro del sistema */
-@media (prefers-color-scheme: dark) {
-  .sidebar-overlay {
-    background: rgba(0, 0, 0, 0.72);
-  }
-}
-
-/* Animaciones suaves */
-.sidebar-desktop,
-.sidebar-mobile,
-.nav-item {
-  transition: var(--transition);
-}
-
-/* Mejoras de accesibilidad */
-.nav-item:focus {
-  outline: 2px solid var(--sidebar-active);
-  outline-offset: 2px;
-}
-
-.sidebar-close-btn:focus {
-  outline: 2px solid var(--sidebar-active);
-  outline-offset: 2px;
-}
-
-/* Scroll personalizado para sidebar */
+/* Scroll personalizado */
 .sidebar-nav {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
@@ -479,154 +457,14 @@
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.28);
 }
-/* ==== SIDEBAR GENERAL ==== */
-.sidebar-desktop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100vh;
-  background: linear-gradient(180deg, #002855, #004a99);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-  transition: width 0.3s ease;
-  overflow-y: auto;
+
+/* Mejoras de accesibilidad */
+.nav-item:focus {
+  outline: 2px solid var(--sidebar-active);
+  outline-offset: 2px;
 }
 
-/* Logo y título */
-.sidebar-header {
-  padding: 1.5rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-}
-
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 1.2rem;
-}
-
-.sidebar-logo i {
-  font-size: 1.6rem;
-  color: #00c8ff;
-}
-
-.sidebar-title {
-  font-weight: 600;
-  color: #fff;
-}
-
-/* ==== NAVEGACIÓN ==== */
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-  padding: 0 0.5rem;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  color: #fff;
-  border: none;
-  text-align: left;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.4rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(4px);
-}
-
-.nav-item-active {
-  background: #00c8ff;
-  color: #002855;
-  font-weight: 600;
-}
-
-.nav-item-logout {
-  color: #ff4d4d;
-}
-
-.nav-item-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.nav-item-content i {
-  font-size: 1.2rem;
-}
-
-.nav-item-text {
-  font-size: 0.95rem;
-}
-
-/* ==== FOOTER ==== */
-.sidebar-footer {
-  padding: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.85rem;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-avatar i {
-  font-size: 2rem;
-  color: #00c8ff;
-}
-
-.user-name {
-  font-weight: bold;
-}
-
-.colegio-info {
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
-  opacity: 0.9;
-}
-
-/* ==== MOBILE ==== */
-.sidebar-mobile {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 250px;
-  height: 100vh;
-  background: linear-gradient(180deg, #002855, #004a99);
-  color: #fff;
-  transition: left 0.3s ease;
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-mobile-open {
-  left: 0;
-}
-
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 150;
+.sidebar-close-btn:focus {
+  outline: 2px solid var(--sidebar-active);
+  outline-offset: 2px;
 }

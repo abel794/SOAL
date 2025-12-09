@@ -12,47 +12,42 @@ import HistorialPQR from "../PQR/HistorialPQR";
 import VerJustificaciones from "../Justificaciones/Ver_justificaciones";
 import EstudiantesCards from "../EstudianteAcudiente/estudiante_acudiente";
 
-import { useNavigate } from "react-router-dom";  // para redirigir
-import { cerrarSesion } from "../../../utils/auth"; // función de logout (limpia token + redirige)
-import useAutoLogout from "../../Login/useAutoLogout"; // hook de auto logout
-import HamburgerBtn from "../SidebarAcudiente/HamburgerBtn"; // Importamos el botón de hamburguesa
+import { useNavigate } from "react-router-dom";
+import { cerrarSesion } from "../../../utils/auth";
+import useAutoLogout from "../../Login/useAutoLogout";
+import HamburgerBtn from "../SidebarAcudiente/HamburgerBtn";
 
 const PanelAcudiente = () => {
   const [mensaje, setMensaje] = useState("");
   const [open, setOpen] = useState(false);
   const [seccionActiva, setSeccionActiva] = useState("Dashboard");
-
-  // Estado para manejar la visibilidad del modal de logout
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const navigate = useNavigate();
 
-  // ⏱ Auto logout por inactividad (10 minutos)
+  /** Auto logout */
   useAutoLogout(() => cerrarSesion(navigate), 10 * 60 * 1000);
 
-  // ESTA función se pasa al Sidebar: cuando el Sidebar dice "quiere cerrar sesión"
-  // abrimos el modal aquí, el usuario confirma desde el modal.
+  /** Cuando el Sidebar pide logout → mostramos modal */
   const handleRequestLogout = () => {
     setShowLogoutModal(true);
   };
 
-  // Si confirma en el modal, ejecutar cierre de sesión real
   const ejecutarCerrarSesion = () => {
     setShowLogoutModal(false);
     cerrarSesion(navigate);
   };
 
-  // Si cancela, cerramos el modal y no hacemos nada
   const cancelarCerrarSesion = () => {
     setShowLogoutModal(false);
   };
 
   const cambiarSeccion = (nombreSeccion) => {
     setSeccionActiva(nombreSeccion);
-    setOpen(false); // cerrar menú móvil si está abierto
+    setOpen(false); // cerrar menú móvil
   };
 
-  // Manejo del menú responsive
+  /** Si ensancha pantalla → cerramos menú móvil */
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) setOpen(false);
@@ -60,13 +55,6 @@ const PanelAcudiente = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Mock data (igual que tenías)
-  const observaciones = [
-    { id: 1, nombre: "David Martinez", grado: "4A", fecha: "24 abr. 2024, 10:30", titulo: "Observación importante", descripcion: "..." },
-    { id: 2, nombre: "María Pérez", grado: "5B", fecha: "20 may. 2024, 09:10", titulo: "Retraso reiterado", descripcion: "..." },
-    { id: 3, nombre: "Juan Gomez", grado: "3C", fecha: "10 jun. 2024, 14:00", titulo: "Excelente participación", descripcion: "..." },
-  ];
 
   // Mock data estudiantes
   const estudiantesMock = [
@@ -76,44 +64,43 @@ const PanelAcudiente = () => {
   ];
 
   return (
-    <div className="d-flex" style={{ height: "100vh" }}>
+    <div className={`panel-acudiente d-flex ${open ? "sidebar-open" : ""}`}>
+      
       {/* Botón hamburguesa (solo móvil) */}
       <HamburgerBtn onClick={() => setOpen(!open)} />
 
-      {/* PASAMOS la función que abre el modal al Sidebar */}
+      {/* Sidebar */}
       <SidebarAcudiente
         open={open}
         setOpen={setOpen}
         cambiarSeccion={cambiarSeccion}
         seccionActiva={seccionActiva}
-        onCerrarSesion={handleRequestLogout} // ahora el Sidebar solo solicita el logout
+        onCerrarSesion={handleRequestLogout}
       />
 
-      {/* Overlay en móvil */}
-      {open && (
-        <div
-          className="mobile-overlay d-md-none"
-          onClick={() => setOpen(false)}
-        />
-      )}
+      {/* Overlay móvil */}
+      {open && <div className="mobile-overlay d-md-none" onClick={() => setOpen(false)} />}
 
       {/* Contenido principal */}
-      <div className="flex-grow-1 p-4 bg-white panel-contenido">
-        <HeaderAcudiente setSeccionActiva={setSeccionActiva} />
-
-        {seccionActiva === "Dashboard" && (
-          <EstudiantesCards estudiantes={estudiantesMock} />
-        )}
-
-        {seccionActiva === "Configuracion de Cuenta" && <ConfiguracionCuenta />}
-        {seccionActiva === "Enviar PQR" && <EnviarPQR />}
-        {seccionActiva === "Enviar Justificacion" && <EnviarJustificacion setSeccionActiva={setSeccionActiva} />}
-        {seccionActiva === "Notificaciones" && <Notificaciones />}
-        {seccionActiva === "Historial de PQR" && <HistorialPQR />}
-        {seccionActiva === "Ver Justificaciones" && <VerJustificaciones />}
+      <div className="panel-contenido main-content">
+        <div className="contenido-centrado">
+          <div className="header-fijo">
+            <HeaderAcudiente setSeccionActiva={setSeccionActiva} />
+          </div>
+          
+          <div className="p-4">
+            {seccionActiva === "Dashboard" && <EstudiantesCards estudiantes={estudiantesMock} />}
+            {seccionActiva === "Configuracion de Cuenta" && <ConfiguracionCuenta />}
+            {seccionActiva === "Enviar PQR" && <EnviarPQR />}
+            {seccionActiva === "Enviar Justificacion" && <EnviarJustificacion setSeccionActiva={setSeccionActiva} />}
+            {seccionActiva === "Notificaciones" && <Notificaciones />}
+            {seccionActiva === "Historial de PQR" && <HistorialPQR />}
+            {seccionActiva === "Ver Justificaciones" && <VerJustificaciones />}
+          </div>
+        </div>
       </div>
 
-      {/* -------------------- Modal centrado (sin dependencias) -------------------- */}
+      {/* Modal Logout */}
       {showLogoutModal && (
         <div
           style={{
@@ -130,16 +117,15 @@ const PanelAcudiente = () => {
           <div style={{ width: 360, maxWidth: "95%", background: "#fff", borderRadius: 8, padding: 18, boxShadow: "0 8px 30px rgba(0,0,0,0.25)" }}>
             <h5 className="mb-2">¿Estás seguro que deseas cerrar sesión?</h5>
             <p className="text-muted mb-3" style={{ fontSize: 14 }}>
-              Si cierras sesión deberás iniciar sesión nuevamente para acceder.
+              Si cierras sesión deberás iniciar sesión nuevamente.
             </p>
             <div className="d-flex justify-content-end gap-2">
-              <button className="btn btn-outline-secondary" onClick={cancelarCerrarSesion}>No, quedar</button>
-              <button className="btn btn-danger" onClick={ejecutarCerrarSesion}>Sí, cerrar sesión</button>
+              <button className="btn btn-outline-secondary" onClick={cancelarCerrarSesion}>Cancelar</button>
+              <button className="btn btn-danger" onClick={ejecutarCerrarSesion}>Cerrar sesión</button>
             </div>
           </div>
         </div>
       )}
-      {/* ------------------------------------------------------------------------ */}
     </div>
   );
 };

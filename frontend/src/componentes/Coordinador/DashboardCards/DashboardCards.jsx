@@ -6,11 +6,9 @@ import {
   FaCalendarAlt,
   FaChalkboardTeacher,
   FaEnvelopeOpenText,
-  FaBell,
   FaChartLine,
   FaChartBar,
   FaSchool,
-  FaUsers
 } from "react-icons/fa";
 import {
   ResponsiveContainer,
@@ -28,7 +26,6 @@ import {
   Pie
 } from "recharts";
 import "./DashboardCards.css";
-
 
 function DashboardCards({ setVista }) {
   const [datos, setDatos] = useState({
@@ -79,9 +76,7 @@ function DashboardCards({ setVista }) {
       
       console.log("📊 Datos de API observacionesGrado:", data);
       
-      // Procesar los datos según la estructura que recibas
       if (data.total_registros !== undefined) {
-        // Si tu API tiene la estructura con total_registros y resumenPorGrado
         const resumen = data.resumenPorGrado || {};
         let maxGrado = "";
         let maxObservaciones = 0;
@@ -104,7 +99,6 @@ function DashboardCards({ setVista }) {
         setObservaciones(data.detalle || []);
         
       } else if (data.grado && data.total_observaciones_graves !== undefined) {
-        // Si tu API tiene estructura diferente (solo grado y total)
         setDatos(prev => ({ 
           ...prev, 
           gradoMasObservaciones: data.grado,
@@ -181,8 +175,6 @@ function DashboardCards({ setVista }) {
     }
   };
 
-  // ELIMINAR cargarGradoMasObservaciones - ya lo hace cargarObservacionesGrado
-
   const cargarCitas = async () => {
     try {
       if (!token) return;
@@ -198,9 +190,12 @@ function DashboardCards({ setVista }) {
 
   const cargarProfesoresActivos = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/dashboard/profesores/activos");
+      const res = await fetch(
+        "http://localhost:3000/api/coordinador/dashboard/profesores/activos",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       const data = await res.json();
-      setDatos((prev) => ({ ...prev, profesoresActivos: Number(data.total) || 0 }));
+      setDatos(prev => ({ ...prev, profesoresActivos: Number(data.total) || 0 }));
     } catch (err) {
       console.error("❌ Error profesores activos:", err);
     }
@@ -255,11 +250,10 @@ function DashboardCards({ setVista }) {
   const cargarDatosDashboard = async () => {
     setLoading(true);
     try {
-      // Cargar datos en paralelo para mejor performance
       await Promise.all([
         cargarEstudiantes(),
         cargarObservaciones(),
-        cargarObservacionesGrado(), // Esta es la función importante
+        cargarObservacionesGrado(),
         cargarAsistencias(),
         cargarCriticos(),
         cargarCitas(),
@@ -268,7 +262,6 @@ function DashboardCards({ setVista }) {
         cargarNotificacionesEnviadas()
       ]);
 
-      // Para gráficos de evolución, usar datos existentes
       const estudiantesData = await cargarEstudiantes();
       const observacionesData = await cargarObservaciones();
       const { asistencias, faltas } = await cargarAsistencias();
@@ -324,8 +317,6 @@ function DashboardCards({ setVista }) {
   }, [nombreGrado]);
 
   // ------------------- DATOS PARA GRÁFICOS -------------------
-  
-  // Datos para el gráfico de resumen por grado
   const resumenGradoData = Object.entries(datos.resumenPorGrado || {}).map(([grado, total]) => ({
     name: grado,
     value: total,
@@ -353,7 +344,7 @@ function DashboardCards({ setVista }) {
   const cards = [
     { 
       key: "totalObservaciones", 
-      title: <>Total Observaciones <FaClipboardList /></>, 
+      title: "Total Observaciones", 
       count: datos.totalObservaciones, 
       vista: "Total Observaciones",
       color: colors.purple,
@@ -361,7 +352,7 @@ function DashboardCards({ setVista }) {
     },
     {
       key: "gradoMasObservaciones",
-      title: <>Grado Más Obs. <FaSchool /></>,
+      title: "Grado Más Obs.",
       count: datos.totalGradoMasObservaciones,
       vista: "Grado Mas Observaciones", 
       color: colors.pink,
@@ -369,7 +360,7 @@ function DashboardCards({ setVista }) {
     },
     { 
       key: "criticos", 
-      title: <>Casos críticos <FaExclamationTriangle /></>, 
+      title: "Casos Críticos", 
       count: datos.criticos, 
       vista: "Casos críticos",
       color: colors.danger,
@@ -377,7 +368,7 @@ function DashboardCards({ setVista }) {
     },
     { 
       key: "estudiantes", 
-      title: <>Estudiantes <FaGraduationCap /></>, 
+      title: "Estudiantes", 
       count: datos.estudiantesAsignados, 
       vista: "Grados y estudiantes",
       color: colors.primary,
@@ -385,7 +376,7 @@ function DashboardCards({ setVista }) {
     },
     { 
       key: "observaciones", 
-      title: <>Observaciones Reg. <FaClipboardList /></>, 
+      title: "Observaciones Reg.", 
       count: datos.observaciones, 
       vista: "Registrar observación",
       color: colors.info,
@@ -393,7 +384,7 @@ function DashboardCards({ setVista }) {
     },
     { 
       key: "citas", 
-      title: <>Citas <FaCalendarAlt /></>, 
+      title: "Citas", 
       count: datos.citas, 
       vista: "Ver citas",
       color: colors.secondary,
@@ -401,7 +392,7 @@ function DashboardCards({ setVista }) {
     },
     { 
       key: "profesoresActivos", 
-      title: <>Profesores <FaChalkboardTeacher /></>, 
+      title: "Profesores", 
       count: datos.profesoresActivos, 
       vista: "Profesores Activos",
       color: colors.teal,
@@ -409,7 +400,7 @@ function DashboardCards({ setVista }) {
     },
     { 
       key: "pqrs", 
-      title: <>PQR <FaEnvelopeOpenText /></>, 
+      title: "PQR Pendientes", 
       count: datos.pqrsPendientes, 
       vista: "Responder PQR",
       color: colors.warning,
@@ -436,185 +427,202 @@ function DashboardCards({ setVista }) {
 
   if (loading) {
     return (
-      <div className="container mt-4">
-        <div className="text-center py-5">
-          <div className="spinner-border text-primary" role="status">
+      <div className="dashboard-container">
+        <div className="loading-container">
+          <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
             <span className="visually-hidden">Cargando...</span>
           </div>
-          <p className="mt-3 text-muted">Cargando dashboard...</p>
+          <p className="mt-3 text-white fw-bold">Cargando dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mt-4 dashboard-container">
-      {/* ======================= 📊 CARDS SUPERIORES ======================= */}
-      <div className="cards-grid">
-        {cards.map((item) => (
-          <div key={item.key}>
-            <div
-              className="dashboard-card elegant-card"
-              style={{ borderLeft: `4px solid ${item.color}` }}
-            >
-              <div className="card-body">
-                <div className="card-content">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <div className="flex-grow-1">
-                      <h6 className="card-subtitle mb-2 text-muted">{item.title}</h6>
-                      <h2 className="card-count mb-0" style={{ color: item.color }}>
-                        {item.count}
-                      </h2>
-                      {/* Mostrar nombre del grado debajo del número */}
-                      {item.key === "gradoMasObservaciones" && datos.gradoMasObservaciones && (
-                        <p className="card-grado mb-0" style={{ 
-                          fontSize: '0.75rem', 
-                          color: '#6c757d', 
-                          marginTop: '0.25rem',
-                          fontWeight: '500'
-                        }}>
-                          {datos.gradoMasObservaciones}
-                        </p>
-                      )}
-                    </div>
-                    <div className="card-icon" style={{ color: item.color }}>
-                      {item.icon}
-                    </div>
+    <div className="dashboard-container">
+      <div className="container-fluid">
+        {/* Header del Dashboard */}
+        <div className="row mb-4">
+          <div className="col-12">
+            <h2 className="text-white fw-bold mb-1" style={{ fontSize: '2rem' }}>📊 Observador Estudiantil</h2>
+            <p className="text-white" style={{ opacity: 0.9, fontSize: '1.1rem' }}>Instituto Renato Descartes</p>
+          </div>
+        </div>
+
+        {/* ======================= 📊 CARDS SUPERIORES ======================= */}
+        <div className="cards-grid">
+          {cards.map((item, index) => (
+            <div key={item.key} style={{ animationDelay: `${index * 0.1}s` }}>
+              <div
+                className="dashboard-card elegant-card"
+                style={{ 
+                  borderLeft: `4px solid ${item.color}`,
+                  color: item.color 
+                }}
+              >
+                <div className="card-body">
+                  <div className="card-content">
+                    <h6 className="card-subtitle">
+                      {item.title}
+                    </h6>
+                    <h2 className="card-count" style={{ color: item.color }}>
+                      {item.count}
+                    </h2>
+                    {item.key === "gradoMasObservaciones" && datos.gradoMasObservaciones && (
+                      <span className="card-grado">
+                        {datos.gradoMasObservaciones}
+                      </span>
+                    )}
                   </div>
+                  <button
+                    className="btn btn-sm card-btn"
+                    onClick={() => setVista(item.vista)}
+                    style={{ 
+                      backgroundColor: item.color, 
+                      color: "white",
+                      border: 'none'
+                    }}
+                  >
+                    Ver detalles
+                  </button>
                 </div>
-                <button
-                  className="btn btn-sm card-btn mt-3"
-                  onClick={() => setVista(item.vista)}
-                  style={{ backgroundColor: item.color, color: "white" }}
-                >
-                  Ver detalles
-                </button>
+                
+                <div className="card-icon" style={{ color: item.color }}>
+                  {item.icon}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ======================= 📈 GRÁFICOS ======================= */}
-      <div className="row">
-        {/* 🔹 Gráfico de Líneas - Evolución */}
-        <div className="col-12 col-lg-8 mb-4 w-100">
-          <div className="elegant-card chart-container">
-            <div className="chart-header">
-              <FaChartLine className="chart-icon" />
-              <h5>Evolución Semanal Acumulada</h5>
-            </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={lineData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                <defs>
-                  <linearGradient id="colorEstudiantes" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={colors.primary} stopOpacity={0.8} />
-                    <stop offset="95%" stopColor={colors.primary} stopOpacity={0.1} />
-                  </linearGradient>
-                  <linearGradient id="colorObservaciones" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={colors.info} stopOpacity={0.8} />
-                    <stop offset="95%" stopColor={colors.info} stopOpacity={0.1} />
-                  </linearGradient>
-                  <linearGradient id="colorAsistencias" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={colors.secondary} stopOpacity={0.8} />
-                    <stop offset="95%" stopColor={colors.secondary} stopOpacity={0.1} />
-                  </linearGradient>
-                  <linearGradient id="colorFaltas" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={colors.danger} stopOpacity={0.8} />
-                    <stop offset="95%" stopColor={colors.danger} stopOpacity={0.1} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis
-                  dataKey="semana"
-                  tick={{ fill: "#6B7280" }}
-                  axisLine={{ stroke: "#E5E7EB" }}
-                />
-                <YAxis tick={{ fill: "#6B7280" }} axisLine={{ stroke: "#E5E7EB" }} />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Area
-                  type="monotone"
-                  dataKey="estudiantes"
-                  stroke={colors.primary}
-                  fill="url(#colorEstudiantes)"
-                  name="Estudiantes"
-                  strokeWidth={2}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="observaciones"
-                  stroke={colors.info}
-                  fill="url(#colorObservaciones)"
-                  name="Observaciones"
-                  strokeWidth={2}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="asistencias"
-                  stroke={colors.secondary}
-                  fill="url(#colorAsistencias)"
-                  name="Asistencias"
-                  strokeWidth={2}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="faltas"
-                  stroke={colors.danger}
-                  fill="url(#colorFaltas)"
-                  name="Faltas"
-                  strokeWidth={2}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          ))}
         </div>
 
-        {/* 🔹 Gráfico de Pie - Asistencias vs Faltas */}
-        <div className="col-12 col-lg-4 mb-4 w-100">
-          <div className="elegant-card chart-container">
-            <div className="chart-header">
-              <FaChartBar className="chart-icon" />
-              <h5>Asistencia vs Faltas</h5>
-            </div>
-            <ResponsiveContainer width="100%" height={350}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="60%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* 🔹 Gráfico de Resumen por Grado */}
-        {resumenGradoData.length > 0 && (
-          <div className="col-12 col-lg-6 mb-4 w-100">
+        {/* ======================= 📈 GRÁFICOS ======================= */}
+        <div className="row">
+          {/* Gráfico de Evolución */}
+          <div className="col-12 mb-4">
             <div className="elegant-card chart-container">
               <div className="chart-header">
-                <FaSchool className="chart-icon" />
-                <h5>Observaciones por Grado</h5>
+                <div className="chart-icon">
+                  <FaChartLine />
+                </div>
+                <h5>Evolución Semanal Acumulada</h5>
               </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={resumenGradoData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+              <ResponsiveContainer width="100%" height={350}>
+                <AreaChart data={lineData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                  <defs>
+                    <linearGradient id="colorEstudiantes" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.primary} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={colors.primary} stopOpacity={0.1} />
+                    </linearGradient>
+                    <linearGradient id="colorObservaciones" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.info} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={colors.info} stopOpacity={0.1} />
+                    </linearGradient>
+                    <linearGradient id="colorAsistencias" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.secondary} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={colors.secondary} stopOpacity={0.1} />
+                    </linearGradient>
+                    <linearGradient id="colorFaltas" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.danger} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={colors.danger} stopOpacity={0.1} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis 
-                    dataKey="name" 
-                    angle={-45} 
-                    textAnchor="end" 
+                  <XAxis dataKey="semana" tick={{ fill: "#6B7280" }} axisLine={{ stroke: "#E5E7EB" }} />
+                  <YAxis tick={{ fill: "#6B7280" }} axisLine={{ stroke: "#E5E7EB" }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend />
+                  <Area type="monotone" dataKey="estudiantes" stroke={colors.primary} fill="url(#colorEstudiantes)" name="Estudiantes" strokeWidth={2} />
+                  <Area type="monotone" dataKey="observaciones" stroke={colors.info} fill="url(#colorObservaciones)" name="Observaciones" strokeWidth={2} />
+                  <Area type="monotone" dataKey="asistencias" stroke={colors.secondary} fill="url(#colorAsistencias)" name="Asistencias" strokeWidth={2} />
+                  <Area type="monotone" dataKey="faltas" stroke={colors.danger} fill="url(#colorFaltas)" name="Faltas" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Asistencias vs Faltas */}
+          <div className="col-12 col-lg-6 mb-4">
+            <div className="elegant-card chart-container">
+              <div className="chart-header">
+                <div className="chart-icon">
+                  <FaChartBar />
+                </div>
+                <h5>Asistencia vs Faltas</h5>
+              </div>
+              <ResponsiveContainer width="100%" height={350}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Observaciones por Grado */}
+          {resumenGradoData.length > 0 && (
+            <div className="col-12 col-lg-6 mb-4">
+              <div className="elegant-card chart-container">
+                <div className="chart-header">
+                  <div className="chart-icon">
+                    <FaSchool />
+                  </div>
+                  <h5>Observaciones por Grado</h5>
+                </div>
+                <ResponsiveContainer width="100%" height={350}>
+                  <BarChart data={resumenGradoData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis 
+                      dataKey="name" 
+                      angle={-45} 
+                      textAnchor="end" 
+                      height={80}
+                      tick={{ fill: "#6B7280", fontSize: 10 }}
+                      interval={0}
+                    />
+                    <YAxis tick={{ fill: "#6B7280" }} axisLine={{ stroke: "#E5E7EB" }} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Bar dataKey="value" name="Observaciones" radius={[8, 8, 0, 0]} barSize={40} fill={colors.primary}>
+                      {resumenGradoData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+
+          {/* Comparativo General */}
+          <div className="col-12 mb-4">
+            <div className="elegant-card chart-container">
+              <div className="chart-header">
+                <div className="chart-icon">
+                  <FaChartBar />
+                </div>
+                <h5>Comparativo General</h5>
+              </div>
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis
+                    dataKey="name"
+                    angle={-45}
+                    textAnchor="end"
                     height={80}
                     tick={{ fill: "#6B7280", fontSize: 10 }}
                     interval={0}
@@ -622,45 +630,14 @@ function DashboardCards({ setVista }) {
                   <YAxis tick={{ fill: "#6B7280" }} axisLine={{ stroke: "#E5E7EB" }} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
-                  <Bar dataKey="value" radius={[4, 4, 0, 0]} barSize={30} fill={colors.primary}>
-                    {resumenGradoData.map((entry, index) => (
+                  <Bar dataKey="cantidad" name="Cantidad" radius={[8, 8, 0, 0]} barSize={40}>
+                    {barData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </div>
-        )}
-
-        {/* 🔹 Gráfico de Barras - Comparativo General */}
-        <div className="col-12 col-lg-6 w-100">
-          <div className="elegant-card chart-container">
-            <div className="chart-header">
-              <FaChartBar className="chart-icon" />
-              <h5>Comparativo General</h5>
-            </div>
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis
-                  dataKey="name"
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                  tick={{ fill: "#6B7280", fontSize: 9 }}
-                  interval={0}
-                />
-                <YAxis tick={{ fill: "#6B7280" }} axisLine={{ stroke: "#E5E7EB" }} />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar dataKey="cantidad" radius={[4, 4, 0, 0]} barSize={30}>
-                  {barData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
           </div>
         </div>
       </div>

@@ -614,3 +614,48 @@
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-detalles-grande {
+  background: #fff;
+  padding: 25px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.modal-header-detalles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-cerrar {
+  background: #ff4b4b;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.seccion {
+  margin-bottom: 20px;
+}
+
+.bloque {
+  background: #f6f6f6;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}

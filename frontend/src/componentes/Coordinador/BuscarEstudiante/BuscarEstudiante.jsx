@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './BuscarEstudiante.css';
 import ModalMensaje from "../../ui/ModalMensaje";
+import ModalDetallesEstudiante from "./ModalDetallesEstudiante"; // 👈 IMPORTAR EL NUEVO MODAL
 
 function BuscarEstudiante() {
   const [nombre, setNombre] = useState('');
@@ -12,6 +13,8 @@ function BuscarEstudiante() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState("");
   const [usuarioGenerado, setUsuarioGenerado] = useState(null);
+  const [estudianteSeleccionado, setEstudianteSeleccionado] = useState(null);
+  const [showModalDetalles, setShowModalDetalles] = useState(false);
 
   // paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -66,7 +69,7 @@ function BuscarEstudiante() {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         setEstudiantes(data);
-        setPaginaActual(1); // reset paginación al traer nuevos datos
+        setPaginaActual(1);
         if (filtro && filtro.trim()) {
           setMensaje(`✅ Se encontraron ${data.length} estudiante(s)`);
           setTipoMensaje('success');
@@ -94,14 +97,11 @@ function BuscarEstudiante() {
     }
   }, []);
 
-  // Al montar, trae todos los estudiantes (modo "sin filtro")
   useEffect(() => {
     fetchEstudiantes('');
   }, [fetchEstudiantes]);
 
-  // 🔍 Función principal de búsqueda optimizada (usa fetchEstudiantes)
   const buscar = useCallback(async () => {
-    // si no hay texto, traer todos (ya lo maneja fetchEstudiantes)
     await fetchEstudiantes(nombre);
   }, [nombre, fetchEstudiantes]);
 
@@ -122,10 +122,10 @@ function BuscarEstudiante() {
     setMensaje('');
     setTipoMensaje('');
     setUsuarioGenerado(null);
-    fetchEstudiantes(''); // recargar todo
+    fetchEstudiantes('');
   }, [fetchEstudiantes]);
 
-  // Paginación: calcular slice actual
+  // Paginación
   const totalPaginas = Math.max(1, Math.ceil(estudiantes.length / itemsPorPagina));
   const inicio = (paginaActual - 1) * itemsPorPagina;
   const fin = inicio + itemsPorPagina;
@@ -134,7 +134,6 @@ function BuscarEstudiante() {
   const irPagina = (nuevaPagina) => {
     if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
     setPaginaActual(nuevaPagina);
-    // scroll top de resultados si quieres:
     const cont = document.querySelector('.tabla-container') || document.querySelector('.tarjetas-container');
     if (cont) cont.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -148,7 +147,7 @@ function BuscarEstudiante() {
           <p className="subtitulo">Instituto Renato Descartes</p>
         </div>
 
-        {/* 🔸 Formulario de búsqueda */}
+        {/* Formulario de búsqueda */}
         <form onSubmit={onSubmit} className="buscar-form">
           <div className="form-container">
             <div className="input-group-wrapper">
@@ -199,7 +198,7 @@ function BuscarEstudiante() {
           </div>
         </form>
 
-        {/* 🔹 Mensajes de estado */}
+        {/* Mensajes de estado */}
         {mensaje && (
           <div className={`mensaje-alerta ${tipoMensaje}`}>
             <span className="icono-alerta">
@@ -211,7 +210,7 @@ function BuscarEstudiante() {
           </div>
         )}
 
-        {/* 📊 Resumen de resultados */}
+        {/* Resumen de resultados */}
         {estudiantes.length > 0 && (
           <div className="resumen-resultados">
             <div className="contador-estudiantes">
@@ -221,7 +220,7 @@ function BuscarEstudiante() {
           </div>
         )}
 
-        {/* 🧭 Tabla desktop */}
+        {/* Tabla desktop */}
         {estudiantesPaginados.length > 0 && (
           <div className="tabla-container desktop">
             <div className="table-responsive">
@@ -234,6 +233,7 @@ function BuscarEstudiante() {
                     <th>Estado</th>
                     <th>Acudiente</th>
                     <th>Contacto</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -241,26 +241,32 @@ function BuscarEstudiante() {
                     const acudiente = est.acudientes?.[0];
                     const personaEst = est.persona;
                     const personaAcu = acudiente?.persona;
-                    
+
                     return (
                       <tr key={est.id_estudiante} className="fila-estudiante">
                         <td>
                           <div className="info-estudiante">
-                            <strong className="nombre">{personaEst?.nombre} {personaEst?.apellido}</strong>
+                            <strong className="nombre">
+                              {personaEst?.nombre} {personaEst?.apellido}
+                            </strong>
                             <span className="grado">Grado: {est.grado || 'No asignado'}</span>
                           </div>
                         </td>
+
                         <td>
                           <span className="documento">{personaEst?.numero_documento || '—'}</span>
                         </td>
+
                         <td>
                           <span className="eps">{est.eps?.nombre || '—'}</span>
                         </td>
+
                         <td>
                           <span className={`estado ${est.estadoAcademico?.nombre?.toLowerCase() || 'sin-estado'}`}>
                             {est.estadoAcademico?.nombre || '—'}
                           </span>
                         </td>
+
                         <td>
                           {acudiente ? (
                             <div className="info-acudiente">
@@ -271,6 +277,7 @@ function BuscarEstudiante() {
                             <span className="sin-acudiente">Sin acudiente</span>
                           )}
                         </td>
+
                         <td>
                           {acudiente ? (
                             <div className="contacto-acudiente">
@@ -282,6 +289,18 @@ function BuscarEstudiante() {
                             <span className="sin-contacto">—</span>
                           )}
                         </td>
+
+                        <td>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              setEstudianteSeleccionado(est);
+                              setShowModalDetalles(true);
+                            }}
+                          >
+                            Ver más
+                          </button>
+                        </td>
                       </tr>
                     );
                   })}
@@ -291,7 +310,7 @@ function BuscarEstudiante() {
           </div>
         )}
 
-        {/* 📱 Tarjetas móviles */}
+        {/* Tarjetas móviles */}
         {estudiantesPaginados.length > 0 && (
           <div className="tarjetas-container mobile">
             {estudiantesPaginados.map((est) => {
@@ -359,6 +378,17 @@ function BuscarEstudiante() {
                         <p>Sin acudiente registrado</p>
                       </div>
                     )}
+
+                    {/* 👈 AGREGAR BOTÓN EN TARJETA MÓVIL */}
+                    <button
+                      className="btn btn-primary w-100 mt-3"
+                      onClick={() => {
+                        setEstudianteSeleccionado(est);
+                        setShowModalDetalles(true);
+                      }}
+                    >
+                      Ver más detalles
+                    </button>
                   </div>
                 </div>
               );
@@ -389,7 +419,7 @@ function BuscarEstudiante() {
           </div>
         )}
 
-        {/* Información cuando no hay búsquedas */}
+        {/* Estado inicial */}
         {!estudiantes.length && !loading && !mensaje && (
           <div className="estado-inicial">
             <div className="estado-content">
@@ -435,6 +465,17 @@ function BuscarEstudiante() {
           setUsuarioGenerado(null);
         }}
       />
+
+      {/* 👈 REEMPLAZAR EL MODAL VIEJO CON EL NUEVO */}
+      {showModalDetalles && estudianteSeleccionado && (
+        <ModalDetallesEstudiante
+          estudiante={estudianteSeleccionado}
+          onClose={() => {
+            setShowModalDetalles(false);
+            setEstudianteSeleccionado(null);
+          }}
+        />
+      )}
     </div>
   );
 }

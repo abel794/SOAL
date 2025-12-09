@@ -1,64 +1,153 @@
 // 📂 controllers/controlador_coordinador/dashboardController.js
+const { sequelize } = require('../../models');
 const db = require('../../models');
 const {
-  Observacion,
-  Estudiante,
+  Notificacion,
+  Pqr,
+  HistorialPqr,
   Funcionario,
   Persona,
-  Grado,
-  EstudianteGrado,
   Usuario,
   FuncionarioGrado,
+  Grado,
+  Sexo,
+  TipoDocumento,
+  TipoUsuario,
+  EstadoUsuario,
+  Observacion,
+  CategoriaObservacion,
+  GravedadObservacion,
+  HistorialObservacion,
   Asistencia,
   EstadoAsistencia,
-  Pqr,
+  Cita,
+  Estudiante,
   Acudiente,
-  Notificacion,
-  sequelize
-} = db;
+  EstudianteGrado
+} = db
 
 const axios = require('axios');
 
 const dashboardController = {
   async profesoresActivos(req, res) {
-    console.log('💡 Ejecutando profesoresActivos');
-    try {
-      const profesores = await Funcionario.findAll({
-        include: [
-          {
-            model: Persona,
-            as: 'persona',
-            attributes: ['numero_documento', 'nombre', 'apellido', 'correo']
-          },
-          {
-            model: FuncionarioGrado,
-            as: 'gradosAsignados',
-            include: [
-              {
-                model: Grado,
-                as: 'grado',
-                attributes: ['id_grado', 'nombre_grado']
-              }
-            ],
-            required: false
-          },
-          {
-            model: Usuario,
-            as: 'usuario',
-            where: { id_tipo_usuario: 3, id_estado_usuario: 1 },
-            attributes: ['id_usuario', 'username', 'fecha_creacion'],
-            required: false
-          }
-        ]
-      });
+  console.log("💡 Ejecutando profesoresActivos (versión ligera)");
+  try {
+    const profesores = await Funcionario.findAll({
+      include: [
+        {
+          model: Persona,
+          as: "persona",
+          attributes: ["numero_documento", "nombre", "apellido", "correo"]
+        },
+        {
+          model: FuncionarioGrado,
+          as: "gradosAsignados",
+          include: [
+            {
+              model: Grado,
+              as: "grado",
+              attributes: ["nombre_grado"]
+            }
+          ],
+          required: false
+        },
+        {
+          model: Usuario,
+          as: "usuario",
+          where: { id_tipo_usuario: 3, id_estado_usuario: 1 },
+          attributes: ["username"],
+          required: true
+        }
+      ],
+      attributes: []
+    });
 
-      const total = profesores.length;
-      res.json({ total, profesores });
-    } catch (error) {
-      console.error('❌ Error al obtener profesores activos:', error);
-      res.status(500).json({ error: 'Error al obtener profesores activos' });
-    }
-  },
+    res.json({ total: profesores.length, profesores });
+  } catch (error) {
+    console.error("❌ Error al obtener profesores activos:", error);
+    res.status(500).json({ error: "Error al obtener profesores activos" });
+  }
+}
+,
+async profesoresCompletos(req, res) {
+  try {
+    const profesores = await Funcionario.findAll({
+      include: [
+        // Datos personales
+        {
+          model: Persona,
+          as: "persona",
+          include: [
+            { model: Sexo, attributes: ["nombre"] },
+            { model: TipoDocumento, attributes: ["nombre"] }
+          ]
+        },
+
+        // Usuario
+        {
+          model: Usuario,
+          as: "usuario",
+          include: [
+            { model: EstadoUsuario, attributes: ["nombre"] },
+            { model: TipoUsuario, attributes: ["nombre"] }
+          ]
+        },
+
+        // Grados asignados
+        {
+          model: FuncionarioGrado,
+          as: "gradosAsignados",
+          include: [
+            { model: Grado, as: "grado", attributes: ["id_grado", "nombre_grado"] }
+          ]
+        },
+
+        // Observaciones
+        {
+          model: Observacion,
+          as: "observaciones",
+          include: [
+            { model: CategoriaObservacion, as: "categoria", attributes: ["nombre"] },
+            { model: GravedadObservacion, as: "gravedad", attributes: ["nombre"] }
+          ]
+        },
+
+        // Asistencias
+        {
+          model: Asistencia,
+          as: "asistencias",
+          include: [
+            {
+              model: Estudiante,
+              include: [
+                { model: Persona, as: "persona", attributes: ["nombre", "apellido"] }
+              ]
+            }
+          ]
+        },
+
+        // Citas
+        {
+          model: Cita,
+          as: "citas",
+          required: false,
+          attributes: ["id_cita", "fecha_cita", "motivo", "estado"],
+          include: [
+            { model: Estudiante, as: "estudiante" },
+            { model: Acudiente, as: "acudiente" }
+          ]
+        }
+      ]
+    });
+
+    res.json({ total: profesores.length, profesores });
+
+  } catch (error) {
+    console.error("❌ Error en profesoresCompletos:", error);
+    res.status(500).json({ error: "Error al obtener todos los profesores" });
+  }
+}
+,
 
   async observacionesPorGravedad(req, res) {
     console.log('💡 Ejecutando observacionesPorGravedad');

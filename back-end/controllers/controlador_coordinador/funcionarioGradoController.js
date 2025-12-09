@@ -39,20 +39,62 @@ const controller = {
 
   // ✅ Obtener grados de un funcionario
   async gradosPorFuncionario(req, res) {
-    try {
-      const { id_funcionario } = req.params;
+  try {
+    const { id_funcionario } = req.params;
 
-      const resultado = await FuncionarioGrado.findAll({
-        where: { id_funcionario },
-        include: [{ model: Grado, as: 'grado' }]
-      });
+    // Traemos los grados asignados al funcionario
+    const grados = await FuncionarioGrado.findAll({
+      where: { id_funcionario },
+      include: [
+        {
+          model: Grado,
+          as: 'grado',
+          include: [
+            {
+              model: EstudianteGrado,
+              as: 'estudiantes',
+              where: { activo: true },
+              required: false, // para incluir aunque no haya estudiantes
+              include: [
+                {
+                  model: Estudiante,
+                  as: 'estudiante',
+                  include: [{ model: Persona, as: 'persona' }]
+                },
+                { model: EstadoAcademico, as: 'estado' }
+              ]
+            }
+          ]
+        },
+        {
+          model: Funcionario,
+          as: 'funcionario',
+          include: [{ model: Persona, as: 'persona' }]
+        }
+      ]
+    });
 
-      res.json(resultado);
-    } catch (error) {
-      console.error("Error en gradosPorFuncionario:", error);
-      res.status(500).json({ error: 'Error al obtener grados por funcionario' });
-    }
-  },
+    // Opcional: reformatear para frontend
+    const resultado = grados.map(g => ({
+      id_funcionario_grado: g.id_funcionario_grado,
+      rol: g.rol,
+      grado: g.grado.nombre_grado,
+      titular: g.grado.titular ? g.grado.titular : null,
+      estudiantes: g.grado.estudiantes.map(e => ({
+        id_estudiante_grado: e.id_estudiante_grado,
+        nombre_completo: `${e.estudiante.persona.nombre} ${e.estudiante.persona.apellido}`,
+        documento: e.estudiante.persona.numero_documento,
+        estado_academico: e.estado.nombre
+      })),
+      funcionario: `${g.funcionario.persona.nombre} ${g.funcionario.persona.apellido}`
+    }));
+
+    res.json(resultado);
+  } catch (error) {
+    console.error("Error en gradosPorFuncionario:", error);
+    res.status(500).json({ error: 'Error al obtener grados por funcionario' });
+  }
+},
 
   // ✅ Filtrar asignaciones por rol
   async filtrarPorRol(req, res) {

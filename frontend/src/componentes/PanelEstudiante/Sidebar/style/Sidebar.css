@@ -1,4 +1,6 @@
-/* Menú lateral institucional */
+/* ============================
+   MENÚ LATERAL INSTITUCIONAL
+============================ */
 .barra-lateral {
   width: 240px;
   height: 100vh;
@@ -24,7 +26,9 @@
   transform: translateX(0);
 }
 
-/* Encabezado con hamburguesa y título */
+/* ============================
+   ENCABEZADO (HAMBURGUESA + TÍTULO)
+============================ */
 .encabezado {
   position: fixed;
   top: 15px;
@@ -39,14 +43,12 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* Botón hamburguesa */
 .hamburguesa {
   font-size: 24px;
   color: #ffffff;
   cursor: pointer;
 }
 
-/* Título Secretaría */
 .texto1 {
   margin: 0;
   font-size: 18px;
@@ -54,12 +56,13 @@
   font-weight: bold;
 }
 
-/* Logo (ya no se usa dentro del menú) */
 .logo {
   display: none;
 }
 
-/* Menú de navegación */
+/* ============================
+   MENÚ DE NAVEGACIÓN
+============================ */
 .menu {
   display: flex;
   flex-direction: column;
@@ -95,11 +98,71 @@
   font-size: 1.2rem;
 }
 
-.textoacu {
-  width: 5px;
+/* ============================
+   MODAL DE CERRAR SESIÓN
+============================ */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-/* Responsive: ocultar menú en pantallas pequeñas */
+.card-confirmacion {
+  background: white;
+  padding: 25px;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  animation: aparecer 0.2s ease-in-out;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-cancelar,
+.btn-confirmar {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 45%;
+}
+
+.btn-cancelar {
+  background: #ccc;
+}
+
+.btn-confirmar {
+  background: #e74c3c;
+  color: white;
+}
+
+/* Animación */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
 @media (max-width: 768px) {
   .barra-lateral {
     transform: translateX(-100%);

@@ -68,6 +68,8 @@ export default function Sidebar({
     { label: "Matricular estudiante", icon: <FaGraduationCap />, categoria: "academica" },
     { label: "Grados y estudiantes", icon: <FaChalkboard />, categoria: "academica" },
     { label: "Registrar asistencia", icon: <FaUserCheck />, categoria: "academica" },
+    { label: "Promover Estudiantes", icon: <FaUserCheck />, categoria: "academica" },
+
     
     // Observaciones
     { label: "Registrar observación", icon: <FaRegStickyNote />, categoria: "observaciones" },

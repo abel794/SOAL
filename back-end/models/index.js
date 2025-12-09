@@ -9,6 +9,7 @@ const sequelize = new Sequelize('SOAL1', 'root', '', {
 
 // 2. Importación de modelos
 const models = {
+  EstadoAnio:require('./EstadoAnio')(sequelize, DataTypes),
   HistorialPqr: require('./historial_pqr')(sequelize, DataTypes),
   GradoAsistencia: require('./GradoAsistencia')(sequelize, DataTypes),
   Archivo: require('./Archivo')(sequelize, DataTypes),

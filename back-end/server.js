@@ -26,6 +26,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 🧱 Rutas personalizadas de archivos
 const obtenerArchivo = require('./routes/coordinador/obtenerArchivo');
 app.use('/api', obtenerArchivo);
+// Rutas
+app.use("/api/email", require("./routes/emailRouter"));
 
 // 📌 Rutas generales
 app.use('/api/autenticacion', require('./routes/rutasAutenticacion'));
@@ -86,7 +88,7 @@ const PORT = process.env.PORT || 3000;
 sequelize.authenticate()
   .then(() => {
     console.log('✅ Conexión a la base de datos establecida.');
-    app.listen(PORT, () => {
+    app.listen(PORT,'0.0.0.0', () => {
       console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
       // console.table(listEndpoints(app)); // Descomenta si quieres ver todas las rutas
     });

@@ -1,6 +1,6 @@
 // controllers/estudianteController.js
-
-const {
+const { Op, Sequelize } = require("sequelize");
+const { 
   Estudiante,
   Persona,
   Usuario,
@@ -8,11 +8,12 @@ const {
   EstadoAcademico,
   Acudiente,
   RelacionAcudiente,
-  Estudiantegrado,
-  Grado,
-  EstudianteAcudiente,
+  Observacion,
+  Asistencia,
+  EstudianteGrado,
+  Grado
 } = require('../../models');
-const { Op } = require('sequelize');
+
 
 module.exports = {
   // 1. Listar todos
@@ -48,63 +49,228 @@ module.exports = {
   async buscar(req, res) {
   try {
     const { filtro } = req.query;
-
     console.log(`[buscar] Filtro recibido: "${filtro || 'sin filtro'}"`);
 
-    // 🔹 Base de la consulta (siempre incluye los mismos modelos)
+    // ==== Opciones base para el findAll ====
     const opcionesConsulta = {
       where: {},
+      attributes: ['id_estudiante', 'numero_documento', 'id_usuario', 'id_eps', 'id_estado_academico'],
       include: [
+        // Persona del estudiante (y filtro aplicado aquí si existe)
         {
           model: Persona,
           as: 'persona',
-          attributes: ['nombre', 'apellido', 'numero_documento'],
+          attributes: ['nombre', 'apellido', 'numero_documento', 'telefono', 'fecha_nacimiento', 'direccion', 'correo'],
+          ...(filtro && filtro.trim() !== ''
+            ? {
+                where: {
+                  [Op.or]: [
+                    { nombre: { [Op.like]: `%${filtro}%` } },
+                    { apellido: { [Op.like]: `%${filtro}%` } },
+                    { numero_documento: { [Op.like]: `%${filtro}%` } }
+                  ]
+                },
+                required: true
+              }
+            : {})
         },
-        { model: Usuario, as: 'usuario', attributes: ['id_usuario'] },
-        { model: Eps, as: 'eps', attributes: ['nombre'] },
-        { model: EstadoAcademico, as: 'estadoAcademico', attributes: ['nombre'] },
+
+        // Usuario asociado
+        {
+          model: Usuario,
+          as: 'usuario',
+          attributes: ['id_usuario', 'username', 'id_tipo_usuario']
+        },
+
+        // EPS
+        {
+          model: Eps,
+          as: 'eps',
+          attributes: ['id_eps', 'nombre']
+        },
+
+        // Estado académico
+        {
+          model: EstadoAcademico,
+          as: 'estadoAcademico',
+          attributes: ['id_estado_academico', 'nombre']
+        },
+
+        // Grado actual (activo = 1)
+        {
+          model: EstudianteGrado,
+          as: 'grados',
+          required: false,
+          where: { activo: 1 },
+          attributes: ['id_estudiante_grado', 'id_grado', 'anio_academico', 'activo', 'fecha_finalizacion', 'id_estado'],
+          include: [
+            {
+              model: Grado,
+              as: 'grado',
+              attributes: ['id_grado', 'nombre_grado', 'descripcion']
+            }
+          ]
+        },
+
+        // Observaciones (todas)
+        {
+          model: Observacion,
+          as: 'observaciones',
+          required: false,
+          attributes: ['id_observacion', 'fecha', 'descripcion', 'id_gravedad', 'id_categoria'],
+          order: [['fecha', 'DESC']]
+        },
+
+        // Asistencias (todas)
+        {
+          model: Asistencia,
+          as: 'asistencias',
+          required: false,
+          attributes: ['id_asistencia', 'fecha', 'observacion', 'id_estado_asistencia', 'id_grado_asistencia']
+        },
+
+        // Acudientes (padres) y dentro de cada acudiente traemos sus datos personales, relación y TODOS sus estudiantes (hermanos)
         {
           model: Acudiente,
           as: 'acudientes',
-          through: { attributes: ['id_estudiante_acudiente'] },
-          attributes: ['id_acudiente', 'numero_documento'],
+          through: { attributes: ['id_estudiante_acudiente'] }, // pivote
+          attributes: ['id_acudiente', 'numero_documento', 'id_relacion'],
+          required: false,
           include: [
             {
               model: Persona,
               as: 'persona',
-              attributes: ['nombre', 'apellido', 'telefono', 'direccion', 'correo'],
+              attributes: ['nombre', 'apellido', 'telefono', 'correo', 'direccion']
             },
             {
               model: RelacionAcudiente,
               as: 'relacion',
-              attributes: ['nombre'],
+              attributes: ['id_relacion', 'nombre']
             },
-          ],
-        },
+            // Aquí traemos los demás estudiantes asociados a este acudiente (hermanos)
+            {
+              model: Estudiante,         // necesita que en models.Acudiente hayas definido: Acudiente.belongsToMany(Estudiante, { through: EstudianteAcudiente, as: 'estudiantes', ...})
+              as: 'estudiantes',
+              through: { attributes: [] },
+              attributes: ['id_estudiante', 'numero_documento', 'id_usuario', 'id_eps'],
+              required: false,
+              include: [
+                {
+                  model: Persona,
+                  as: 'persona',
+                  attributes: ['nombre', 'apellido', 'numero_documento']
+                },
+                {
+                  model: EstudianteGrado,
+                  as: 'grados',
+                  where: { activo: 1 },
+                  required: false,
+                  include: [{ model: Grado, as: 'grado', attributes: ['id_grado', 'nombre_grado'] }]
+                },
+                {
+                  model: EstadoAcademico,
+                  as: 'estadoAcademico',
+                  attributes: ['id_estado_academico', 'nombre'],
+                  required: false
+                }
+              ]
+            }
+          ]
+        }
       ],
+      order: [
+        [{ model: EstudianteGrado, as: 'grados' }, 'anio_academico', 'DESC'],
+        [{ model: Observacion, as: 'observaciones' }, 'fecha', 'DESC']
+      ],
+      distinct: true // importante cuando hay many-to-many para que count/limit funcionen bien
     };
 
-    // 🔹 Si hay filtro, agregamos condición al include de Persona
-    if (filtro && filtro.trim() !== '') {
-      opcionesConsulta.include[0].where = {
-        [Op.or]: [
-          { nombre: { [Op.like]: `%${filtro}%` } },
-          { apellido: { [Op.like]: `%${filtro}%` } },
-          { numero_documento: { [Op.like]: `%${filtro}%` } },
-        ],
+    // ==== Ejecutar la consulta ====
+    const estudiantesRaw = await Estudiante.findAll(opcionesConsulta);
+    console.log(`[buscar] Estudiantes raw encontrados: ${estudiantesRaw.length}`);
+
+    // ==== Post-procesamiento: resumenes útiles por estudiante ====
+    const estudiantesProcesados = await Promise.all(estudiantesRaw.map(async (est) => {
+      const estJson = est.toJSON();
+
+      // resumen de asistencias por estado (conteo)
+      const asistenciasConteo = await Asistencia.findAll({
+        attributes: ['id_estado_asistencia', [Sequelize.fn('COUNT', Sequelize.col('id_asistencia')), 'total']],
+        where: { id_estudiante: estJson.id_estudiante },
+        group: ['id_estado_asistencia']
+      });
+
+      // convertir a objeto { estadoId: total, ... }
+      const resumenAsistencias = {};
+      asistenciasConteo.forEach(row => {
+        resumenAsistencias[row.id_estado_asistencia] = Number(row.get('total'));
+      });
+
+      // última observación (si existe)
+      const ultimaObs = estJson.observaciones && estJson.observaciones.length
+        ? estJson.observaciones.reduce((prev, curr) => (new Date(prev.fecha) > new Date(curr.fecha) ? prev : curr))
+        : null;
+
+      // calcular cantidad total de observaciones
+      const totalObservaciones = Array.isArray(estJson.observaciones) ? estJson.observaciones.length : 0;
+
+      // dar estructura limpia a acudientes y hermanos (por si deseas filtrar o excluir el propio estudiante)
+      const acudientesLimpios = (estJson.acudientes || []).map(ac => {
+        const hermanos = (ac.estudiantes || [])
+          .map(h => {
+            // evitar ciclos profundos: traer solo datos esenciales de hermanos
+            return {
+              id_estudiante: h.id_estudiante,
+              numero_documento: h.numero_documento,
+              persona: h.persona || null,
+              estadoAcademico: h.estadoAcademico || null,
+              gradoActual: (h.grados && h.grados[0]) ? {
+                id_estudiante_grado: h.grados[0].id_estudiante_grado,
+                id_grado: h.grados[0].id_grado,
+                anio_academico: h.grados[0].anio_academico,
+                grado: h.grados[0].grado || null
+              } : null
+            };
+          });
+
+        return {
+          id_acudiente: ac.id_acudiente,
+          numero_documento: ac.numero_documento,
+          persona: ac.persona || null,
+          relacion: ac.relacion || null,
+          hermanos // incluye al propio estudiante también; si quieres excluirlo, se filtra abajo
+        };
+      });
+
+      // armar objeto final por estudiante
+      return {
+        id_estudiante: estJson.id_estudiante,
+        numero_documento: estJson.numero_documento,
+        persona: estJson.persona || null,
+        usuario: estJson.usuario || null,
+        eps: estJson.eps || null,
+        estadoAcademico: estJson.estadoAcademico || null,
+        gradoActual: (estJson.grados && estJson.grados[0]) ? {
+          id_estudiante_grado: estJson.grados[0].id_estudiante_grado,
+          id_grado: estJson.grados[0].id_grado,
+          anio_academico: estJson.grados[0].anio_academico,
+          grado: estJson.grados[0].grado || null
+        } : null,
+        observaciones: estJson.observaciones || [],
+        totalObservaciones,
+        ultimaObservacion: ultimaObs,
+        asistencias: estJson.asistencias || [],
+        resumenAsistencias,
+        acudientes: acudientesLimpios
       };
-      opcionesConsulta.include[0].required = true;
-    }
+    }));
 
-    // 🔹 Ejecutar búsqueda
-    const estudiantes = await Estudiante.findAll(opcionesConsulta);
-
-    console.log(`[buscar] Estudiantes encontrados: ${estudiantes.length}`);
-    return res.json(estudiantes);
+    console.log(`[buscar] Estudiantes procesados: ${estudiantesProcesados.length}`);
+    return res.json(estudiantesProcesados);
 
   } catch (error) {
-    console.error('[buscar] Error al buscar estudiante:', error);
-    return res.status(500).json({ error: 'Error al buscar estudiante' });
+    console.error("[buscar] Error al buscar estudiante:", error);
+    return res.status(500).json({ error: "Error al buscar estudiante", detail: error.message });
   }
 }
 ,

@@ -28,6 +28,7 @@ import ResponderPqr from './ResponderPQR/ResponderPQR';
 import VerArchivos from './ver_archivos/ver_archivos.jsx'
 import GradoObservaciones from './GradoObservaciones/GradoObservaciones.jsx'
 import TotalObservaciones from './TotalObservaciones/TotalObservaciones.jsx'
+import PromoverEstudiantes from './promocion_estudiante/PromoverEstudiantes.jsx';
 
 
 import './PanelCoordinador.css';
@@ -107,6 +108,12 @@ export default function PanelCoordinador() {
         return <ProfesoresActivos />;
       case 'Buscar estudiante':
         return <BuscarEstudiante />;
+
+      case 'Promover Estudiantes':
+        return (
+          <PromoverEstudiantes
+            setVista={setVista}
+            />);
       case 'Registrar observación':
         return (
           <RegistrarObservacion
@@ -204,16 +211,14 @@ export default function PanelCoordinador() {
         return (
           <>
             <UserHeader />
-            <div className="textopanel">
-              <div className="container-fluid px-0 mt-4">
-                <h1 className="mb-1">Observador estudiantil</h1>
-                <h4 className="text-muted mb-3">
-                  Instituto Renato Descartes
-                </h4>
-                <DashboardCards setVista={setVista} />
-                <ResumenObservaciones />
-                <TablaObservaciones setVista={setVista}/>
-              </div>
+            <div className="cards-panel mt-4">
+              <h1 className="mb-1">Observador estudiantil</h1>
+              <h4 className="text-muted mb-3">
+                Instituto Renato Descartes
+              </h4>
+              <DashboardCards setVista={setVista} />
+              <ResumenObservaciones />
+              <TablaObservaciones setVista={setVista}/>
             </div>
           </>
         );

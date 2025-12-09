@@ -22,23 +22,47 @@ module.exports = (sequelize) => {
     activo: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    }
+    },
+    id_estado: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    fecha_finalizacion: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    id_funcionario_titular: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   }, {
     tableName: 'estudiante_grado',
     timestamps: false,
   });
 
-  // Asociaciones internas del modelo
   EstudianteGrado.associate = (models) => {
-    // ✅ Alias modificado para evitar conflicto
+    // Relación con Estudiante
     EstudianteGrado.belongsTo(models.Estudiante, {
       foreignKey: 'id_estudiante',
       as: 'estudianteAsignado'
     });
 
+    // Relación con Grado
     EstudianteGrado.belongsTo(models.Grado, {
       foreignKey: 'id_grado',
       as: 'grado'
+    });
+
+    // Relación con EstadoAnio
+    EstudianteGrado.belongsTo(models.EstadoAnio, {
+      foreignKey: 'id_estado',
+      as: 'estadoAnio'
+    });
+
+    // Relación opcional con Funcionario (profesor)
+    EstudianteGrado.belongsTo(models.Funcionario, {
+      foreignKey: 'id_funcionario_titular',
+      as: 'funcionarioTitular'
     });
   };
 

@@ -1,66 +1,233 @@
-/* PanelEstudiante.css */
-
-/* Estructura principal */
-.panel-estudiante {
-  display: flex;
-  flex-direction: column;
+.dashboard-estudiante {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
   min-height: 100vh;
 }
 
-@media (min-width: 768px) {
-  .panel-estudiante {
-    flex-direction: row;
-  }
+.dashboard-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 30px;
 }
 
-/* Contenedor del contenido principal */
-.panel-contenido {
-  flex-grow: 1;
-  margin-left: 0; /* En mobile, el sidebar está oculto */
-
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.estudiante-info h2 {
+    color: white;
+    margin: 0;
+    Font-size: 1.8em;
 }
 
-@media (min-width: 768px) {
-  .panel-contenido {
-    margin-left: 240px; /* Espacio para el sidebar */
-  }
+.estudiante-info p {
+    color: white;
+    margin: 5px 0;
+    opacity: 0.9;
+}
+.texto-blanco{
+    color: white;
+}
+.resumen-rapido {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-/* Área del contenido renderizado dinámicamente */
-.panel-main {
-  padding: 1.5rem;
-}
-
-.panel-main .contenido {
-  background: #fff;
-  padding: 1.5rem;
+.tarjeta-resumen {
+  background: white;
+  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
-/* Responsive ajustes si sidebar está cerrado */
-@media (max-width: 767px) {
-  .panel-contenido {
-    margin-left: 0;
+.tarjeta-resumen .numero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 2em;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 10px 0 0 0;
+}
+
+.seccion-cursos, .seccion-tareas, .seccion-calendario {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.lista-cursos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.tarjeta-curso {
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.tarjeta-curso:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-ver-curso {
+  background-color: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-ver-curso:hover {
+  background-color: #5a6fd8;
+}
+
+.lista-tareas {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.tarjeta-tarea {
+  border-left: 4px solid #667eea;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.tarjeta-tarea.pendiente {
+  border-left-color: #ffc107;
+}
+
+.tarjeta-tarea.entregado {
+  border-left-color: #28a745;
+}
+
+.tarjeta-tarea.en-progreso {
+  border-left-color: #17a2b8;
+}
+
+.estado {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.estado.pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.estado.entregado {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.estado.en-progreso {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2em;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 15px;
+  color: #6c757d;
+}
+
+.error-container .alert {
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Agregar al DashboardEstudiante.css */
+
+/* Sección de Observaciones */
+.seccion-observaciones {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.lista-observaciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.tarjeta-observacion {
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #17a2b8;
+  transition: transform 0.2s;
+}
+
+.tarjeta-observacion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.tarjeta-observacion h3 {
+  color: #17a2b8;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.tarjeta-observacion p {
+  color: #666;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.fecha-observacion {
+  font-size: 0.85em;
+  color: #888;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .dashboard-estudiante {
+    padding: 10px;
   }
-}
-
-/* Asegurar que el contenido no se solape con el sidebar en desktop */
-@media (min-width: 768px) {
-  .sidebar-visible + .panel-contenido {
-    margin-left: 240px;
+  
+  .resumen-rapido {
+    grid-template-columns: 1fr;
   }
-}
-
-/* Transiciones suaves al cambiar contenido */
-.panel-main .contenido {
-  transition: all 0.2s ease-in-out;
-}
-
-/* Utilidades opcionales */
-.scroll-y {
-  overflow-y: auto;
+  
+  .lista-cursos {
+    grid-template-columns: 1fr;
+  }
 }

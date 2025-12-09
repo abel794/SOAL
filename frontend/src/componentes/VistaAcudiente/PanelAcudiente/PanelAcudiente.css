@@ -8,6 +8,29 @@ body, html {
   font-family: "Segoe UI", sans-serif;
   color: #333333;
 }
+.panel-acudiente {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.sidebar-open .acudiente-sidebar {
+  transform: translateX(0);
+}
+
+.sidebar-open .main-content {
+  margin-left: 260px; /* el ancho de tu sidebar */
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .sidebar-open .main-content {
+    margin-left: 0; /* en móvil no se corre */
+  }
+}
+
 
 /* --- CONTENEDOR PRINCIPAL --- */
 .panel-acudiente {
@@ -48,6 +71,7 @@ body, html {
 
 /* --- CONTENIDO PRINCIPAL --- */
 .panel-contenido {
+  
   flex-grow: 1;
   background-color: #ffffff; /* Blanco neutro */
   border-radius: 0;
