@@ -1,164 +1,440 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useCallback, useEffect } from 'react';
+import ModalMensaje from "../../ui/ModalMensaje";
 
-const BuscarEstudiantes = () => {
-  const [filtro, setFiltro] = useState("");
+function BuscarEstudiante() {
+  const [nombre, setNombre] = useState('');
   const [estudiantes, setEstudiantes] = useState([]);
-  const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState("success");
-  const [cargando, setCargando] = useState(false);
+  const [mensaje, setMensaje] = useState('');
+  const [tipoMensaje, setTipoMensaje] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [usuarioGenerado, setUsuarioGenerado] = useState(null);
 
-  const buscarEstudiantes = async () => {
-    if (!filtro.trim()) {
-      setEstudiantes([]);
-      setMensaje("⚠️ Ingresa un nombre o documento para buscar.");
-      setTipoMensaje("danger");
-      return;
-    }
+  // paginación
+  const [paginaActual, setPaginaActual] = useState(1);
+  const itemsPorPagina = 10;
 
+  const ejecutarAccion = useCallback(() => {
+    console.log("Acción confirmada");
+  }, []);
+
+  // helper para obtener token
+  const getToken = () => localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+
+  // Función para obtener estudiantes (si filtro vacío trae todo)
+  const fetchEstudiantes = useCallback(async (filtro = '') => {
     try {
-      setCargando(true);
-      const token = localStorage.getItem("token");
+      setMensaje('');
+      setTipoMensaje('');
+      setLoading(true);
+      setEstudiantes([]);
 
+      const token = getToken();
       if (!token) {
-        setMensaje("No se encontró token de autenticación. Inicia sesión nuevamente.");
-        setTipoMensaje("danger");
-        setCargando(false);
+        setMensaje('⚠️ Necesitas iniciar sesión para buscar estudiantes.');
+        setTipoMensaje('error');
+        setLoading(false);
         return;
       }
 
-      // Petición con filtro y token
-      const res = await axios.get(
-        `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro)}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const url = filtro && filtro.trim()
+        ? `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro.trim())}`
+        : `http://localhost:3000/api/coordinador/estudiante/buscar`;
+
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         }
-      );
+      });
 
-      setEstudiantes(res.data || []);
+      if (res.status === 401 || res.status === 403) {
+        setMensaje('🔐 Tu sesión ha expirado. Inicia sesión nuevamente.');
+        setTipoMensaje('error');
+        setLoading(false);
+        return;
+      }
 
-      if (res.data.length > 0) {
-        setMensaje(`✅ Se encontraron ${res.data.length} estudiantes`);
-        setTipoMensaje("success");
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        setEstudiantes(data);
+        setPaginaActual(1); // reset paginación al traer nuevos datos
+        if (filtro && filtro.trim()) {
+          setMensaje(`✅ Se encontraron ${data.length} estudiante(s)`);
+          setTipoMensaje('success');
+        } else {
+          setMensaje(`📋 Se cargaron ${data.length} estudiante(s) en total`);
+          setTipoMensaje('info');
+        }
       } else {
-        setMensaje("No se encontraron estudiantes");
-        setTipoMensaje("warning");
+        setEstudiantes([]);
+        if (filtro && filtro.trim()) {
+          setMensaje('📭 No se encontraron estudiantes con ese criterio de búsqueda.');
+          setTipoMensaje('info');
+        } else {
+          setMensaje('📭 No hay estudiantes registrados actualmente.');
+          setTipoMensaje('info');
+        }
       }
     } catch (err) {
-      console.error("❌ Error al buscar estudiantes:", err);
-      setMensaje("Error al buscar estudiantes. Intenta nuevamente.");
-      setTipoMensaje("danger");
+      console.error('❌ Error en fetchEstudiantes:', err);
+      setMensaje('🚨 Error al conectar con el servidor. Intenta nuevamente.');
+      setTipoMensaje('error');
       setEstudiantes([]);
     } finally {
-      setCargando(false);
+      setLoading(false);
     }
+  }, []);
+
+  // Al montar, trae todos los estudiantes (modo "sin filtro")
+  useEffect(() => {
+    fetchEstudiantes('');
+  }, [fetchEstudiantes]);
+
+  // 🔍 Función principal de búsqueda optimizada (usa fetchEstudiantes)
+  const buscar = useCallback(async () => {
+    // si no hay texto, traer todos (ya lo maneja fetchEstudiantes)
+    await fetchEstudiantes(nombre);
+  }, [nombre, fetchEstudiantes]);
+
+  const onSubmit = useCallback((e) => {
+    e.preventDefault();
+    buscar();
+  }, [buscar]);
+
+  const handleKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      buscar();
+    }
+  }, [buscar]);
+
+  const limpiarBusqueda = useCallback(() => {
+    setNombre('');
+    setMensaje('');
+    setTipoMensaje('');
+    setUsuarioGenerado(null);
+    fetchEstudiantes(''); // recargar todo
+  }, [fetchEstudiantes]);
+
+  // Paginación: calcular slice actual
+  const totalPaginas = Math.max(1, Math.ceil(estudiantes.length / itemsPorPagina));
+  const inicio = (paginaActual - 1) * itemsPorPagina;
+  const fin = inicio + itemsPorPagina;
+  const estudiantesPaginados = estudiantes.slice(inicio, fin);
+
+  const irPagina = (nuevaPagina) => {
+    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) return;
+    setPaginaActual(nuevaPagina);
+    // scroll top de resultados si quieres:
+    const cont = document.querySelector('.tabla-container') || document.querySelector('.tarjetas-container');
+    if (cont) cont.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <div className="container mt-4 p-4 bg-light rounded shadow">
-      <h2 className="text-center mb-4">📚 Buscar Estudiantes</h2>
-
-      {/* Input + botón */}
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar por nombre o documento"
-          value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
-        />
-        <button
-          className="btn btn-primary"
-          type="button"
-          onClick={buscarEstudiantes}
-          disabled={cargando}
-        >
-          {cargando ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>{" "}
-              Buscando...
-            </>
-          ) : (
-            "Buscar"
-          )}
-        </button>
-      </div>
-
-      {/* Mensaje de estado */}
-      {mensaje && (
-        <div className={`alert alert-${tipoMensaje} text-center`} role="alert">
-          {mensaje}
+    <div className="buscar-container">
+      <div className="buscar-card">
+        {/* Header */}
+        <div className="buscar-header">
+          <h1 className="titulo-principal">🔍 Buscar Estudiante</h1>
+          <p className="subtitulo">Instituto Renato Descartes</p>
         </div>
-      )}
 
-      {/* Tabla de resultados */}
-      <div className="table-responsive mt-3">
-        <table className="table table-striped table-hover align-middle">
-          <thead className="table-dark text-center">
-            <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Documento</th>
-              <th>EPS</th>
-              <th>Estado académico</th>
-              <th>Nombre acudiente</th>
-              <th>Documento acudiente</th>
-              <th>Teléfono acudiente</th>
-              <th>Dirección</th>
-              <th>Email acudiente</th>
-            </tr>
-          </thead>
-          <tbody>
-            {estudiantes.length > 0 ? (
-              estudiantes.map((est) => {
-                const acudiente = est.acudientes?.[0];
-                const personaEst = est.persona;
-                const personaAcu = acudiente?.persona;
-
-                return (
-                  <tr key={est.id_estudiante}>
-                    <td>{personaEst?.nombre || "—"}</td>
-                    <td>{personaEst?.apellido || "—"}</td>
-                    <td>{personaEst?.numero_documento || "—"}</td>
-                    <td>{est.eps?.nombre || "—"}</td>
-                    <td>{est.estadoAcademico?.nombre || "—"}</td>
-                    {acudiente ? (
+        {/* 🔸 Formulario de búsqueda */}
+        <form onSubmit={onSubmit} className="buscar-form">
+          <div className="form-container">
+            <div className="input-group-wrapper">
+              <label className="form-label">
+                Nombre o Documento del Estudiante <span className="required">*</span>
+              </label>
+              <div className="input-button-group">
+                <input
+                  type="text"
+                  className="input-busqueda"
+                  placeholder="Ej: Juan Pérez o 1012345678"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={loading}
+                />
+                <div className="botones-accion">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="btn-buscar"
+                  >
+                    {loading ? (
                       <>
-                        <td>
-                          {personaAcu?.nombre} {personaAcu?.apellido}
-                        </td>
-                        <td>{acudiente.numero_documento || "—"}</td>
-                        <td>{personaAcu?.telefono || "—"}</td>
-                        <td>{personaAcu?.direccion || "—"}</td>
-                        <td>{personaAcu?.correo || "—"}</td>
+                        <span className="spinner"></span>
+                        Buscando...
                       </>
                     ) : (
-                      <td colSpan={5} className="text-center">
-                        Sin acudiente
-                      </td>
+                      <>
+                        <span className="icono-buscar">🔍</span>
+                        Buscar
+                      </>
                     )}
+                  </button>
+                  {(nombre || estudiantes.length > 0) && (
+                    <button
+                      type="button"
+                      onClick={limpiarBusqueda}
+                      className="btn-limpiar"
+                      disabled={loading}
+                    >
+                      🗑️ Limpiar
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        {/* 🔹 Mensajes de estado */}
+        {mensaje && (
+          <div className={`mensaje-alerta ${tipoMensaje}`}>
+            <span className="icono-alerta">
+              {tipoMensaje === 'success' ? '✅' :
+               tipoMensaje === 'error' ? '❌' :
+               tipoMensaje === 'info' ? 'ℹ️' : '⚠️'}
+            </span>
+            <span>{mensaje}</span>
+          </div>
+        )}
+
+        {/* 📊 Resumen de resultados */}
+        {estudiantes.length > 0 && (
+          <div className="resumen-resultados">
+            <div className="contador-estudiantes">
+              <span className="numero">{estudiantes.length}</span>
+              <span className="texto">estudiante(s) encontrado(s)</span>
+            </div>
+          </div>
+        )}
+
+        {/* 🧭 Tabla desktop */}
+        {estudiantesPaginados.length > 0 && (
+          <div className="tabla-container desktop">
+            <div className="table-responsive">
+              <table className="tabla-estudiantes">
+                <thead>
+                  <tr>
+                    <th>Información del Estudiante</th>
+                    <th>Documento</th>
+                    <th>EPS</th>
+                    <th>Estado</th>
+                    <th>Acudiente</th>
+                    <th>Contacto</th>
                   </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan="10" className="text-center text-muted">
-                  No hay estudiantes para mostrar
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                </thead>
+                <tbody>
+                  {estudiantesPaginados.map((est) => {
+                    const acudiente = est.acudientes?.[0];
+                    const personaEst = est.persona;
+                    const personaAcu = acudiente?.persona;
+                    
+                    return (
+                      <tr key={est.id_estudiante} className="fila-estudiante">
+                        <td>
+                          <div className="info-estudiante">
+                            <strong className="nombre">{personaEst?.nombre} {personaEst?.apellido}</strong>
+                            <span className="grado">Grado: {est.grado || 'No asignado'}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <span className="documento">{personaEst?.numero_documento || '—'}</span>
+                        </td>
+                        <td>
+                          <span className="eps">{est.eps?.nombre || '—'}</span>
+                        </td>
+                        <td>
+                          <span className={`estado ${est.estadoAcademico?.nombre?.toLowerCase() || 'sin-estado'}`}>
+                            {est.estadoAcademico?.nombre || '—'}
+                          </span>
+                        </td>
+                        <td>
+                          {acudiente ? (
+                            <div className="info-acudiente">
+                              <strong>{personaAcu?.nombre} {personaAcu?.apellido}</strong>
+                              <span>Doc: {acudiente.numero_documento || '—'}</span>
+                            </div>
+                          ) : (
+                            <span className="sin-acudiente">Sin acudiente</span>
+                          )}
+                        </td>
+                        <td>
+                          {acudiente ? (
+                            <div className="contacto-acudiente">
+                              <span className="telefono">📞 {personaAcu?.telefono || '—'}</span>
+                              <span className="email">📧 {personaAcu?.correo || '—'}</span>
+                              <span className="direccion">🏠 {personaAcu?.direccion || '—'}</span>
+                            </div>
+                          ) : (
+                            <span className="sin-contacto">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 📱 Tarjetas móviles */}
+        {estudiantesPaginados.length > 0 && (
+          <div className="tarjetas-container mobile">
+            {estudiantesPaginados.map((est) => {
+              const acudiente = est.acudientes?.[0];
+              const personaEst = est.persona;
+              const personaAcu = acudiente?.persona;
+              
+              return (
+                <div key={est.id_estudiante} className="tarjeta-estudiante">
+                  <div className="tarjeta-header">
+                    <h3 className="nombre-estudiante">{personaEst?.nombre} {personaEst?.apellido}</h3>
+                    <span className="grado-estudiante">Grado {est.grado || 'No asignado'}</span>
+                  </div>
+                  
+                  <div className="tarjeta-content">
+                    <div className="info-section">
+                      <h4>👤 Información Personal</h4>
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <span className="label">Documento:</span>
+                          <span className="value">{personaEst?.numero_documento || '—'}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">EPS:</span>
+                          <span className="value">{est.eps?.nombre || '—'}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="label">Estado:</span>
+                          <span className={`value estado ${est.estadoAcademico?.nombre?.toLowerCase() || 'sin-estado'}`}>
+                            {est.estadoAcademico?.nombre || '—'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {acudiente ? (
+                      <div className="acudiente-section">
+                        <h4>👨‍👩‍👧‍👦 Acudiente</h4>
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="label">Nombre:</span>
+                            <span className="value">{personaAcu?.nombre} {personaAcu?.apellido}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Documento:</span>
+                            <span className="value">{acudiente.numero_documento || '—'}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Teléfono:</span>
+                            <span className="value">{personaAcu?.telefono || '—'}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Email:</span>
+                            <span className="value">{personaAcu?.correo || '—'}</span>
+                          </div>
+                          <div className="info-item full-width">
+                            <span className="label">Dirección:</span>
+                            <span className="value">{personaAcu?.direccion || '—'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="sin-acudiente-section">
+                        <span className="icono">👤</span>
+                        <p>Sin acudiente registrado</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Paginación */}
+        {estudiantes.length > 0 && (
+          <div className="paginacion">
+            <button
+              onClick={() => irPagina(paginaActual - 1)}
+              disabled={paginaActual === 1}
+              className="btn-pagina"
+            >
+              ◀ Anterior
+            </button>
+
+            <span className="pagina-info">Página {paginaActual} de {totalPaginas}</span>
+
+            <button
+              onClick={() => irPagina(paginaActual + 1)}
+              disabled={paginaActual === totalPaginas}
+              className="btn-pagina"
+            >
+              Siguiente ▶
+            </button>
+          </div>
+        )}
+
+        {/* Información cuando no hay búsquedas */}
+        {!estudiantes.length && !loading && !mensaje && (
+          <div className="estado-inicial">
+            <div className="estado-content">
+              <span className="icono-estado">🔍</span>
+              <h3>Buscar Estudiantes</h3>
+              <p>Ingresa el nombre o documento de un estudiante para comenzar la búsqueda</p>
+              <div className="tips-busqueda">
+                <div className="tip">
+                  <strong>📝 Por nombre</strong>
+                  <p>Busca por nombre completo o parcial</p>
+                </div>
+                <div className="tip">
+                  <strong>🆔 Por documento</strong>
+                  <p>Ingresa el número de documento</p>
+                </div>
+                <div className="tip">
+                  <strong>🎯 Resultados</strong>
+                  <p>Se mostrarán todos los estudiantes que coincidan</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Modales */}
+      <ModalMensaje
+        visible={showConfirm}
+        tipo="confirmacion"
+        titulo="Confirmación"
+        mensaje={confirmMessage}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={ejecutarAccion}
+      />
+
+      <ModalMensaje
+        visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
+        tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
+        titulo="Notificación"
+        mensaje={mensaje}
+        onClose={() => {
+          setMensaje("");
+          setUsuarioGenerado(null);
+        }}
+      />
     </div>
   );
-};
+}
 
-export default BuscarEstudiantes;
+export default BuscarEstudiante;

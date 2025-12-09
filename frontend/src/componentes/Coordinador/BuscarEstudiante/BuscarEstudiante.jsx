@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './BuscarEstudiante.css';
 import ModalMensaje from "../../ui/ModalMensaje";
+<<<<<<< HEAD
 import ModalDetallesEstudiante from "./ModalDetallesEstudiante"; // 👈 IMPORTAR EL NUEVO MODAL
+=======
+import "./BuscarEstudiante.css"
+>>>>>>> a43669583a660c0a97b731df552b28ce5b167ac3
 
 function BuscarEstudiante() {
   const [nombre, setNombre] = useState('');
@@ -139,15 +141,35 @@ function BuscarEstudiante() {
   };
 
   return (
-    <div className="buscar-container">
+    <div className="buscar_container">
       <div className="buscar-card">
         {/* Header */}
-        <div className="buscar-header">
-          <h1 className="titulo-principal">🔍 Buscar Estudiante</h1>
-          <p className="subtitulo">Instituto Renato Descartes</p>
+              <div className="hero-section">
+
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Bienvenido <span className="gradient-text">Coordinador</span>
+          </h1>
+          <p className="hero-subtitle">
+            Panel de control para buscar estudiantes
+          </p>
         </div>
 
+<<<<<<< HEAD
         {/* Formulario de búsqueda */}
+=======
+        <div className="hero-graphic">
+          <div className="floating-elements">
+            <div className="floating-element element-1">🎓</div>
+            <div className="floating-element element-2">📚</div>
+            <div className="floating-element element-3">⭐</div>
+          </div>
+        </div>
+
+      </div>
+
+        {/* 🔸 Formulario de búsqueda */}
+>>>>>>> a43669583a660c0a97b731df552b28ce5b167ac3
         <form onSubmit={onSubmit} className="buscar-form">
           <div className="form-container">
             <div className="input-group-wrapper">
@@ -164,7 +186,7 @@ function BuscarEstudiante() {
                   onKeyPress={handleKeyPress}
                   disabled={loading}
                 />
-                <div className="botones-accion">
+                <div className="botones-accion ">
                   <button
                     type="submit"
                     disabled={loading}
@@ -182,16 +204,6 @@ function BuscarEstudiante() {
                       </>
                     )}
                   </button>
-                  {(nombre || estudiantes.length > 0) && (
-                    <button
-                      type="button"
-                      onClick={limpiarBusqueda}
-                      className="btn-limpiar"
-                      disabled={loading}
-                    >
-                      🗑️ Limpiar
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
@@ -446,15 +458,16 @@ function BuscarEstudiante() {
       </div>
 
       {/* Modales */}
-      <ModalMensaje
-        visible={showConfirm}
-        tipo="confirmacion"
-        titulo="Confirmación"
-        mensaje={confirmMessage}
-        onClose={() => setShowConfirm(false)}
-        onConfirm={ejecutarAccion}
-      />
+        <ModalMensaje
+          visible={showConfirm}
+          tipo="confirmacion"
+          titulo="Confirmación"
+          mensaje={confirmMessage}
+          onClose={() => setShowConfirm(false)}
+          onConfirm={ejecutarAccion}
+        />
 
+<<<<<<< HEAD
       <ModalMensaje
         visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
         tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
@@ -478,6 +491,20 @@ function BuscarEstudiante() {
       )}
     </div>
   );
+=======
+        <ModalMensaje
+          visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
+          tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
+          titulo="Notificación"
+          mensaje={mensaje}
+          onClose={() => {
+            setMensaje("");
+            setUsuarioGenerado(null);
+          }}
+        />
+      </div>
+    );
+>>>>>>> a43669583a660c0a97b731df552b28ce5b167ac3
 }
 
 export default BuscarEstudiante;
