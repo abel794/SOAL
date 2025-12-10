@@ -1,10 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import ModalMensaje from "../../ui/ModalMensaje";
-<<<<<<< HEAD
 import ModalDetallesEstudiante from "./ModalDetallesEstudiante"; // 👈 IMPORTAR EL NUEVO MODAL
-=======
 import "./BuscarEstudiante.css"
->>>>>>> a43669583a660c0a97b731df552b28ce5b167ac3
 
 function BuscarEstudiante() {
   const [nombre, setNombre] = useState('');
@@ -155,9 +152,9 @@ function BuscarEstudiante() {
           </p>
         </div>
 
-<<<<<<< HEAD
+
         {/* Formulario de búsqueda */}
-=======
+
         <div className="hero-graphic">
           <div className="floating-elements">
             <div className="floating-element element-1">🎓</div>
@@ -169,7 +166,7 @@ function BuscarEstudiante() {
       </div>
 
         {/* 🔸 Formulario de búsqueda */}
->>>>>>> a43669583a660c0a97b731df552b28ce5b167ac3
+
         <form onSubmit={onSubmit} className="buscar-form">
           <div className="form-container">
             <div className="input-group-wrapper">
@@ -467,44 +464,30 @@ function BuscarEstudiante() {
           onConfirm={ejecutarAccion}
         />
 
-<<<<<<< HEAD
-      <ModalMensaje
-        visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
-        tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
-        titulo="Notificación"
-        mensaje={mensaje}
-        onClose={() => {
-          setMensaje("");
-          setUsuarioGenerado(null);
-        }}
-      />
+<ModalMensaje
+  visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
+  tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
+  titulo="Notificación"
+  mensaje={mensaje}
+  onClose={() => {
+    setMensaje("");
+    setUsuarioGenerado(null);
+  }}
+/>
 
-      {/* 👈 REEMPLAZAR EL MODAL VIEJO CON EL NUEVO */}
-      {showModalDetalles && estudianteSeleccionado && (
-        <ModalDetallesEstudiante
-          estudiante={estudianteSeleccionado}
-          onClose={() => {
-            setShowModalDetalles(false);
-            setEstudianteSeleccionado(null);
-          }}
-        />
-      )}
-    </div>
-  );
-=======
-        <ModalMensaje
-          visible={!!mensaje && tipoMensaje !== 'success' && tipoMensaje !== 'info'}
-          tipo={tipoMensaje === 'error' ? 'error' : 'advertencia'}
-          titulo="Notificación"
-          mensaje={mensaje}
-          onClose={() => {
-            setMensaje("");
-            setUsuarioGenerado(null);
-          }}
-        />
-      </div>
-    );
->>>>>>> a43669583a660c0a97b731df552b28ce5b167ac3
+{/* 👈 REEMPLAZAR EL MODAL VIEJO CON EL NUEVO */}
+{showModalDetalles && estudianteSeleccionado && (
+  <ModalDetallesEstudiante
+    estudiante={estudianteSeleccionado}
+    onClose={() => {
+      setShowModalDetalles(false);
+      setEstudianteSeleccionado(null);
+    }}
+  />
+)}
+</div>
+);
+
 }
 
 export default BuscarEstudiante;

@@ -16,7 +16,20 @@ import {
   FaChalkboard,
   FaUserCheck,
   FaReply,
-  FaFolder
+  FaFolder,
+  FaLevelUpAlt,
+  FaHistory,
+  FaExclamationTriangle,
+  FaChartBar,
+  FaListOl,
+  FaCalendarPlus,
+  FaCalendarCheck,
+  FaUsers,
+  FaUserPlus,
+  FaUserCog,
+  FaEnvelopeOpenText,
+  FaFileAlt
+
 } from "react-icons/fa";
 import "./Sidebar.css";
 
@@ -68,33 +81,33 @@ export default function Sidebar({
     { label: "Matricular estudiante", icon: <FaGraduationCap />, categoria: "academica" },
     { label: "Grados y estudiantes", icon: <FaChalkboard />, categoria: "academica" },
     { label: "Registrar asistencia", icon: <FaUserCheck />, categoria: "academica" },
-    { label: "Promover Estudiantes", icon: <FaUserCheck />, categoria: "academica" },
+    { label: "Promover Estudiantes", icon: <FaLevelUpAlt />, categoria: "academica" },
 
     
     // Observaciones
     { label: "Registrar observación", icon: <FaRegStickyNote />, categoria: "observaciones" },
-    { label: "Historial de Observaciones", icon: <FaClipboardList />, categoria: "observaciones" },
-    { label: "Casos críticos", icon: <FaClipboardList />, categoria: "observaciones" },
-    { label: "Grado Mas Observaciones", icon: <FaClipboardList />, categoria: "observaciones" },
-    { label: "Total Observaciones", icon: <FaClipboardList />, categoria: "observaciones" },
+    { label: "Historial de Observaciones", icon: <FaHistory />, categoria: "observaciones" },
+    { label: "Casos críticos", icon: <FaExclamationTriangle />, categoria: "observaciones" },
+    { label: "Grado Mas Observaciones", icon: <FaChartBar />, categoria: "observaciones" },
+    { label: "Total Observaciones", icon: <FaListOl />, categoria: "observaciones" },
     
     // Citas y reuniones
-    { label: "Agendar cita con acudiente", icon: <FaCalendarAlt />, categoria: "citas" },
-    { label: "Ver citas", icon: <FaCalendarAlt />, categoria: "citas" },
+    { label: "Agendar cita con acudiente", icon: <FaCalendarPlus />, categoria: "citas" },
+    { label: "Ver citas", icon: <FaCalendarCheck />, categoria: "citas" },
     
     // Gestión de usuarios
-    { label: "Profesores Activos", icon: <FaChalkboardTeacher />, categoria: "usuarios" },
-    { label: "Registrar profesor", icon: <FaChalkboardTeacher />, categoria: "usuarios" },
+    { label: "Profesores Activos", icon: <FaUsers />, categoria: "usuarios" },
+    { label: "Registrar profesor", icon: <FaUserPlus />, categoria: "usuarios" },
     { label: "Registrar secretaria", icon: <FaUserTie />, categoria: "usuarios" },
     { label: "Asignar grado a profesor", icon: <FaChalkboard />, categoria: "usuarios" },
-    { label: "Activar o desactivar usuario", icon: <FaToggleOn />, categoria: "usuarios" },
+    { label: "Activar o desactivar usuario", icon: <FaUserCog />, categoria: "usuarios" },
     
     // Comunicación y soporte
-    { label: "Responder PQR", icon: <FaReply />, categoria: "comunicacion" },
+    { label: "Responder PQR", icon: <FaEnvelopeOpenText />, categoria: "comunicacion" },
     
     // Sistema
     { label: "Notificaciones", icon: <FaBell />, categoria: "sistema" },
-    { label: "Ver archivos", icon: <FaFolder />, categoria: "sistema" },
+    { label: "Ver archivos", icon: <FaFileAlt />, categoria: "sistema" },
     { label: "Configuración", icon: <FaCog />, categoria: "sistema" }
   ];
 

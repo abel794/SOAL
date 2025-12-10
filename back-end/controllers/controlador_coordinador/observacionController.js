@@ -372,26 +372,42 @@ async contarPorGravedad(req, res) {
 
   // Contar por tipo de observación (cantidad simple)
   async contarPorTipo(req, res) {
-  //  console.log('🚀 [contarPorTipo] Inicio');
-    try {
-      const categorias = await CategoriaObservacion.findAll();
-      const resultados = {};
-      console.log('ℹ️ [contarPorTipo] Categorías encontradas =', categorias.length);
+  try {
+    const categorias = await CategoriaObservacion.findAll();
+    const resultados = {};
+    let total = 0;
 
-      for (const cat of categorias) {
-        const cantidad = await Observacion.count({ where: { id_categoria: cat.id_categoria } });
-        resultados[cat.nombre_categoria] = cantidad;
-        console.log(`   • ${cat.nombre_categoria}: ${cantidad}`);
-      }
+    console.log('ℹ️ [contarPorTipo] Categorías encontradas =', categorias.length);
 
-    //  console.log('✅ [contarPorTipo] Resultado:', resultados);
-      return res.json(resultados);
+    for (const cat of categorias) {
+      const cantidad = await Observacion.count({
+        where: { id_categoria: cat.id_categoria }
+      });
 
-    } catch (error) {
-      console.error('❌ [contarPorTipo] Error:', error);
-      return res.status(500).json({ error: 'Error al contar por tipo', detalle: error.message });
+      // Si el nombre de la categoría está vacío o nulo, usar "Sin categoría"
+      const nombre = cat.nombre_categoria || "Sin categoría";
+
+      resultados[nombre] = cantidad;
+      total += cantidad; // acumular total
+
+      console.log(`   • ${nombre}: ${cantidad}`);
     }
-  },
+
+    // Devolver resultados junto con el total
+    return res.json({
+      totalObservaciones: total,
+      detalle: resultados
+    });
+
+  } catch (error) {
+    console.error('❌ [contarPorTipo] Error:', error);
+    return res.status(500).json({
+      error: 'Error al contar por tipo',
+      detalle: error.message
+    });
+  }
+}
+,
 
   // Contar observaciones críticas (Disciplina + Crítica)
   // Contar observaciones con gravedad Crítica, Grave o Urgente

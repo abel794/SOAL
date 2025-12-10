@@ -16,51 +16,51 @@ function ResumenObservaciones() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const cargarDatos = async () => {
-      try {
-        const [resGravedad, resTipo] = await Promise.all([
-          fetch("http://localhost:3000/api/coordinador/observaciones/contar/gravedad"),
-          fetch("http://localhost:3000/api/coordinador/observaciones/contar/tipo"),
-        ]);
+  const cargarDatos = async () => {
+    try {
+      const [resGravedad, resTipo] = await Promise.all([
+        fetch("http://localhost:3000/api/coordinador/observaciones/contar/gravedad"),
+        fetch("http://localhost:3000/api/coordinador/observaciones/contar/tipo"),
+      ]);
 
-        const gravedad = await resGravedad.json();
-        const tipo = await resTipo.json();
+      const gravedad = await resGravedad.json();
+      const tipo = await resTipo.json();
 
-        const leve = parseFloat(gravedad.porcentajes?.Leve?.replace("%", "") || "0");
-        const moderado = parseFloat(gravedad.porcentajes?.Moderado?.replace("%", "") || "0");
-        const grave = parseFloat(gravedad.porcentajes?.Grave?.replace("%", "") || "0");
+      // Extraer porcentajes de gravedad
+      const leve = parseFloat(gravedad.resumen?.Leve?.porcentaje.replace("%", "") || "0");
+      const moderado = parseFloat(gravedad.resumen?.Moderada?.porcentaje.replace("%", "") || "0");
+      const grave = parseFloat(gravedad.resumen?.Grave?.porcentaje.replace("%", "") || "0");
 
-        setDatosGravedad({
-          Leve: leve,
-          Moderado: moderado,
-          Grave: grave,
-        });
+      setDatosGravedad({
+        Leve: leve,
+        Moderado: moderado,
+        Grave: grave,
+      });
 
-        const tipoArray = Object.entries(tipo).map(([nombre, cantidad]) => ({
-          nombre,
-          cantidad,
-        }));
+      // Convertir detalle en array para el gráfico de barras
+      const tipoArray = Object.entries(tipo.detalle || {}).map(([nombre, cantidad]) => ({
+        nombre,
+        cantidad,
+      }));
+      setDatosTipo(tipoArray);
 
-        setDatosTipo(tipoArray);
+      // Guardar estadísticas rápidas
+      setEstadisticas({
+        totalObservaciones: tipo.totalObservaciones || gravedad.total || 0,
+        porcentajeLeve: leve,
+        porcentajeModerado: moderado,
+        porcentajeGrave: grave,
+      });
 
-        // Calcular total de observaciones
-        const total = tipoArray.reduce((sum, item) => sum + item.cantidad, 0);
-        setEstadisticas({
-          totalObservaciones: total,
-          porcentajeLeve: leve,
-          porcentajeModerado: moderado,
-          porcentajeGrave: grave
-        });
+    } catch (error) {
+      console.error("❌ Error al cargar datos:", error);
+    } finally {
+      setCargando(false);
+    }
+  };
 
-      } catch (error) {
-        console.error("❌ Error al cargar datos:", error);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    cargarDatos();
-  }, []);
+  cargarDatos();
+}, []);
 
   if (cargando) {
     return (
