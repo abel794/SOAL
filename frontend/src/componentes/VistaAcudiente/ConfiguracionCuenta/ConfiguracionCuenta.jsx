@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './ConfiguracionCuenta.css';
+import "../ConfiguracionCuenta/ConfiguracionCuenta.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const ConfiguracionCuenta = () => {
   const [formData, setFormData] = useState({
@@ -32,9 +34,10 @@ const ConfiguracionCuenta = () => {
         const token = localStorage.getItem("token");
         const documento = localStorage.getItem("documento");
 
-        const res = await axios.get(`http://localhost:3000/api/coordinador/persona/${documento}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `http://localhost:3000/api/coordinador/persona/${documento}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
         const data = res.data;
         setFormData({
@@ -62,12 +65,12 @@ const ConfiguracionCuenta = () => {
   // 🟢 Manejo de cambios en inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setPasswords(prev => ({ ...prev, [name]: value }));
+    setPasswords((prev) => ({ ...prev, [name]: value }));
   };
 
   // 🟢 Manejo de foto
@@ -75,7 +78,7 @@ const ConfiguracionCuenta = () => {
     const file = e.target.files[0];
     if (file) {
       setFotoPreview(URL.createObjectURL(file));
-      setFormData(prev => ({ ...prev, foto: file }));
+      setFormData((prev) => ({ ...prev, foto: file }));
     }
   };
 
@@ -91,14 +94,14 @@ const ConfiguracionCuenta = () => {
         return;
       }
       if (passwords.passwordNueva !== passwords.passwordConfirm) {
-        setMensaje("❌ La nueva contraseña no coincide con la confirmación");
+        setMensaje("❌ La nueva contraseña no coincide");
         return;
       }
     }
 
     // Detectar cambios
     const hayCambios =
-      Object.keys(formData).some(key => formData[key] !== datosOriginales[key]) ||
+      Object.keys(formData).some((key) => formData[key] !== datosOriginales[key]) ||
       passwords.passwordNueva ||
       formData.foto;
 
@@ -114,16 +117,18 @@ const ConfiguracionCuenta = () => {
       const documento = localStorage.getItem("documento");
 
       const payload = new FormData();
-      // Campos de usuario
-      Object.keys(formData).forEach(key => {
+
+      Object.keys(formData).forEach((key) => {
         if (formData[key] !== null) payload.append(key, formData[key]);
       });
 
-      // Password
-      if (passwords.passwordNueva) payload.append("contrasena", passwords.passwordNueva);
-      if (passwords.passwordActual) payload.append("passwordActual", passwords.passwordActual);
+      if (passwords.passwordNueva)
+        payload.append("contrasena", passwords.passwordNueva);
 
-      const response = await axios.put(
+      if (passwords.passwordActual)
+        payload.append("passwordActual", passwords.passwordActual);
+
+      await axios.put(
         `http://localhost:3000/api/coordinador/persona/${documento}`,
         payload,
         {
@@ -141,7 +146,7 @@ const ConfiguracionCuenta = () => {
       if (err.response) {
         setMensaje("❌ Error: " + (err.response.data.detalle || err.response.data.error));
       } else {
-        setMensaje("❌ Hubo un error al guardar los cambios");
+        setMensaje("❌ Hubo un error al guardar");
       }
     } finally {
       setLoading(false);
@@ -149,13 +154,19 @@ const ConfiguracionCuenta = () => {
   };
 
   return (
+    <div className="configuracion-container">
     <div className="container py-4">
-      <h4 className="mb-4 text-center">Configuración de Cuenta</h4>
-      {mensaje && <div className="alert alert-info text-center">{mensaje}</div>}
+      <h4 className="mb-4 text-center fw-bold">Configuración de Cuenta</h4>
+
+      {mensaje && (
+        <div className="alert alert-info text-center fw-semibold">{mensaje}</div>
+      )}
+
       <form onSubmit={handleSubmit} className="row g-3">
-        {/* Campos */}
+
+        {/* Correo */}
         <div className="col-md-6">
-          <label className="form-label">Correo electrónico</label>
+          <label className="form-label fw-semibold">Correo electrónico</label>
           <input
             type="email"
             className="form-control"
@@ -165,8 +176,10 @@ const ConfiguracionCuenta = () => {
             required
           />
         </div>
+
+        {/* Teléfono */}
         <div className="col-md-6">
-          <label className="form-label">Teléfono</label>
+          <label className="form-label fw-semibold">Teléfono</label>
           <input
             type="tel"
             className="form-control"
@@ -177,8 +190,10 @@ const ConfiguracionCuenta = () => {
             placeholder="Solo números"
           />
         </div>
+
+        {/* Dirección */}
         <div className="col-md-12">
-          <label className="form-label">Dirección</label>
+          <label className="form-label fw-semibold">Dirección</label>
           <input
             type="text"
             className="form-control"
@@ -187,8 +202,10 @@ const ConfiguracionCuenta = () => {
             onChange={handleChange}
           />
         </div>
+
+        {/* Ciudad */}
         <div className="col-md-12">
-          <label className="form-label">Ciudad de residencia</label>
+          <label className="form-label fw-semibold">Ciudad de residencia</label>
           <input
             type="text"
             className="form-control"
@@ -197,8 +214,10 @@ const ConfiguracionCuenta = () => {
             onChange={handleChange}
           />
         </div>
+
+        {/* Ocupación */}
         <div className="col-md-12">
-          <label className="form-label">Ocupación</label>
+          <label className="form-label fw-semibold">Ocupación</label>
           <input
             type="text"
             className="form-control"
@@ -208,9 +227,9 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Contraseñas */}
+        {/* Contraseña actual */}
         <div className="col-md-12">
-          <label className="form-label">Contraseña actual</label>
+          <label className="form-label fw-semibold">Contraseña actual</label>
           <input
             type="password"
             className="form-control"
@@ -220,8 +239,10 @@ const ConfiguracionCuenta = () => {
             placeholder="Ingrese su contraseña actual"
           />
         </div>
+
+        {/* Nueva contraseña */}
         <div className="col-md-12">
-          <label className="form-label">Nueva contraseña</label>
+          <label className="form-label fw-semibold">Nueva contraseña</label>
           <input
             type="password"
             className="form-control"
@@ -231,8 +252,10 @@ const ConfiguracionCuenta = () => {
             placeholder="Ingrese la nueva contraseña"
           />
         </div>
+
+        {/* Confirmar contraseña */}
         <div className="col-md-12">
-          <label className="form-label">Confirmar nueva contraseña</label>
+          <label className="form-label fw-semibold">Confirmar nueva contraseña</label>
           <input
             type="password"
             className="form-control"
@@ -243,33 +266,41 @@ const ConfiguracionCuenta = () => {
           />
         </div>
 
-        {/* Foto de perfil */}
+        {/* Foto */}
         <div className="col-md-12">
-          <label className="form-label">Foto de perfil</label>
+          <label className="form-label fw-semibold">Foto de perfil</label>
           <input
             type="file"
             className="form-control"
             accept="image/*"
             onChange={handleFotoChange}
           />
+
           {fotoPreview && (
             <div className="text-center mt-3">
               <img
                 src={fotoPreview}
                 alt="Foto de perfil"
-                className="img-thumbnail rounded-circle"
-                style={{ width: "120px", height: "120px", objectFit: "cover" }}
+                className="img-thumbnail rounded-circle shadow-sm"
+                style={{ width: 140, height: 140, objectFit: "cover" }}
               />
             </div>
           )}
         </div>
 
+        {/* Guardar */}
         <div className="col-12 text-center mt-4">
-          <button type="submit" className="btn btn-primary px-4" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary px-4 fw-semibold"
+            disabled={loading}
+          >
             {loading ? "Guardando..." : "Guardar cambios"}
           </button>
         </div>
+
       </form>
+    </div>
     </div>
   );
 };

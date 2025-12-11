@@ -25,7 +25,7 @@ const models = {
   EstadoPqr: require('./EstadoPqr')(sequelize, DataTypes),
   EstadoUsuario: require('./EstadoUsuario')(sequelize, DataTypes),
   Estudiante: require('./Estudiante')(sequelize, DataTypes),
-  EstudianteGrado: require('./EstudianteGrado')(sequelize, DataTypes),
+  EstudianteGrado: require('./Estudiantegrado')(sequelize, DataTypes),
   Eps: require('./Eps')(sequelize, DataTypes),
   Funcionario: require('./funcionario')(sequelize, DataTypes),
   FuncionarioGrado: require('./FuncionarioGrado')(sequelize, DataTypes),

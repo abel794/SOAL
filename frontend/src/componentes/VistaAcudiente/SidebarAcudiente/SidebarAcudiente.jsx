@@ -1,67 +1,38 @@
-import React, { useEffect, useState } from "react";
-import "./AcudienteSidebar.css";
+// SidebarAcudiente.jsx
+import React, { useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "../SidebarAcudiente/AcudienteSidebar.css"; // Importar el CSS personalizado
 
-/**
- * SidebarAcudiente - Componente de navegación responsive
- */
 const SidebarAcudiente = ({
   open,
   setOpen,
   cambiarSeccion,
   seccionActiva,
   onCerrarSesion,
-  apiBase = "http://localhost:3000", // puedes sobrescribir si tu API está en otra base
+  apiBase = "http://localhost:3000",
 }) => {
   const menuItems = [
-    { nombre: "Dashboard", icono: "bi bi-house-door", seccion: "Dashboard" },
-    { nombre: "Notificaciones", icono: "bi bi-bell", seccion: "Notificaciones" },
-    { nombre: "Enviar PQR", icono: "bi bi-chat-dots", seccion: "Enviar PQR" },
-    { nombre: "Enviar Justificacion", icono: "bi bi-file-earmark-medical", seccion: "Enviar Justificacion" },
-    { nombre: "Historial de PQR", icono: "bi bi-clock-history", seccion: "Historial de PQR" },
-    { nombre: "Configuracion de Cuenta", icono: "bi bi-gear", seccion: "Configuracion de Cuenta" },
-    { nombre: "Cerrar Sesion", icono: "bi bi-box-arrow-right", seccion: "Cerrar Sesion", esLogout: true },
+    { nombre: "Dashboard", icono: "bi-house-door", seccion: "Dashboard" },
+    { nombre: "Notificaciones", icono: "bi-bell", seccion: "Notificaciones" },
+    { nombre: "Enviar PQR", icono: "bi-chat-dots", seccion: "Enviar PQR" },
+    { nombre: "Enviar Justificacion", icono: "bi-file-earmark-medical", seccion: "Enviar Justificacion" },
+    { nombre: "Historial de PQR", icono: "bi-clock-history", seccion: "Historial de PQR" },
+    { nombre: "Configuracion de Cuenta", icono: "bi-gear", seccion: "Configuracion de Cuenta" },
+    { nombre: "Cerrar Sesion", icono: "bi-box-arrow-right", seccion: "Cerrar Sesion", esLogout: true },
   ];
 
-  const [config, setConfig] = useState(null);
-  const [loadingConfig, setLoadingConfig] = useState(true);
-  const [errorConfig, setErrorConfig] = useState(null);
-
   useEffect(() => {
-    const controller = new AbortController();
-    const obtenerConfiguracion = async () => {
-      setLoadingConfig(true);
-      setErrorConfig(null);
-      try {
-        // Si tu API requiere token, puedes agregarlo aquí:
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${apiBase}/api/coordinador/configuracionSistema`, {
-          method: "GET",
-          headers: token ? { "Authorization": `Bearer ${token}` } : undefined,
-          signal: controller.signal,
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        setConfig(data);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          console.error("Error al obtener la configuración:", error);
-          setErrorConfig("No se pudo cargar la configuración");
-        }
-      } finally {
-        setLoadingConfig(false);
-      }
+    // Cerrar con Escape para accesibilidad
+    const onKey = (e) => {
+      if (e.key === "Escape" && open) setOpen(false);
     };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, setOpen]);
 
-    obtenerConfiguracion();
-    return () => controller.abort();
-  }, [apiBase]);
-
-  const handleClick = (e, item, isMobile = false) => {
-    e.preventDefault();
-
+  const handleClick = (item, isMobile = false) => {
     if (item.esLogout) {
-      if (typeof onCerrarSesion === "function") onCerrarSesion();
-      else console.warn("onCerrarSesion no está definido en SidebarAcudiente");
+      if (onCerrarSesion) onCerrarSesion();
       if (isMobile) setOpen(false);
       return;
     }
@@ -70,141 +41,153 @@ const SidebarAcudiente = ({
     if (isMobile) setOpen(false);
   };
 
-  const formatDate = (iso) => {
-    try {
-      return new Date(iso).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" });
-    } catch {
-      return iso || "";
-    }
-  };
-
-  const formatTime = (timeStr) => {
-    // espera "HH:MM:SS" o "HH:MM"
-    if (!timeStr) return "";
-    return timeStr.slice(0,5);
-  };
-
-  const renderColegioInfo = () => {
-    if (loadingConfig) return <p className="cargando-config">Cargando datos del colegio...</p>;
-    if (errorConfig) return <p className="cargando-config error">{errorConfig}</p>;
-    if (!config) return null;
-
-    // Ajusta la ruta del logo según cómo sirvas los archivos (ej: /uploads/ o URL completa)
-    const logoUrl = config.logo ? `${apiBase}/uploads/${config.logo}` : null;
-
-    return (
-      <div className="colegio-info">
-        <hr />
-        <div className="colegio-top">
-          {logoUrl ? (
-            <img className="colegio-logo" src={logoUrl} alt={`Logo ${config.nombre_colegio}`} />
-          ) : (
-            <i className="bi bi-building cole-icon-placeholder" />
-          )}
-          <div className="colegio-txt">
-            <strong className="colegio-nombre">{config.nombre_colegio}</strong>
-            <div className="colegio-meta">
-              <span>{config.direccion}</span>
-              <span>Tel: {config.telefono}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="colegio-datos">
-          <p>Email: <a href={`mailto:${config.correo}`}>{config.correo}</a></p>
-          <p>Año escolar: {config.anio_escolar}</p>
-          <p>Hora cierre: {formatTime(config.hora_cierre)}</p>
-          <p>Medio de notificación: {config.medio_notificacion}</p>
-          <p>Horario envío: {config.horario_envio}</p>
-          <p>Notificar acudiente: {config.notificar_acudiente ? "Sí" : "No"}</p>
-          <p>Máx. estudiantes por curso: {config.max_estudiantes_curso}</p>
-          {config.mensaje_institucional && <p className="msg-inst">{config.mensaje_institucional}</p>}
-          {config.fecha_actualizacion && <p className="fecha-act">Actualizado: {formatDate(config.fecha_actualizacion)}</p>}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <>
-      {/* Sidebar Desktop */}
-      <div className="sidebar-desktop">
+      {/* === DESKTOP SIDEBAR === */}
+      <div
+        className={`sidebar-container d-none d-md-flex ${open ? "open" : ""}`}
+        role="navigation"
+        aria-label="Menú principal"
+      >
         <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <i className="bi bi-mortarboard-fill"></i>
-            <span className="sidebar-title">Panel Acudiente</span>
-          </div>
-        </div>
-
-        <nav className="sidebar-nav">
-          {menuItems.map((item) => (
-            <button
-              key={item.nombre}
-              className={`nav-item ${seccionActiva === item.seccion ? "nav-item-active" : ""} ${
-                item.esLogout ? "nav-item-logout" : ""
-              }`}
-              onClick={(e) => handleClick(e, item, false)}
-            >
-              <div className="nav-item-content">
-                <i className={item.icono}></i>
-                <span className="nav-item-text">{item.nombre}</span>
-              </div>
-              <i className="bi bi-chevron-right nav-item-arrow" />
-            </button>
-          ))}
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="user-info">
-            <div className="user-avatar">
-              <i className="bi bi-person-circle"></i>
-            </div>
-            <div className="user-details">
-              <span className="user-name">Acudiente</span>
-              <span className="user-role">Usuario</span>
-            </div>
+          <div className="sidebar-logo" aria-hidden="true">
+            <i className="bi bi-mortarboard-fill" />
           </div>
 
-          {renderColegioInfo()}
-        </div>
-      </div>
-
-      {/* Sidebar Mobile */}
-      <div className={`sidebar-mobile ${open ? "sidebar-mobile-open" : ""}`}>
-        <div className="sidebar-mobile-header">
-          <div className="sidebar-logo">
-            <i className="bi bi-mortarboard-fill"></i>
-            <span className="sidebar-title">Panel Acudiente</span>
+          <div className="sidebar-title-wrap">
+            <h5 className="sidebar-title">Panel Acudiente</h5>
+            <div className="sidebar-subtitle">Sistema de Gestión</div>
           </div>
-          <button className="sidebar-close-btn" onClick={() => setOpen(false)} aria-label="Cerrar menú">
-            <i className="bi bi-x-lg"></i>
+
+          <button
+            className="sidebar-collapse-btn"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-label={open ? "Colapsar menú" : "Abrir menú"}
+            title={open ? "Colapsar menú" : "Abrir menú"}
+          >
+            <i className={`bi ${open ? "bi-chevron-left" : "bi-chevron-right"}`} />
           </button>
         </div>
 
-        <nav className="sidebar-nav">
+        <div className="sidebar-menu" role="menu">
           {menuItems.map((item) => (
             <button
               key={item.nombre}
-              className={`nav-item ${seccionActiva === item.seccion ? "nav-item-active" : ""} ${
-                item.esLogout ? "nav-item-logout" : ""
-              }`}
-              onClick={(e) => handleClick(e, item, true)}
+              role="menuitem"
+              className={`menu-item ${seccionActiva === item.seccion ? "active" : ""}`}
+              onClick={() => handleClick(item)}
+              aria-current={seccionActiva === item.seccion ? "page" : undefined}
+              title={item.nombre}
             >
-              <div className="nav-item-content">
-                <i className={item.icono}></i>
-                <span className="nav-item-text">{item.nombre}</span>
+              <div className="d-flex align-items-center">
+                <i className={`bi ${item.icono} menu-icon`} aria-hidden="true" />
+                <span className="menu-text">{item.nombre}</span>
               </div>
-              <i className="bi bi-chevron-right nav-item-arrow" />
+
+              {/* indicador sutil */}
+              <i className="bi bi-chevron-right menu-arrow" aria-hidden="true" />
             </button>
           ))}
-        </nav>
+        </div>
 
-        {/* Footer móvil con misma info */}
-        <div className="sidebar-mobile-footer">{renderColegioInfo()}</div>
+        <div className="sidebar-footer mt-auto">
+          <div className="sidebar-user">
+            <div className="user-avatar" aria-hidden="true">A</div>
+            <div className="user-info">
+              <div className="user-name">Acudiente</div>
+              <div className="user-role">Usuario</div>
+            </div>
+          </div>
+
+          <div className="sidebar-actions">
+            <button
+              className="btn btn-logout"
+              onClick={() => handleClick({ esLogout: true })}
+              title="Cerrar sesión"
+            >
+              <i className="bi bi-box-arrow-right" /> <span className="d-none d-lg-inline">Salir</span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Overlay Mobile */}
-      {open && <div className="sidebar-overlay" onClick={() => setOpen(false)} />}
+      {/* === MOBILE SIDEBAR (OFFCANVAS) === */}
+      <div
+        className={`offcanvas offcanvas-start sidebar-mobile ${open ? "show" : "hide"}`}
+        style={{ visibility: open ? "visible" : "hidden" }}
+        tabIndex="-1"
+        id="sidebarMobile"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!open}
+      >
+        <div className="offcanvas-header">
+          <h5 className="offcanvas-title d-flex align-items-center gap-2">
+            <i className="bi bi-mortarboard-fill text-primary" />
+            Panel Acudiente
+          </h5>
+          <button
+            className="btn-close"
+            onClick={() => setOpen(false)}
+            aria-label="Close"
+            title="Cerrar"
+          />
+        </div>
+
+        <div className="offcanvas-body p-0">
+          <div className="sidebar-menu">
+            {menuItems.map((item) => (
+              <button
+                key={item.nombre}
+                className={`menu-item ${seccionActiva === item.seccion ? "active" : ""}`}
+                onClick={() => handleClick(item, true)}
+                title={item.nombre}
+              >
+                <div className="d-flex align-items-center">
+                  <i className={`bi ${item.icono} menu-icon`} />
+                  <span className="menu-text">{item.nombre}</span>
+                </div>
+                <i className="bi bi-chevron-right menu-arrow" />
+              </button>
+            ))}
+          </div>
+
+          <div className="mobile-footer p-3">
+            <div className="mobile-user d-flex align-items-center gap-2">
+              <div className="user-avatar-sm">A</div>
+              
+            </div>
+
+            <div className="mt-3 d-flex gap-2">
+              <button
+                className="btn btn-outline-secondary w-100"
+                onClick={() => {
+                  // ejemplo: acción rápida
+                  setOpen(false);
+                }}
+              >
+                Cerrar
+              </button>
+              <button
+                className="btn btn-danger w-100"
+                onClick={() => handleClick({ esLogout: true }, true)}
+              >
+                <i className="bi bi-box-arrow-right me-1" /> Salir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* OVERLAY MANUAL PARA OFFCANVAS */}
+      {open && (
+        <div
+          className="sidebar-overlay position-fixed top-0 start-0 w-100 h-100 d-md-none"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
     </>
   );
 };

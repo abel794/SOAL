@@ -1,740 +1,549 @@
 /* src/componentes/VistaAcudiente/AcudienteObservacionCard/AcudienteObservacionCard.css */
 
-/* ===================================================
-   👩‍🏫 ACUDIENTE OBSERVACIONES - COMPONENTE CSS
-   =================================================== */
-
 /* Variables CSS */
 :root {
-  --primary-color: #3b3de0;
-  --primary-dark: #2d2ed6;
+  --primary-color: #0d6efd;
   --secondary-color: #6c757d;
-  --success-color: #28a745;
-  --warning-color: #ffc107;
   --danger-color: #dc3545;
-  --info-color: #17a2b8;
-  --light-bg: #f8f9fa;
-  --border-color: #dee2e6;
-  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 4px 15px rgba(0, 0, 0, 0.15);
+  --warning-color: #ffc107;
+  --success-color: #198754;
+  --info-color: #0dcaf0;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
 }
 
-/* Contenedor principal */
+/* Estilos generales */
 .acudiente-observaciones-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* Header */
+.acudiente-observaciones-container .page-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: var(--border-radius);
   padding: 1.5rem;
-  max-width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  margin: 1rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  box-shadow: var(--box-shadow);
 }
 
-/* Título de la sección */
-.seccion-titulo {
-  font-weight: 700;
-  color: #212529;
-  margin-bottom: 2rem;
-  font-size: 1.75rem;
-  border-bottom: 3px solid var(--primary-color);
-  padding-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.acudiente-observaciones-container .page-header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
 }
 
-.seccion-titulo::before {
-  content: "📋";
-  font-size: 1.5rem;
+.acudiente-observaciones-container .page-header p {
+  opacity: 0.9;
+  margin-bottom: 0;
 }
 
-/* ===== ESTADOS Y MENSAJES ===== */
-.estado-mensaje {
+/* Tarjetas de estudiantes */
+.students-selector-card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.students-selector-card .card-header {
+  background: linear-gradient(135deg, var(--primary-color), #0a58ca);
+  color: white;
+  border: none;
+  padding: 1.25rem 1.5rem;
+  font-weight: 600;
+}
+
+.students-selector-card .card-body {
   padding: 1.5rem;
-  border-radius: 12px;
-  margin: 1.5rem 0;
-  text-align: center;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  border: 1px solid transparent;
 }
 
-.estado-mensaje.loading {
-  background-color: #e3f2fd;
-  color: #0d6efd;
-  border-color: #bbdefb;
-}
-
-.estado-mensaje.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border-color: #f5c6cb;
-}
-
-.estado-mensaje.info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border-color: #bee5eb;
-}
-
-.estado-mensaje i {
-  font-size: 1.25rem;
-}
-
-/* ===== SELECTOR DE ESTUDIANTES ===== */
-.estudiantes-selector {
-  margin-bottom: 2.5rem;
-}
-
-.estudiantes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
-  margin-top: 1.25rem;
-}
-
-.estudiante-selector-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
+.student-card-item {
+  border: 2px solid transparent;
+  border-radius: 10px;
   transition: var(--transition);
-  box-shadow: var(--shadow);
+  cursor: pointer;
+  height: 100%;
   position: relative;
   overflow: hidden;
 }
 
-.estudiante-selector-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  transition: var(--transition);
-}
-
-.estudiante-selector-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+.student-card-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.15);
   border-color: var(--primary-color);
 }
 
-.estudiante-selector-card.activo {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-  color: white;
+.student-card-item.selected {
   border-color: var(--primary-color);
-  transform: scale(1.02);
+  background-color: rgba(13, 110, 253, 0.05);
+  box-shadow: 0 6px 16px rgba(13, 110, 253, 0.1);
 }
 
-.estudiante-selector-card.con-observaciones::before {
-  background-color: var(--danger-color);
-}
-
-.estudiante-selector-card.sin-observaciones::before {
-  background-color: var(--success-color);
-}
-
-.estudiante-selector-card.activo.con-observaciones::before,
-.estudiante-selector-card.activo.sin-observaciones::before {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Avatar del estudiante */
-.estudiante-avatar {
-  flex-shrink: 0;
-  position: relative;
-}
-
-.avatar-img {
+.student-card-item .student-avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #e9ecef;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.student-card-item .student-info h6 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.student-card-item .badge-notification {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Panel de observaciones */
+.observations-panel {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.observations-panel .card-header {
+  background: white;
+  border-bottom: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+}
+
+.observations-panel .student-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+/* Filtros mejorados */
+.filters-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  min-width: 80px;
+  padding: 0.5rem 1rem;
+  border: 2px solid #dee2e6;
+  background: white;
+  color: var(--secondary-color);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
 }
 
-.estudiante-selector-card.activo .avatar-img {
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: scale(1.1);
+.filter-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(13, 110, 253, 0.05);
 }
 
-.estudiante-selector-card:hover .avatar-img {
+.filter-btn.active {
+  background: var(--primary-color);
+  color: white;
   border-color: var(--primary-color);
 }
 
-/* Información del estudiante */
-.estudiante-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.estudiante-nombre {
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: inherit;
-}
-
-.estudiante-grado {
-  font-size: 0.9rem;
-  color: inherit;
-  opacity: 0.8;
-  margin-bottom: 0.5rem;
-}
-
-.estudiante-stats {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.observaciones-count {
-  background: var(--secondary-color);
-  color: white;
-  padding: 0.3rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: var(--transition);
-}
-
-.estudiante-selector-card.activo .observaciones-count {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.estudiante-selector-card.con-observaciones .observaciones-count {
-  background: var(--danger-color);
-}
-
-.estudiante-selector-card.sin-observaciones .observaciones-count {
-  background: var(--success-color);
-}
-
-/* ===== SECCIÓN DE OBSERVACIONES ===== */
-.observaciones-seccion {
-  margin-top: 2.5rem;
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.observaciones-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--light-bg);
-}
-
-.observaciones-titulo {
-  font-size: 1.4rem;
-  color: #343a40;
-  margin: 0;
-  font-weight: 600;
-}
-
-.estudiante-seleccionado {
-  color: var(--primary-color);
-  font-weight: 700;
-}
-
-.observaciones-count {
-  background: var(--primary-color);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  box-shadow: var(--shadow);
-}
-
-/* ===== LISTA DE OBSERVACIONES ===== */
-.observaciones-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-/* Tarjeta de observación individual */
-.observacion-card {
-  display: flex;
-  gap: 1.25rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: var(--shadow);
-  border-left: 4px solid var(--danger-color);
+/* Tarjetas de observación mejoradas */
+.observation-card-item {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1rem;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
 }
 
-.observacion-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, transparent, rgba(0,0,0,0.02));
-  opacity: 0;
-  transition: var(--transition);
+.observation-card-item:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.observacion-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+.observation-card-item.unread {
+  border-left: 4px solid var(--primary-color);
 }
 
-.observacion-card:hover::before {
-  opacity: 1;
+.observation-card-item.read {
+  border-left: 4px solid var(--secondary-color);
 }
 
-.observacion-card.leida {
-  border-left-color: var(--success-color);
-  background: #f8fff9;
-  opacity: 0.9;
-}
-
-.observacion-card.no-leida {
-  border-left-color: var(--danger-color);
-  background: #fff5f5;
-}
-
-/* Avatar en la observación */
-.observacion-avatar {
-  flex-shrink: 0;
-}
-
-.observacion-avatar .avatar-img {
+.observation-avatar {
   width: 70px;
   height: 70px;
-  border: 3px solid #e9ecef;
-  box-shadow: var(--shadow);
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
 }
 
-.observacion-card.leida .avatar-img {
-  border-color: var(--success-color);
-}
-
-.observacion-card.no-leida .avatar-img {
-  border-color: var(--danger-color);
-}
-
-/* Contenido de la observación */
-.observacion-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.observacion-header {
+.observation-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.estudiante-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.estudiante-nombre {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #343a40;
-  margin: 0;
-}
-
-.observacion-grado {
-  font-size: 0.9rem;
-  color: var(--secondary-color);
-  font-weight: 500;
-}
-
-/* Metadatos de la observación */
-.observacion-meta {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.categoria-badge,
-.gravedad-badge {
-  color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
+.observation-title {
+  font-size: 1.1rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
+  margin-bottom: 0.25rem;
+  color: var(--dark-color);
 }
 
-.categoria-badge:hover,
-.gravedad-badge:hover {
-  transform: scale(1.05);
+.observation-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
-/* Descripción de la observación */
-.observacion-descripcion {
-  margin: 0 0 1.25rem 0;
-  color: #343a40;
-  line-height: 1.6;
-  font-size: 1rem;
-  padding: 1rem;
-  background: var(--light-bg);
+.badge-custom {
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-gravedad {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.observation-description {
+  color: var(--secondary-color);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  background: #f8f9fa;
+  padding: 0.75rem;
   border-radius: 8px;
-  border-left: 3px solid var(--primary-color);
+  border-left: 3px solid #dee2e6;
 }
 
-/* Footer de la observación */
-.observacion-footer {
+.observation-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+  border-top: 1px solid #e9ecef;
 }
 
-.observacion-fecha {
-  font-size: 0.85rem;
+.observation-date {
+  font-size: 0.8rem;
   color: var(--secondary-color);
-  font-weight: 500;
-}
-
-/* Botón marcar como leída */
-.btn-marcar-leida {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: var(--success-color);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
+  gap: 0.25rem;
+}
+
+.mark-read-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   transition: var(--transition);
-  box-shadow: var(--shadow);
 }
 
-.btn-marcar-leida:hover {
-  background: #218838;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+/* Estado vacío */
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
 }
 
-.btn-marcar-leida:active {
-  transform: translateY(0);
+.empty-state-icon {
+  font-size: 3rem;
+  color: #dee2e6;
+  margin-bottom: 1rem;
 }
 
-.check-icon {
-  font-size: 1.1rem;
-  filter: brightness(0) invert(1);
+.empty-state-title {
+  font-size: 1.25rem;
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
 }
 
-.btn-text {
-  white-space: nowrap;
+/* Footer de observaciones */
+.observations-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 1rem 1.5rem;
 }
 
-/* ================================
-   📱 RESPONSIVE DESIGN
-   ================================ */
+.legend-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  border: 1px solid #dee2e6;
+  background: white;
+}
 
-/* Tablets */
-@media (max-width: 1024px) {
+/* Responsive Design */
+
+/* Mobile (≤ 576px) */
+@media (max-width: 576px) {
   .acudiente-observaciones-container {
-    padding: 1.25rem;
-    margin: 0.75rem;
+    padding: 0.5rem !important;
   }
   
-  .estudiantes-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+  .acudiente-observaciones-container .page-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
   }
   
-  .seccion-titulo {
+  .acudiente-observaciones-container .page-header h1 {
     font-size: 1.5rem;
   }
   
-  .observacion-card {
-    padding: 1.25rem;
-    gap: 1rem;
-  }
-}
-
-/* Móviles */
-@media (max-width: 768px) {
-  .acudiente-observaciones-container {
+  .students-selector-card .card-body {
     padding: 1rem;
-    margin: 0.5rem;
-    border-radius: 8px;
   }
   
-  .seccion-titulo {
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-  
-  .estudiantes-grid {
-    grid-template-columns: 1fr;
-    gap: 0.875rem;
-  }
-  
-  .estudiante-selector-card {
+  .student-card-item {
     padding: 1rem;
-    gap: 0.875rem;
   }
   
-  .avatar-img {
+  .student-card-item .student-avatar {
     width: 50px;
     height: 50px;
   }
   
-  .observacion-avatar .avatar-img {
-    width: 60px;
-    height: 60px;
+  .student-card-item .student-info h6 {
+    font-size: 1rem;
   }
   
-  .observaciones-header {
+  .observations-panel .card-header {
+    padding: 1rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
   
-  .observaciones-titulo {
-    font-size: 1.2rem;
+  .observations-panel .student-name {
+    font-size: 1.1rem;
   }
   
-  .observacion-card {
-    flex-direction: column;
-    text-align: center;
-    padding: 1.25rem;
-  }
-  
-  .observacion-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.75rem;
-  }
-  
-  .observacion-meta {
-    justify-content: center;
-  }
-  
-  .observacion-footer {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .btn-marcar-leida {
+  .filters-container {
     width: 100%;
     justify-content: center;
   }
-}
-
-/* Móviles pequeños */
-@media (max-width: 480px) {
-  .acudiente-observaciones-container {
-    padding: 0.75rem;
-    margin: 0.25rem;
-  }
   
-  .seccion-titulo {
-    font-size: 1.2rem;
-    padding-bottom: 0.5rem;
-  }
-  
-  .estudiante-selector-card {
-    padding: 0.875rem;
-    gap: 0.75rem;
-  }
-  
-  .estudiante-nombre {
-    font-size: 1rem;
-  }
-  
-  .estudiante-grado {
+  .filter-btn {
+    flex: 1;
+    min-width: auto;
+    padding: 0.5rem;
     font-size: 0.8rem;
   }
   
-  .observaciones-count {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.75rem;
-  }
-  
-  .observacion-card {
+  .observation-card-item .card-body {
     padding: 1rem;
   }
   
-  .observacion-descripcion {
-    padding: 0.75rem;
+  .observation-avatar {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .observation-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .observation-badges {
+    gap: 0.35rem;
+  }
+  
+  .badge-custom {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+  
+  .observation-description {
+    padding: 0.5rem;
     font-size: 0.9rem;
   }
   
-  .categoria-badge,
-  .gravedad-badge {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
+  .observation-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
   
-  .btn-marcar-leida {
-    padding: 0.625rem 1rem;
-    font-size: 0.85rem;
+  .mark-read-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .observations-footer {
+    padding: 0.75rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
   }
 }
 
-/* Modo oscuro del sistema */
-@media (prefers-color-scheme: dark) {
+/* Tablet (577px - 768px) */
+@media (min-width: 577px) and (max-width: 768px) {
   .acudiente-observaciones-container {
-    background: #2d3748;
-    color: #e2e8f0;
+    padding: 1rem !important;
   }
   
-  .seccion-titulo {
-    color: #e2e8f0;
-    border-bottom-color: var(--primary-color);
+  .student-card-item .student-avatar {
+    width: 55px;
+    height: 55px;
   }
   
-  .estudiante-selector-card {
-    background: #4a5568;
-    border-color: #718096;
-    color: #e2e8f0;
+  .observations-panel .card-header {
+    padding: 1.25rem;
   }
   
-  .estudiante-selector-card.activo {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-  }
-  
-  .estudiante-grado {
-    color: #cbd5e0;
-  }
-  
-  .observacion-card {
-    background: #4a5568;
-    color: #e2e8f0;
-  }
-  
-  .estudiante-nombre {
-    color: #e2e8f0;
-  }
-  
-  .observacion-grado {
-    color: #a0aec0;
-  }
-  
-  .observacion-descripcion {
-    background: #2d3748;
-    color: #e2e8f0;
-    border-left-color: var(--primary-color);
-  }
-  
-  .observacion-footer {
-    border-top-color: #718096;
-  }
-  
-  .observacion-fecha {
-    color: #a0aec0;
-  }
-  
-  .estado-mensaje.info {
-    background: #2d3748;
-    color: #e2e8f0;
-    border-color: #4a5568;
+  .observation-avatar {
+    width: 65px;
+    height: 65px;
   }
 }
 
-/* Mejoras de accesibilidad */
-.estudiante-selector-card:focus,
-.btn-marcar-leida:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+/* Desktop (≥ 769px) */
+@media (min-width: 769px) {
+  .acudiente-observaciones-container {
+    padding: 1rem;
+  }
 }
 
-/* Scroll suave para la lista de observaciones */
-.observaciones-list {
-  scroll-behavior: smooth;
+/* Mejoras específicas para la visualización fea */
+
+/* Corregir layout de tarjetas de observación en móvil */
+@media (max-width: 576px) {
+  .observation-card-item .d-flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .observation-card-item .flex-shrink-0 {
+    margin-right: 0 !important;
+    margin-bottom: 1rem;
+  }
+  
+  .observation-card-item .flex-grow-1 {
+    width: 100%;
+  }
 }
 
-/* Animaciones adicionales */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+/* Mejorar visualización de badges en móvil */
+@media (max-width: 576px) {
+  .badge-custom .bi {
+    font-size: 0.7rem;
+  }
+  
+  .observation-badges .badge {
+    margin-bottom: 0.25rem;
+  }
 }
 
-.estudiante-selector-card.activo {
-  animation: pulse 2s infinite;
-}
-
-/* Estados de carga mejorados */
-.spinner-border {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-width: 0.2em;
-}
-
-/* Mejoras de legibilidad */
-.observacion-descripcion {
-  word-wrap: break-word;
+/* Asegurar que los textos no se desborden */
+.observation-title,
+.student-info h6 {
+  word-break: break-word;
   overflow-wrap: break-word;
 }
 
-.estudiante-nombre {
-  word-break: break-word;
+/* Scroll suave para listas largas */
+.observations-list {
+  max-height: 600px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) #f1f1f1;
 }
 
-/* Soporte para alta densidad de píxeles */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .avatar-img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+.observations-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.observations-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.observations-list::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Reducción de movimiento para usuarios que lo prefieren */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+.observation-card-item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Estados de carga mejorados */
+.loading-container {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.spinner-custom {
+  width: 3rem;
+  height: 3rem;
+  color: var(--primary-color);
+}
+
+/* Estados de error mejorados */
+.error-container {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+/* Hover effects para móvil (solo cuando no es táctil) */
+@media (hover: hover) and (pointer: fine) {
+  .student-card-item:hover .student-info h6 {
+    color: var(--primary-color);
   }
   
-  .estudiante-selector-card,
-  .observacion-card,
-  .btn-marcar-leida {
-    transition: none;
+  .mark-read-btn:hover {
+    transform: scale(1.05);
   }
 }

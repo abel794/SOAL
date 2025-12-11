@@ -1,125 +1,141 @@
-/* ===== CONFIGURACIÓN DE CUENTA ===== */
-.container {
-  max-width: 700px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+/* Contenedor principal */
+.configuracion-container {
+  max-width: 850px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: linear-gradient(145deg, #ffffff, #f3f4f6);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Título */
+.configuracion-container h4 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  letter-spacing: 0.5px;
+}
+
+/* Mensajes */
+.configuracion-container .alert {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-radius: 14px;
+  font-weight: 600;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
 }
 
-.container:hover {
+/* Inputs */
+.configuracion-container .form-control {
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.configuracion-container .form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  transform: scale(1.02);
+}
+
+/* Labels */
+.configuracion-container .form-label {
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+}
+
+/* Botón Guardar */
+.configuracion-container .btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border: none;
+  border-radius: 14px;
+  padding: 0.85rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+.configuracion-container .btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.35);
+}
+
+/* Foto de perfil */
+.configuracion-container .img-thumbnail {
+  border-radius: 50%;
+  border: 3px solid #3b82f6;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.configuracion-container .img-thumbnail:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+/* Campos de archivo */
+.configuracion-container input[type="file"] {
+  border-radius: 12px;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+}
+
+/* Hover en filas del form */
+.configuracion-container .col-md-6, 
+.configuracion-container .col-md-12 {
+  transition: transform 0.2s ease;
+}
+
+.configuracion-container .col-md-6:hover,
+.configuracion-container .col-md-12:hover {
   transform: translateY(-2px);
 }
 
-/* ===== TÍTULO PRINCIPAL ===== */
-h4 {
-  font-weight: 700;
-  color: #0d6efd;
-  letter-spacing: 0.5px;
+/* Dark Mode */
+body.dark-mode .configuracion-container {
+  background: #1e293b;
+  color: #f8fafc;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* ===== FORMULARIO ===== */
-form {
-  margin-top: 1rem;
+body.dark-mode .configuracion-container .form-control {
+  background: #334155;
+  border-color: #475569;
+  color: #f8fafc;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
 }
 
-label.form-label {
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 0.4rem;
+body.dark-mode .configuracion-container .form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5);
 }
 
-input.form-control {
-  border-radius: 8px;
-  padding: 10px 12px;
-  border: 1px solid #ced4da;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+body.dark-mode .configuracion-container .btn-primary {
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
-input.form-control:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 6px rgba(13, 110, 253, 0.25);
-}
-
-/* ===== BOTÓN GUARDAR ===== */
-button.btn {
-  color: white;
-  background-color: #0b5ed7;
-  border-radius: 10px;
-  font-weight: 600;
-  padding: 10px 28px;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-}
-
-button.btn-primary {
-  background: linear-gradient(135deg, #0d6efd, #007bff);
-  border: none;
-}
-
-button.btn-primary:hover {
-  background: linear-gradient(135deg, #0b5ed7, #0069d9);
-  transform: translateY(-1px);
-}
-
-
-/* ===== MENSAJES ===== */
-.alert {
-  border-radius: 10px;
-  font-weight: 500;
-  padding: 0.8rem 1.2rem;
-  margin-bottom: 1.5rem;
-}
-
-.alert-info {
-  background: #e9f4ff;
-  color: #0d6efd;
-  border: 1px solid #b6daff;
-}
-
-/* ===== FOTO DE PERFIL ===== */
-.img-thumbnail {
-  border: 3px solid #0d6efd;
-  transition: all 0.3s ease;
-}
-
-.img-thumbnail:hover {
-  transform: scale(1.05);
-  border-color: #0b5ed7;
-}
-
-/* ===== INPUT FILE ===== */
-input[type="file"] {
-  cursor: pointer;
-}
-
-input[type="file"]::file-selector-button {
-  background-color: #0d6efd;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
-  margin-right: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-input[type="file"]::file-selector-button:hover {
-  background-color: #0b5ed7;
-}
-
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 768px) {
-  .container {
+  .configuracion-container {
     padding: 1.5rem;
-  }
-
-  h4 {
-    font-size: 1.2rem;
-  }
-
-  button.btn {
-    width: 100%;
   }
 }
