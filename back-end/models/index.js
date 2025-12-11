@@ -29,7 +29,7 @@ const models = {
   Eps: require('./Eps')(sequelize, DataTypes),
   Funcionario: require('./funcionario')(sequelize, DataTypes),
   FuncionarioGrado: require('./funcionarioGrado')(sequelize, DataTypes),
-  Grado: require('./grado')(sequelize, DataTypes),
+  Grado: require('./Grado')(sequelize, DataTypes),
   GravedadObservacion: require('./GravedadObservacion')(sequelize, DataTypes),
   HistorialObservacion: require('./HistorialObservacion')(sequelize, DataTypes),
   Justificacion: require('./justificacion')(sequelize, DataTypes),
