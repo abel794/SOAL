@@ -35,7 +35,7 @@ const DesactivarUsuario = () => {
   const fetchUsuarios = useCallback(async (filtroParam = '', paginaParam = 1, pageSizeParam = pageSize) => {
     setLoading(true);
     try {
-      const url = `${API_BASE}/usuarios?filtro=${encodeURIComponent(filtroParam)}&pagina=${paginaParam}&pageSize=${pageSizeParam}`;
+      const url = `${process.env.REACT_APP_API_URL}/usuarios?filtro=${encodeURIComponent(filtroParam)}&pagina=${paginaParam}&pageSize=${pageSizeParam}`;
       const res = await fetch(url);
 
       if (res.status === 423) {

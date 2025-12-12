@@ -11,7 +11,7 @@ export default function AsistenciasFaltas() {
   const cargarFaltas = async () => {
     try {
       const res = await fetch(
-        "http://localhost:3000/api/coordinador/dashboard/asistencias/registradasfaltas",
+        `${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/asistencias/registradasfaltas`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

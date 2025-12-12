@@ -10,7 +10,7 @@ function GradosYEstudiantes() {
 
   // Cargar todos los grados
   useEffect(() => {
-    fetch("http://localhost:3000/api/coordinador/grado")
+    fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/grado`)
       .then((res) => res.json())
       .then((data) => {
         setGrados(data);
@@ -30,7 +30,7 @@ function GradosYEstudiantes() {
       return;
     }
 
-    fetch(`http://localhost:3000/api/coordinador/grado/${idGrado}/estudiantes`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/grado/${idGrado}/estudiantes`)
       .then((res) => res.json())
       .then((data) => {
         setEstudiantesPorGrado((prev) => ({

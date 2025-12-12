@@ -26,7 +26,7 @@ const ConfiguracionCuenta = () => {
         const token = localStorage.getItem("token");
         const documento = localStorage.getItem("documento");
 
-        const res = await axios.get(`http://localhost:3000/api/coordinador/persona/${documento}`, {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/coordinador/persona/${documento}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -113,7 +113,7 @@ const ConfiguracionCuenta = () => {
       delete payload.passwordConfirm;
 
       const response = await axios.put(
-        `http://localhost:3000/api/personas/${documento}`,
+        `${process.env.REACT_APP_API_URL}/api/personas/${documento}`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },

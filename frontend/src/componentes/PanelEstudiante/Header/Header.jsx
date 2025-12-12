@@ -51,8 +51,8 @@ export default function HeaderEstudianteFB() {
       if (!token) return;
       try {
         const [cfg, usr] = await Promise.all([
-          axios.get("http://localhost:3000/api/coordinador/configuracionSistema", { headers }).catch(() => null),
-          axios.get("http://localhost:3000/api/usuarios/me", { headers }).catch(() => null),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/coordinador/configuracionSistema`, { headers }).catch(() => null),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, { headers }).catch(() => null),
         ]);
 
         if (!mountedRef.current) return;
@@ -71,7 +71,7 @@ export default function HeaderEstudianteFB() {
     const fetchCount = async () => {
       if (!token) return;
       try {
-        const res = await axios.get("http://localhost:3000/api/notificaciones/estudiantes", { headers });
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/notificaciones/estudiantes`, { headers });
         if (!mountedRef.current) return;
         if (Array.isArray(res.data)) {
           const pend = res.data.filter(n => n.id_estado_notificacion === 1).length;
@@ -134,7 +134,7 @@ export default function HeaderEstudianteFB() {
 
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:3000/api/notificaciones/estudiantes", { headers });
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/notificaciones/estudiantes`, { headers });
 
       if (!mountedRef.current) return;
 

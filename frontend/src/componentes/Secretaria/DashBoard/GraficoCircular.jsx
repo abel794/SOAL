@@ -15,7 +15,7 @@ const GraficoCircular = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/dashboard-secretaria/estado_formularios')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard-secretaria/estado_formularios`)
       .then(res => {
         // Cambiamos los nombres
         const dataConNombresNuevos = res.data.map(item => ({

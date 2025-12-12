@@ -14,7 +14,7 @@ const ResponderPqr = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/coordinador/pqr", {
+      .get(`${process.env.REACT_APP_API_URL}/api/coordinador/pqr`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setPqrs(res.data))
@@ -28,7 +28,7 @@ const ResponderPqr = () => {
   const verHistorial = (idPqr) => {
     setSelectedPqr(idPqr);
     axios
-      .get(`http://localhost:3000/api/coordinador/pqr/${idPqr}/historial`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/coordinador/pqr/${idPqr}/historial`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setHistorial(res.data))
@@ -43,7 +43,7 @@ const ResponderPqr = () => {
     e.preventDefault();
     axios
       .post(
-        `http://localhost:3000/api/coordinador/pqr/${selectedPqr}/responder`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/pqr/${selectedPqr}/responder`,
         { mensaje, id_estado_pqr: estadoPqr },
         { headers: { Authorization: `Bearer ${token}` } }
       )

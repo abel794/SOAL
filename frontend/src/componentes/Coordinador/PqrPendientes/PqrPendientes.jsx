@@ -11,7 +11,7 @@ const PqrPendientes = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get('http://localhost:3000/api/coordinador/dashboard/pqrs/SinResponder');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/pqrs/SinResponder`);
       
       // Validar respuesta del servidor
       if (response.data && Array.isArray(response.data.pqrs)) {

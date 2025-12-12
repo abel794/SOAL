@@ -45,7 +45,7 @@ const HeaderAcudiente = () => {
 
     const fetchConfig = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/coordinador/configuracionSistema", {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/coordinador/configuracionSistema`, {
           headers,
           signal: controller.signal,
         });
@@ -60,7 +60,7 @@ const HeaderAcudiente = () => {
     const fetchUsuario = async () => {
       try {
         setLoadingUsuario(true);
-        const res = await axios.get("http://localhost:3000/api/usuarios/me", {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, {
           headers,
           signal: controller.signal,
         });
@@ -97,7 +97,7 @@ const HeaderAcudiente = () => {
     const fetchNotifs = async () => {
       try {
        const res = await axios.get(
-  "http://localhost:3000/api/notificaciones-secretaria/count",
+  `${process.env.REACT_APP_API_URL}/api/notificaciones-secretaria/count`,
   { headers, signal: controller.signal }
 );
         if (typeof res.data?.count === "number") {

@@ -18,7 +18,7 @@ export default function VerArchivos() {
     const obtenerArchivos = async () => {
       try {
         setError(null);
-        const res = await axios.get("http://localhost:3000/api/obtenerArchivos");
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/obtenerArchivos`);
         setArchivos(res.data);
       } catch (error) {
         console.error("Error al obtener archivos:", error);
@@ -101,7 +101,7 @@ export default function VerArchivos() {
       
       // Usar el endpoint de descarga directa
       const response = await axios.get(
-      `http://localhost:3000/api/descargarArchivo/${archivo.id_archivo}`,
+      `${process.env.REACT_APP_API_URL}/api/descargarArchivo/${archivo.id_archivo}`,
       { responseType: 'blob' }
     );
       

@@ -96,12 +96,12 @@ export default function RegistroMultistep() {
     const fetchCatalogos = async () => {
       try {
         const [sexos, tiposDocumento, eps, estados, grados, relaciones] = await Promise.all([
-          fetch('http://localhost:3000/api/coordinador/sexo').then(res => res.ok ? res.json() : []),
-          fetch('http://localhost:3000/api/coordinador/tipoDocumento').then(res => res.ok ? res.json() : []),
-          fetch('http://localhost:3000/api/coordinador/eps').then(res => res.ok ? res.json() : []),
-          fetch('http://localhost:3000/api/coordinador/estadoAcademico').then(res => res.ok ? res.json() : []),
-          fetch('http://localhost:3000/api/coordinador/grado').then(res => res.ok ? res.json() : []),
-          fetch('http://localhost:3000/api/coordinador/relacionAcudiente').then(res => res.ok ? res.json() : [])
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/sexo`).then(res => res.ok ? res.json() : []),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/tipoDocumento`).then(res => res.ok ? res.json() : []),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/eps`).then(res => res.ok ? res.json() : []),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/estadoAcademico`).then(res => res.ok ? res.json() : []),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/grado`).then(res => res.ok ? res.json() : []),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/relacionAcudiente`).then(res => res.ok ? res.json() : [])
         ]);
         setCatalogos({ sexos, tiposDocumento, eps, estadosAcademicos: estados, grados, relaciones });
       } catch (err) {
@@ -242,7 +242,7 @@ export default function RegistroMultistep() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:3000/api/coordinador/registrarEstudianteRoute/buscarAcudiente?documento=${encodeURIComponent(query)}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/registrarEstudianteRoute/buscarAcudiente?documento=${encodeURIComponent(query)}`);
       if (!res.ok) {
         setResultadosAcudientes([]);
         return;
@@ -428,7 +428,7 @@ export default function RegistroMultistep() {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3000/api/coordinador/registrarEstudianteRoute', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/registrarEstudianteRoute`, {
         method: 'POST',
         body: data
         // NO establecer Content-Type aquí; fetch lo gestiona para multipart/form-data

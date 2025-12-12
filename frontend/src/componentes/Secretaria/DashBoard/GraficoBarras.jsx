@@ -7,7 +7,7 @@ const GraficoBarras = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/dashboard-secretaria/mensual')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard-secretaria/mensual`)
       .then(res => setData(res.data))
       .catch(err => console.error(err));
   }, []);

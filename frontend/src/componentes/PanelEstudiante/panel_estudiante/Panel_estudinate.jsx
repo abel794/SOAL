@@ -41,9 +41,9 @@ export default function PanelEstudiante() {
         // Hacer las peticiones para obtener datos del usuario
         const [usuarioRes, personaRes] = await Promise.all([
           // API para datos básicos del usuario
-          axios.get("http://localhost:3000/api/usuarios/me", { headers }).catch(() => null),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, { headers }).catch(() => null),
           // API para datos completos de la persona (la misma que usa ConfiguracionCuenta)
-          axios.get(`http://localhost:3000/api/coordinador/persona/${documento}`, { headers }).catch(() => null)
+          axios.get(`${process.env.REACT_APP_API_URL}/api/coordinador/persona/${documento}`, { headers }).catch(() => null)
         ]);
 
         let datosUsuario = {};

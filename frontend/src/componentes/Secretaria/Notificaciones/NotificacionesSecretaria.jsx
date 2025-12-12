@@ -42,7 +42,7 @@ const NotificacionesSecretaria = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:3000/api/notificaciones-secretaria?limit=10&offset=${page * 10}`
+          `${process.env.REACT_APP_API_URL}/api/notificaciones-secretaria?limit=10&offset=${page * 10}`
         );
         if (!res.ok) throw new Error("Error al cargar el historial");
         const data = await res.json();
@@ -90,7 +90,7 @@ const NotificacionesSecretaria = () => {
         id_estado_notificacion,
       };
 
-      const res = await fetch("http://localhost:3000/api/notificaciones-secretaria", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/notificaciones-secretaria`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -113,7 +113,7 @@ const NotificacionesSecretaria = () => {
     const obtenerGrados = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/api/coordinador/grado");
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/grado`);
         if (!res.ok) throw new Error("Error al obtener los grados");
         const data = await res.json();
 

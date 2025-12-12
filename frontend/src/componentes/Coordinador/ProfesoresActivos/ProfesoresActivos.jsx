@@ -20,7 +20,7 @@ const [mostrarModal, setMostrarModal] = useState(false);
   const cargarProfesores = async () => {
     try {
       const res = await fetch(
-        "http://localhost:3000/api/coordinador/dashboard/funcionarios/completos",
+        `${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/funcionarios/completos`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

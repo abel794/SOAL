@@ -230,7 +230,7 @@ const AcudienteObservacionCard = () => {
         }
 
         const res = await axios.get(
-          "http://localhost:3000/api/acudientes/observaciones",
+          `${process.env.REACT_APP_API_URL}/api/acudientes/observaciones`,
           { 
             headers: { Authorization: `Bearer ${token}` },
             timeout: 10000

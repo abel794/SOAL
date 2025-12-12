@@ -35,7 +35,7 @@ const SecretariaInicio = () => {
   // 🔹 Cargar datos desde la API
   const fetchResumen = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/dashboard-secretaria/resumen");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard-secretaria/resumen`);
       setResumen(res.data);
     } catch (error) {
       console.error("Error al obtener el resumen:", error);

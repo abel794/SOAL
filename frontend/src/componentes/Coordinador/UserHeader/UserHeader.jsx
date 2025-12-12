@@ -188,7 +188,7 @@ export default function UserHeader({ onActionSelect }) {
     }
 
     try {
-      const response = await axios.get("http://localhost:3000/api/usuarios/me", {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, {
         headers: { 
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

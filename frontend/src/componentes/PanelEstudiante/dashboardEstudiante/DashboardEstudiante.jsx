@@ -38,9 +38,9 @@ const DashboardEstudiante = ({ userData }) => {
         const headers = { Authorization: `Bearer ${token}` };
 
         const [personaRes, cursosRes, tareasRes] = await Promise.all([
-          axios.get(`http://localhost:3000/api/coordinador/persona/${documento}`, { headers }).catch(() => null),
-          axios.get("http://localhost:3000/api/estudiantes/cursos", { headers }).catch(() => null),
-          axios.get("http://localhost:3000/api/estudiantes/tareas", { headers }).catch(() => null)
+          axios.get(`${process.env.REACT_APP_API_URL}/api/coordinador/persona/${documento}`, { headers }).catch(() => null),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/estudiantes/cursos`, { headers }).catch(() => null),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/estudiantes/tareas`, { headers }).catch(() => null)
         ]);
 
         let datosEstudiante = {};

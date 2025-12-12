@@ -8,7 +8,7 @@ export const cerrarSesion = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     if (!apiUrl) throw new Error('VITE_API_URL no está definido');
 
-    const res = await fetch(`${apiUrl}/auth/logout`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -56,7 +56,7 @@ function HistorialObservaciones({ token }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/coordinador/historialObservacion/buscar?nombre=${encodeURIComponent(nombreBuscado)}`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/historialObservacion/buscar?nombre=${encodeURIComponent(nombreBuscado)}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -120,7 +120,7 @@ function HistorialObservaciones({ token }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/coordinador/observaciones/${idObservacion}`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/${idObservacion}`,
         {
           method: 'PUT',
           headers: {

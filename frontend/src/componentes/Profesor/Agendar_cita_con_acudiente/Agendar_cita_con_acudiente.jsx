@@ -39,7 +39,7 @@ export default function AgendarCitaAcu({ setVista }) {
     try {
       setCargando(true);
       const res = await fetch(
-        `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro)}`,
+       `${process.env.REACT_APP_API_URL}/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro)}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -101,7 +101,7 @@ export default function AgendarCitaAcu({ setVista }) {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/citas", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/citas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

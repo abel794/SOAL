@@ -31,7 +31,7 @@ function RegistrarObservacion() {
       if (!token) return setMensaje({ tipo: "error", texto: "No hay token. Inicia sesión nuevamente." });
 
       try {
-        const res = await fetch("http://localhost:3000/api/coordinador/categoria_observacion", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/categoria_observacion`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -54,7 +54,7 @@ function RegistrarObservacion() {
       if (!token) return;
 
       try {
-        const res = await fetch("http://localhost:3000/api/coordinador/gravedadObservacion", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/gravedadObservacion`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -86,7 +86,7 @@ function RegistrarObservacion() {
 
     setCargando(true);
     try {
-      const url = `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(nombreBuscado)}`;
+      const url = `${process.env.REACT_APP_API_URL}/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(nombreBuscado)}`;
       const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
 
       if (res.status === 401) throw new Error("Token inválido o expirado.");
@@ -137,7 +137,7 @@ function RegistrarObservacion() {
         fecha: new Date().toISOString().slice(0, 10),
       };
 
-      const res = await fetch("http://localhost:3000/api/coordinador/observaciones", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/observaciones`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),

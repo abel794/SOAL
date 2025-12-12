@@ -100,7 +100,7 @@ const ConfiguracionCuenta = ({ userData, onActualizarUserData }) => {
       delete payload.passwordConfirm;
 
       await axios.put(
-        `http://localhost:3000/api/coordinador/persona/${documento}`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/persona/${documento}`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );

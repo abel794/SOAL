@@ -18,11 +18,11 @@ const ESTADOS_PQR = {
 };
 
 const API_ENDPOINTS = {
-  PQR: "http://localhost:3000/api/coordinador/pqr",
+  PQR: `${process.env.REACT_APP_API_URL}/api/coordinador/pqr`,
   HISTORIAL: (id) =>
-    `http://localhost:3000/api/coordinador/pqr/${id}/historial`,
+    `${process.env.REACT_APP_API_URL}/api/coordinador/pqr/${id}/historial`,
   RESPONDER: (id) =>
-    `http://localhost:3000/api/coordinador/pqr/${id}/responder`
+    `${process.env.REACT_APP_API_URL}/api/coordinador/pqr/${id}/responder`
 };
 
 // ---------------------------------------------------------------

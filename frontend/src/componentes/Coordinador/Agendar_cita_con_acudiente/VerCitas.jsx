@@ -18,7 +18,7 @@ function VerCitas({ setVista = () => {}, setCitaSeleccionada = () => {} }) {
         return;
       }
 
-      const res = await fetch("http://localhost:3000/api/coordinador/citas", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/citas`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -56,8 +56,8 @@ function VerCitas({ setVista = () => {}, setCitaSeleccionada = () => {} }) {
 
       const url =
         tipoFiltro === "nombre"
-          ? `http://localhost:3000/api/coordinador/citas/buscar/nombre?nombre=${encodeURIComponent(filtro)}`
-          : `http://localhost:3000/api/coordinador/citas/buscar/documento?documento=${encodeURIComponent(filtro)}`;
+          ? `${process.env.REACT_APP_API_URL}/api/coordinador/citas/buscar/nombre?nombre=${encodeURIComponent(filtro)}`
+          : `${process.env.REACT_APP_API_URL}/api/coordinador/citas/buscar/documento?documento=${encodeURIComponent(filtro)}`;
 
       const res = await fetch(url, { 
         headers: { Authorization: `Bearer ${token}` } 

@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./ListarAsistencias.css";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: `${process.env.REACT_APP_API_URL}`,
   withCredentials: true,
 });
 

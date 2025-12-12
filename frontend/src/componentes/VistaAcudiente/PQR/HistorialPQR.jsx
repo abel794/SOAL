@@ -65,7 +65,7 @@ const HistorialPQR = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:3000/api/acudientes/pqr/mis-pqrs", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/acudientes/pqr/mis-pqrs`, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -136,7 +136,7 @@ const HistorialPQR = () => {
 
     try {
       const token = getToken();
-      const url = `http://localhost:3000/api/acudientes/pqr/${idPqr}/historial`;
+      const url = `${process.env.REACT_APP_API_URL}/api/acudientes/pqr/${idPqr}/historial`;
 
       const res = await axios.get(url, {
         headers: { 

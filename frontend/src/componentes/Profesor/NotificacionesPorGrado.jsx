@@ -25,7 +25,7 @@ const NotificacionesPorGrado = () => {
         console.log(`📡 Consultando grados para profesor ID: ${idProfesor}`);
 
         const res = await axios.get(
-          `http://localhost:3000/api/profesor/${idProfesor}/grados`,
+          `${process.env.REACT_APP_API_URL}/api/profesor/${idProfesor}/grados`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

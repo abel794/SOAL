@@ -29,7 +29,7 @@ const ListaObservaciones = () => {
   const cargarObservaciones = async () => {
     try {
       // Reemplaza esta URL con tu endpoint real
-      const res = await fetch("http://localhost:3000/api/coordinador/observaciones/contar");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/contar`);
       if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
 
       const data = await res.json();

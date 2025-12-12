@@ -22,7 +22,7 @@ useEffect(() => {
   const fetchConfig = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/coordinador/configuracionSistema", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/configuracionSistema`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
       if (!res.ok) throw new Error("Error cargando configuración");
@@ -129,7 +129,7 @@ useEffect(() => {
       <div className="footer-logo d-flex align-items-center">
         {configColegio.logo ? (
           <img
-            src={`http://localhost:3000/uploads/${configColegio.logo}`}
+            src={`${process.env.REACT_APP_API_URL}/uploads/${configColegio.logo}`}
             alt="Logo Colegio"
             style={{ height: 60, objectFit: "contain", marginRight: 12 }}
           />

@@ -93,7 +93,7 @@ const EnviarJustificacion = ({ setSeccionActiva, estudianteId: propEstudianteId 
 
     try {
       console.log("📤 Enviando justificación - payload FormData (oculto archivo en logs)...");
-      const res = await axios.post("http://localhost:3000/api/coordinador/justificacion", formData, {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/coordinador/justificacion`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

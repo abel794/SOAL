@@ -32,7 +32,7 @@ export default function Notificaciones() {
   const obtenerNotificaciones = async (params = "") => {
     setLoading(true);
     try {
-      const url = `http://localhost:3000/api/coordinador/notificacion${params}`;
+      const url = `${process.env.REACT_APP_API_URL}/api/coordinador/notificacion${params}`;
       const res = await fetch(url);
       const data = await res.json();
 

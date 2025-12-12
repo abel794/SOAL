@@ -65,7 +65,7 @@ export default function ConfiguracionSistema() {
   const cargarConfiguracionExistente = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/coordinador/configuracionSistema', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/configuracionSistema`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -94,7 +94,7 @@ export default function ConfiguracionSistema() {
     try {
       const token = localStorage.getItem('token');
       const endpoint = rutasBackend[seleccionEntidad];
-      const res = await fetch(`http://localhost:3000/api/coordinador/${endpoint}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -159,7 +159,7 @@ export default function ConfiguracionSistema() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/coordinador/configuracionSistema', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/configuracionSistema`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -214,7 +214,7 @@ export default function ConfiguracionSistema() {
           ? { nombre: nuevoRegistro.trim() }
           : { nombre: nuevoRegistro.trim(), descripcion: descripcion.trim() || null };
 
-      const res = await fetch(`http://localhost:3000/api/coordinador/${endpoint}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -267,7 +267,7 @@ export default function ConfiguracionSistema() {
       try {
         const token = localStorage.getItem('token');
         const endpoint = rutasBackend[seleccionEntidad];
-        const res = await fetch(`http://localhost:3000/api/coordinador/${endpoint}/${id}`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/${endpoint}/${id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` }
         });

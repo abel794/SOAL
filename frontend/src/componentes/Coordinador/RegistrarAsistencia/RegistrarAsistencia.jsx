@@ -90,7 +90,7 @@ const RegistrarAsistencia = () => {
 
     setCargando(true);
     axios
-      .get(`http://localhost:3000/api/coordinador/estudiantegrado/grado/${gradoSeleccionado}`)
+      .get(`${process.env.REACT_APP_API_URL}/api/coordinador/estudiantegrado/grado/${gradoSeleccionado}`)
       .then((res) => {
         const inicialAsis = {};
         const inicialObs = {};
@@ -153,7 +153,7 @@ const RegistrarAsistencia = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/api/asistencias/masivo", payload, {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/asistencias/masivo`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

@@ -48,13 +48,13 @@ const PanelProfesor = () => {
 
       if (usuarioLocal?.id_funcionario) {
         const res = await fetch(
-          `http://localhost:3000/api/profesor/${usuarioLocal.id_funcionario}/datos`
+          `${process.env.REACT_APP_API_URL}/api/profesor/${usuarioLocal.id_funcionario}/datos`
         );
         if (!res.ok) throw new Error("Error al cargar datos del profesor");
 
         const data = await res.json();
         const fotoUrl = data.persona?.foto
-          ? `http://localhost:3000/${data.persona.foto}`
+          ? `${process.env.REACT_APP_API_URL}/${data.persona.foto}`
           : getDefaultAvatar();
 
         setProfesor({

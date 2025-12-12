@@ -25,7 +25,7 @@ const PorcentajePorGravedad = () => {
       setError(null);
       try {
         const res = await fetch(
-          "http://localhost:3000/api/coordinador/observaciones/contar/gravedad"
+          `${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/contar/gravedad○`
         );
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();

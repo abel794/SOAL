@@ -21,7 +21,7 @@ export default function ObservacionCard() {
       }
 
       try {
-        const res = await fetch("http://localhost:3000/api/estudiantes/observaciones", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/estudiantes/observaciones`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -23,7 +23,7 @@ export default function AsignarGradoProfesor() {
   useEffect(() => {
     const cargarGrados = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/coordinador/grado');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/grado`);
         if (!response.ok) throw new Error('Error al cargar grados');
         const data = await response.json();
         setGrados(data);
@@ -50,7 +50,7 @@ export default function AsignarGradoProfesor() {
 
     try {
       // Intentar buscar por cédula primero
-      let res = await fetch(`http://localhost:3000/api/coordinador/funcionario/cedula/${q}`);
+      let res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/funcionario/cedula/${q}`);
       if (res.ok) {
         const data = await res.json();
         setProfesor(data);
@@ -60,7 +60,7 @@ export default function AsignarGradoProfesor() {
       }
 
       // Si no encuentra por cédula, buscar por nombre
-      res = await fetch(`http://localhost:3000/api/coordinador/funcionario/buscar?nombre=${encodeURIComponent(q)}`);
+      res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/funcionario/buscar?nombre=${encodeURIComponent(q)}`);
       if (res.ok) {
         const { data } = await res.json();
         const profesorEncontrado = data.find(f => 
@@ -88,7 +88,7 @@ export default function AsignarGradoProfesor() {
   // 📋 Cargar historial de asignaciones del profesor
   const cargarHistorialAsignaciones = async (idFuncionario) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/coordinador/funcionario/${idFuncionario}/grados-asignados`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/funcionario/${idFuncionario}/grados-asignados`);
       if (res.ok) {
         const data = await res.json();
         setHistorialAsignaciones(data || []);
@@ -108,7 +108,7 @@ export default function AsignarGradoProfesor() {
 
     try {
       setLoadingAsignar(true);
-      const res = await fetch('http://localhost:3000/api/coordinador/funcionario/asignar-grado', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/funcionario/asignar-grado`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

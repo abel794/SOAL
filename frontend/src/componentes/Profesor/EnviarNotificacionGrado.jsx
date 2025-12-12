@@ -25,7 +25,7 @@ const EnviarNotificacionGrado = ({ gradoSeleccionado }) => {
       setEnviando(true);
       const token = localStorage.getItem("token"); // asegúrate de guardar el token al iniciar sesión
       const res = await axios.post(
-        "http://localhost:3000/api/profesor/enviar-grado",
+        `${process.env.REACT_APP_API_URL}/api/profesor/enviar-grado`,
         { id_grado: parseInt(gradoSeleccionado), titulo, mensaje },
         {
           headers: {

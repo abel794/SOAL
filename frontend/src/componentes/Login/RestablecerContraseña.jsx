@@ -26,7 +26,7 @@ const RestablecerContraseña = () => {
 
     try {
       // 🔹 URL actualizada al backend en puerto 3001
-      const res = await fetch('http://localhost:3000/api/auth/restablecer-contrasena', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/restablecer-contrasena`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, nueva }),

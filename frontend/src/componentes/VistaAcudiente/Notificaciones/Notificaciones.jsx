@@ -23,7 +23,7 @@ const AcudienteCitas = () => {
           return;
         }
 
-        const res = await axios.get("http://localhost:3000/api/acudientes/citas", {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/acudientes/citas`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

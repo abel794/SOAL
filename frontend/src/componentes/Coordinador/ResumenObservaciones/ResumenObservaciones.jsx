@@ -19,8 +19,8 @@ function ResumenObservaciones() {
   const cargarDatos = async () => {
     try {
       const [resGravedad, resTipo] = await Promise.all([
-        fetch("http://localhost:3000/api/coordinador/observaciones/contar/gravedad"),
-        fetch("http://localhost:3000/api/coordinador/observaciones/contar/tipo"),
+        fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/contar/gravedad`),
+        fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/contar/tipo`),
       ]);
 
       const gravedad = await resGravedad.json();

@@ -43,8 +43,8 @@ function BuscarEstudiante() {
       }
 
       const url = filtro && filtro.trim()
-        ? `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro.trim())}`
-        : `http://localhost:3000/api/coordinador/estudiante/buscar`;
+        ? `${process.env.REACT_APP_API_URL}/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(filtro.trim())}`
+        : `${process.env.REACT_APP_API_URL}/api/coordinador/estudiante/buscar`;
 
       const res = await fetch(url, {
         method: 'GET',

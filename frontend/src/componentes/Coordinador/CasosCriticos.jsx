@@ -11,7 +11,7 @@ function CasosCriticos() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:3000/api/observaciones/serias/listar')
+    fetch(`${process.env.REACT_APP_API_URL}/api/observaciones/serias/listar`)
       .then(res => res.json())
       .then(data => {
         console.log('📡 Datos recibidos desde la API:', data);

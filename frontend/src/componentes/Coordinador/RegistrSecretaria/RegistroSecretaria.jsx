@@ -201,7 +201,7 @@ export default function RegistroSecretariaMultistep() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/coordinador/registrarFuncionario", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/registrarFuncionario`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

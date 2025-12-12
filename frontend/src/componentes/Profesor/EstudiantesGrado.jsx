@@ -8,7 +8,7 @@ const EstudiantesGrado = ({ idProfesor, grado, setEstudianteSeleccionado }) => {
     const fetchEstudiantes = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/profesor/${idProfesor}/estudiantes/${grado}`,
+          `${process.env.REACT_APP_API_URL}/api/profesor/${idProfesor}/estudiantes/${grado}`,
           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
         const data = await res.json();

@@ -48,7 +48,7 @@ const getFotoSrc = (foto) => {
     } catch {}
     return `data:image/jpeg;base64,${cleaned}`;
   }
-  return `http://localhost:3000/uploads/${encodeURIComponent(cleaned)}`;
+  return `${process.env.REACT_APP_API_URL}/uploads/${encodeURIComponent(cleaned)}`;
 };
 
 /* ----------------- componente ----------------- */
@@ -101,7 +101,7 @@ export default function HeaderAcudiente({ setSeccionActiva, openSidebar, setOpen
 
       // 🔹 Total de no leídas
       const resCount = await axios.get(
-        "http://localhost:3000/api/notificaciones/contador",
+        `${process.env.REACT_APP_API_URL}/api/notificaciones/contador`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -110,7 +110,7 @@ export default function HeaderAcudiente({ setSeccionActiva, openSidebar, setOpen
       // 🔹 Lista completa (solo si se necesita)
       if (!soloContador) {
         const resList = await axios.get(
-          "http://localhost:3000/api/notificaciones",
+          `${process.env.REACT_APP_API_URL}/api/notificaciones`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (mountedRef.current) setNotificaciones(resList.data || []);
@@ -139,7 +139,7 @@ export default function HeaderAcudiente({ setSeccionActiva, openSidebar, setOpen
     try {
       const token = normalizeStored(localStorage.getItem("token"));
       await axios.put(
-        `http://localhost:3000/api/notificaciones/${id}/leida`,
+       `${process.env.REACT_APP_API_URL}/api/notificaciones/${id}/leida`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -160,7 +160,7 @@ export default function HeaderAcudiente({ setSeccionActiva, openSidebar, setOpen
       if (ids.length === 0) return;
 
       await axios.put(
-        "http://localhost:3000/api/notificaciones/marcar-varias",
+        `${process.env.REACT_APP_API_URL}/api/notificaciones/marcar-varias`,
         { ids },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -180,7 +180,7 @@ export default function HeaderAcudiente({ setSeccionActiva, openSidebar, setOpen
     const fetchConfig = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/api/coordinador/configuracionSistema",
+          `${process.env.REACT_APP_API_URL}/api/coordinador/configuracionSistema`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (mountedRef.current && res.data) {
@@ -204,7 +204,7 @@ export default function HeaderAcudiente({ setSeccionActiva, openSidebar, setOpen
       try {
         setLoadingUsuario(true);
         setFotoError(false);
-        const res = await axios.get("http://localhost:3000/api/usuarios/me", {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = res.data || {};

@@ -46,7 +46,7 @@ function BuscarEstudiante() {
       setLoading(true);
       setEstudiantes([]);
 
-      const url = `http://localhost:3000/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(nombre.trim())}`;
+      const url = `${process.env.REACT_APP_API_URL}/api/coordinador/estudiante/buscar?filtro=${encodeURIComponent(nombre.trim())}`;
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
       if (!token) {

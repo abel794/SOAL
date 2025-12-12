@@ -16,7 +16,7 @@ const OlvidoContrasena = () => {
 
     try {
       // ⚠️ Cambiamos el puerto al del backend (3001)
-      const res = await fetch('http://localhost:3000/api/auth/olvido-contrasena', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/olvido-contrasena`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username }),

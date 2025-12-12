@@ -15,7 +15,7 @@ function TablaObservaciones({ limite = 8, onVerTodas }) {
           return;
         }
 
-        const res = await fetch('http://localhost:3000/api/coordinador/observaciones/detalles', {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/detalles`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

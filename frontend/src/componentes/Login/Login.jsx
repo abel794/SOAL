@@ -43,7 +43,7 @@ const Login = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, contrasena })
@@ -168,7 +168,7 @@ const Login = () => {
     const { usernameInput, emailInput } = formValues;
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/solicitar-desbloqueo', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/solicitar-desbloqueo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: usernameInput, correo: emailInput }) // <-- envio "correo" como el backend espera
@@ -219,7 +219,7 @@ const Login = () => {
     if (!codigo) return;
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/verificar-codigo', {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/verificar-codigo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: usernameFromModal, codigo: codigo.trim() })

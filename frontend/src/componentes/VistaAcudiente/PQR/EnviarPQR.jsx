@@ -29,8 +29,8 @@ const EnviarPQR = () => {
 
   const id_estado_pqr = 1;
 
-  const STUDENTS_URL = "http://localhost:3000/api/acudientes/informacion/estudiantes";
-  const PQR_POST_URL = "http://localhost:3000/api/acudientes/pqr";
+  const STUDENTS_URL = `${process.env.REACT_APP_API_URL}/api/acudientes/informacion/estudiantes`;
+  const PQR_POST_URL = `${process.env.REACT_APP_API_URL}/api/acudientes/pqr`;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

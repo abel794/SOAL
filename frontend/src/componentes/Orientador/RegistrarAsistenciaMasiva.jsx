@@ -40,7 +40,7 @@ const RegistrarAsistenciaMasiva = ({ idProfesor }) => {
   // Fetch grados con manejo de errores
   const fetchGrados = useCallback(async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/profesor/${idProfesor}/grados`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/profesor/${idProfesor}/grados`);
       if (!res.ok) throw new Error("Error al cargar grados");
       const data = await res.json();
       setGrados(data.data || []);
@@ -53,7 +53,7 @@ const RegistrarAsistenciaMasiva = ({ idProfesor }) => {
   // Fetch estados
   const fetchEstados = useCallback(async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/estadoAsistencia");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/estadoAsistencia`);
       if (!res.ok) throw new Error("Error al cargar estados");
       const data = await res.json();
       setEstados(data);
@@ -81,7 +81,7 @@ const RegistrarAsistenciaMasiva = ({ idProfesor }) => {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/profesor/${idProfesor}/estudiantes/${id_grado}`
+        `${process.env.REACT_APP_API_URL}/api/profesor/${idProfesor}/estudiantes/${id_grado}`
       );
       if (!res.ok) throw new Error("Error al cargar estudiantes");
       const data = await res.json();
@@ -154,7 +154,7 @@ const RegistrarAsistenciaMasiva = ({ idProfesor }) => {
   const confirmarRegistro = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/profesor/asistencias/registro-masivo`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/profesor/asistencias/registro-masivo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

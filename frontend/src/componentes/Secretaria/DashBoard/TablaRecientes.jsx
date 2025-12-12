@@ -7,7 +7,7 @@ const TablaRecientes = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/dashboard-secretaria/recientes")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard-secretaria/recientes`)
       .then((res) => {
         setDatos(res.data);
         setLoading(false);

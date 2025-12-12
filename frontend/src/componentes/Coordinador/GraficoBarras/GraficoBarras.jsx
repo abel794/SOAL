@@ -55,7 +55,7 @@ export default function GraficoBarras() {
         if (token) headers.Authorization = `Bearer ${token}`;
 
         const res = await fetch(
-          "http://localhost:3000/api/coordinador/observaciones/contar/categoria",
+          `${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/contar/categoria`,
           { headers }
         );
         if (!res.ok) throw new Error(`HTTP ${res.status}`);

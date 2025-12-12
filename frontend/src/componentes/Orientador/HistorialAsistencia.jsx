@@ -42,7 +42,7 @@ const HistorialAsistenciasProfesor = ({ idProfesor }) => {
   // Fetch estados
   const fetchEstados = useCallback(async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/estadoAsistencia");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/estadoAsistencia`);
       if (!res.ok) throw new Error("Error al cargar estados");
       const data = await res.json();
       setEstados(data);
@@ -62,7 +62,7 @@ const HistorialAsistenciasProfesor = ({ idProfesor }) => {
       });
       
       const res = await fetch(
-        `http://localhost:3000/api/profesor/asistencias/filtros?${queryParams}`
+        `${process.env.REACT_APP_API_URL}/api/profesor/asistencias/filtros?${queryParams}`
       );
       
       if (!res.ok) throw new Error("Error al cargar historial");
@@ -111,7 +111,7 @@ const HistorialAsistenciasProfesor = ({ idProfesor }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/profesor/asistencias/${id_asistencia}`,
+        `${process.env.REACT_APP_API_URL}/api/profesor/asistencias/${id_asistencia}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

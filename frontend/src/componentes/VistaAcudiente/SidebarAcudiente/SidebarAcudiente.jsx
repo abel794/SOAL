@@ -9,7 +9,7 @@ const SidebarAcudiente = ({
   cambiarSeccion,
   seccionActiva,
   onCerrarSesion,
-  apiBase = "http://localhost:3000",
+  apiBase = `${process.env.REACT_APP_API_URL}`,
 }) => {
   const menuItems = [
     { nombre: "Dashboard", icono: "bi-house-door", seccion: "Dashboard" },

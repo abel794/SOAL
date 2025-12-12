@@ -61,9 +61,9 @@ export default function RegistroProfesorMultistep() {
     const fetchCatalogos = async () => {
       try {
         const [sexosRes, tiposRes, tiposUsuarioRes] = await Promise.all([
-          fetch("http://localhost:3000/api/coordinador/sexo"),
-          fetch("http://localhost:3000/api/coordinador/tipoDocumento"),
-          fetch("http://localhost:3000/api/coordinador/TipoUsuario"),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/sexo`),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/tipoDocumento`),
+          fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/TipoUsuario`),
         ]);
 
         const sexos = sexosRes.ok ? await sexosRes.json() : [];
@@ -208,7 +208,7 @@ export default function RegistroProfesorMultistep() {
       }
 
       const token = localStorage.getItem("token") || "";
-      const url = "http://localhost:3000/api/coordinador/registrarFuncionario"; // ruta correcta
+      const url = `${process.env.REACT_APP_API_URL}/api/coordinador/registrarFuncionario`; // ruta correcta
 
       const res = await fetch(url, {
         method: "POST",

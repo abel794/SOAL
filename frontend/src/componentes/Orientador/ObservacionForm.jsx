@@ -35,7 +35,7 @@ const ObservacionForm = ({ estudiante, idProfesor, onVolver }) => {
   // Fetch categorías
   const fetchCategorias = useCallback(async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/categorias");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/categorias`);
       if (!res.ok) throw new Error("Error al cargar categorías");
       const data = await res.json();
       setCategorias(data.categorias || []);
@@ -93,7 +93,7 @@ const ObservacionForm = ({ estudiante, idProfesor, onVolver }) => {
   const confirmarRegistro = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/api/profesor/observaciones", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/profesor/observaciones`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

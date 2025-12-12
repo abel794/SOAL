@@ -25,7 +25,7 @@ ChartJS.register(
   ArcElement
 );
 
-const API_URL = "http://localhost:3000/api/acudientes/informacion/estudiantes";
+const API_URL = `${process.env.REACT_APP_API_URL}/api/acudientes/informacion/estudiantes`;
 
 const EstudiantesCards = () => {
   const [estudiantes, setEstudiantes] = useState([]);

@@ -66,7 +66,7 @@ function DashboardCards({ setVista }) {
   // ------------------- FUNCIÓN ÚNICA PARA CARGAR OBSERVACIONES POR GRADO -------------------
   const cargarObservacionesGrado = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/dashboard/observacionesGrado");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/observacionesGrado`);
       
       if (!res.ok) {
         throw new Error(`Error HTTP: ${res.status}`);
@@ -143,7 +143,7 @@ function DashboardCards({ setVista }) {
   // ------------------- FUNCIONES DE CARGA -------------------
   const cargarEstudiantes = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/grado/contar/todos");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/grado/contar/todos`);
       const data = await res.json();
       setDatos((prev) => ({ ...prev, estudiantesAsignados: Number(data.total_estudiantes_colegio) || 0 }));
       return data.estudiantes || [];
@@ -155,7 +155,7 @@ function DashboardCards({ setVista }) {
 
   const cargarObservaciones = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/observaciones/contar");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/observaciones/contar`);
       const data = await res.json();
       setDatos((prev) => ({ ...prev, observaciones: Number(data.totalObservaciones) || 0 }));
       return data.observaciones || [];
@@ -167,7 +167,7 @@ function DashboardCards({ setVista }) {
 
   const cargarCriticos = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/observaciones/serias/contar");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/observaciones/serias/contar`);
       const data = await res.json();
       setDatos((prev) => ({ ...prev, criticos: Number(data.observacionesSerias) || 0 }));
     } catch (err) {
@@ -178,7 +178,7 @@ function DashboardCards({ setVista }) {
   const cargarCitas = async () => {
     try {
       if (!token) return;
-      const res = await fetch("http://localhost:3000/api/coordinador/citas/contar", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/citas/contar`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -191,7 +191,7 @@ function DashboardCards({ setVista }) {
   const cargarProfesoresActivos = async () => {
     try {
       const res = await fetch(
-        "http://localhost:3000/api/coordinador/dashboard/profesores/activos",
+        `${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/profesores/activos`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -203,7 +203,7 @@ function DashboardCards({ setVista }) {
 
   const cargarPqrsPendientes = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/dashboard/pqrs/SinResponder");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/pqrs/SinResponder`);
       const data = await res.json();
       setDatos((prev) => ({ ...prev, pqrsPendientes: Number(data.total) || 0 }));
     } catch (err) {
@@ -213,7 +213,7 @@ function DashboardCards({ setVista }) {
 
   const cargarNotificacionesEnviadas = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/coordinador/dashboard/notificaciones/enviadas");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/notificaciones/enviadas`);
       const data = await res.json();
       setDatos((prev) => ({ ...prev, notificacionesEnviadas: Number(data.total) || 0 }));
     } catch (err) {
@@ -223,11 +223,11 @@ function DashboardCards({ setVista }) {
 
   const cargarAsistencias = async () => {
     try {
-      const resAll = await fetch("http://localhost:3000/api/coordinador/dashboard/asistencias/registradas");
+      const resAll = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/asistencias/registradas`);
       const dataAll = await resAll.json();
       const allAsist = normalizeArray(dataAll);
 
-      const resF = await fetch("http://localhost:3000/api/coordinador/dashboard/asistencias/registradasfaltas");
+      const resF = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/asistencias/registradasfaltas`);
       const dataF = await resF.json();
       const faltasArr = normalizeArray(dataF);
 

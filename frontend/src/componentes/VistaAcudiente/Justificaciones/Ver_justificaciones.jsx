@@ -21,7 +21,7 @@ const VerJustificacionesEstudiantes = () => {
         if (!token) throw new Error("No hay token de sesión");
 
         const response = await fetch(
-          "http://localhost:3000/api/coordinador/justificacion/mis-justificaciones",
+          `${process.env.REACT_APP_API_URL}/api/coordinador/justificacion/mis-justificaciones`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ const VerJustificacionesEstudiantes = () => {
       console.log(`📥 Iniciando descarga para justificación ID: ${idJustificacion}`);
       
       const response = await fetch(
-        `http://localhost:3000/api/coordinador/justificacion/descargar/${idJustificacion}`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/justificacion/descargar/${idJustificacion}`,
         {
           headers: { 
             Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ const VerJustificacionesEstudiantes = () => {
       console.log(`👁️ Solicitando imagen para justificación ID: ${idJustificacion}`);
       
       const response = await fetch(
-        `http://localhost:3000/api/coordinador/justificacion/descargar/${idJustificacion}`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/justificacion/descargar/${idJustificacion}`,
         {
           headers: { 
             Authorization: `Bearer ${token}`,
@@ -184,7 +184,7 @@ const VerJustificacionesEstudiantes = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/coordinador/justificacion/verificar-archivo/${idJustificacion}`,
+        `${process.env.REACT_APP_API_URL}/api/coordinador/justificacion/verificar-archivo/${idJustificacion}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
