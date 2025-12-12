@@ -1,6 +1,7 @@
 // db/index.js
 require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
+const cors = require("cors");
 
 // Detectar si estamos en producción (Render)
 const isProduction = process.env.RENDER === 'true';
