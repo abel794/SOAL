@@ -9,11 +9,25 @@ const sequelize = db.sequelize;
 
 const app = express();
 
-// 🌐 Middlewares globales
+// 🌐 Middlewares globales CORS
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3001",
+  "https://soal-ten.vercel.app",
+  "https://soal-sistema-de-observador-para-el-alumnovercel-eu7nirfub.vercel.app"
+];
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:3001"],
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // Postman o requests sin origin
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error(`CORS no permitido para: ${origin}`), false);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,10 +40,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 🧱 Rutas personalizadas de archivos
 const obtenerArchivo = require('./routes/coordinador/obtenerArchivo');
 app.use('/api', obtenerArchivo);
-// Rutas
-app.use("/api/email", require("./routes/emailRouter"));
 
-// 📌 Rutas generales
+// Rutas generales
+app.use("/api/email", require("./routes/emailRouter"));
 app.use('/api/autenticacion', require('./routes/rutasAutenticacion'));
 app.use('/api/usuarios', require('./routes/coordinador/usuarioRoutes'));
 app.use('/api/usuario', require('./routes/usuarioHashTemporalRoutes'));
@@ -41,43 +54,44 @@ app.use('/api/eps', require('./routes/coordinador/epsRoutes'));
 app.use('/api/profesor', require('./routes/profesor/profesorRoutes'));
 app.use('/api/configuracionUsuario', require('./routes/configuracionUsuario'));
 
-// 📚 Rutas de ESTUDIANTE
+// Rutas de ESTUDIANTE
 app.use('/api/estudiantes/observaciones', require('./routes/citas_estudiante/observacionesEstudianteRoutes'));
 app.use('/api/estudiantes/citas', require('./routes/citas_estudiante/citas_estudiante'));
 
-// 👨‍👩‍👧‍👦 Rutas de ACUDIENTE
+// Rutas de ACUDIENTE
 app.use('/api/acudientes/informacion', require('./routes/acudiente/informacionEstudianteRoutes'));
 app.use('/api/acudientes/observaciones', require('./routes/acudiente/observacionesAcudienteRoutes'));
 app.use('/api/acudientes/citas', require('./routes/acudiente/citas_acudiente'));
 app.use('/api/acudientes/pqr', require('./routes/acudiente/pqr_acudiente'));
 
-// 📌 Nueva ruta de NOTIFICACIONES (para estudiantes y acudientes)
+// Rutas de NOTIFICACIONES
 app.use('/api/notificaciones', require('./routes/acudiente/notificacionesAcudiente'));
 app.use('/api/notificaciones/estudiantes', require('./routes/citas_estudiante/notificacionesEstudiante'));
 
-// 🧠 Rutas de OBSERVACIONES CRÍTICAS (sin auth)
+// OBSERVACIONES CRÍTICAS (sin auth)
 app.use('/api', require('./routes/coordinador/observacionesCriticasRoutes'));
 
-
-// 📨 Rutas de SECRETARÍA
+// Rutas de SECRETARÍA
 app.use('/api/notificaciones-secretaria', require('./routes/notificacionesSecretariaRoutes'));
 app.use('/api/dashboard-secretaria', require('./routes/dashboardSecretariaRoutes'));
 
-// 🧠 Rutas de COORDINADOR
+// Rutas de COORDINADOR
 app.use('/api/coordinador', require('./routes/coordinador'));
 
-// 🎓 Rutas de PROFESOR (solo una vez)
+// Rutas de PROFESOR
 app.use('/api/profesor', require('./routes/profesor/profesorRoutes'));
 
-// 🧾 Middleware de logging (para depuración)
+// 🧾 Middleware de logging
 app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.url}`);
   next();
 });
+
 app.get('/', (req, res) => {
   res.send('✅ Backend activo y corriendo en Render!');
 });
-// 🚨 Middleware de errores
+
+// Middleware de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: err.message });
@@ -86,7 +100,7 @@ app.use((err, req, res, next) => {
 // ✅ Puerto
 const PORT = process.env.PORT || 3000;
 
-// 🟢 Conexión a la base de datos y arranque del servidor
+// Conexión a la base de datos y arranque del servidor
 sequelize.authenticate()
   .then(() => {
     console.log('✅ Conexión a la base de datos establecida.');
