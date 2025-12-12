@@ -66,7 +66,9 @@ function DashboardCards({ setVista }) {
   // ------------------- FUNCIÓN ÚNICA PARA CARGAR OBSERVACIONES POR GRADO -------------------
   const cargarObservacionesGrado = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/observacionesGrado`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/coordinador/dashboard/observacionesGrado`,{
+        headers: { Authorization: `Bearer ${token}` },
+      });
       
       if (!res.ok) {
         throw new Error(`Error HTTP: ${res.status}`);
