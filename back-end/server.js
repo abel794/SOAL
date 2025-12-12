@@ -74,7 +74,9 @@ app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.url}`);
   next();
 });
-
+app.get('/', (req, res) => {
+  res.send('✅ Backend activo y corriendo en Render!');
+});
 // 🚨 Middleware de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
