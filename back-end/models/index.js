@@ -1,7 +1,5 @@
 // db/index.js
 require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Detectar si estamos en producción (Render)
@@ -9,12 +7,12 @@ const isProduction = process.env.RENDER === 'true';
 
 // Configuración de Sequelize
 const sequelize = new Sequelize(
-  process.env.DATABASE_NAME,
-  process.env.DATABASE_USERNAME,
-  process.env.DATABASE_PASSWORD,
+  process.env.DB_NAME,      // antes DATABASE_NAME
+  process.env.DB_USER,      // antes DATABASE_USERNAME
+  process.env.DB_PASSWORD,  // antes DATABASE_PASSWORD
   {
-    host: isProduction ? process.env.DATABASE_HOST : process.env.LOCAL_DATABASE_HOST,
-    port: isProduction ? 3306 : process.env.LOCAL_DATABASE_PORT || 3306,
+    host: process.env.DB_HOST, // antes DATABASE_HOST
+    port: 3306,
     dialect: 'mysql',
     logging: false,
     dialectOptions: isProduction
@@ -31,7 +29,6 @@ const sequelize = new Sequelize(
 sequelize.authenticate()
   .then(() => console.log(`✅ Conectado a la base de datos (${isProduction ? 'PlanetScale' : 'local'})`))
   .catch(err => console.error('❌ Error de conexión:', err));
-
 
 
 // Importación de modelos
