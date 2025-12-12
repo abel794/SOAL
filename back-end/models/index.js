@@ -21,7 +21,6 @@ const sequelize = new Sequelize(
       ? {
           ssl: {
             rejectUnauthorized: true,
-            ca: fs.readFileSync(path.join(__dirname, 'certs/ca-certs.pem')), // tu certificado SSL
           }
         }
       : {}
@@ -34,9 +33,7 @@ sequelize.authenticate()
   .catch(err => console.error('❌ Error de conexión:', err));
 
 
-sequelize.authenticate()
-  .then(() => console.log('✅ Conectado a PlanetScale'))
-  .catch(err => console.error('❌ Error de conexión:', err));
+
 // Importación de modelos
 const models = {
   EstadoAnio: require('./EstadoAnio')(sequelize, DataTypes),
