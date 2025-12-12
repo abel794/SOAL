@@ -1,22 +1,22 @@
-// back-end/models/index.js
 require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
 
+// Detectar si estamos en Render
 const isProduction = process.env.RENDER === 'true';
 
-// 1. Conexión a la base de datos
+// Conexión a PlanetScale en producción
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
   process.env.DATABASE_USERNAME,
   process.env.DATABASE_PASSWORD,
   {
     host: process.env.DATABASE_HOST,
-    port: process.env.DATABASE_PORT || 3306,
+    port: 3306, // PlanetScale siempre usa 3306
     dialect: 'mysql',
     logging: false,
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: true
+        rejectUnauthorized: true, // obligatorio para PlanetScale
       }
     }
   }
@@ -26,7 +26,13 @@ sequelize.authenticate()
   .then(() => console.log('✅ Conectado a PlanetScale'))
   .catch(err => console.error('❌ Error de conexión:', err));
 
-// 2. Importación de modelos
+module.exports = { sequelize, DataTypes };
+
+
+sequelize.authenticate()
+  .then(() => console.log('✅ Conectado a PlanetScale'))
+  .catch(err => console.error('❌ Error de conexión:', err));
+// Importación de modelos
 const models = {
   EstadoAnio: require('./EstadoAnio')(sequelize, DataTypes),
   HistorialPqr: require('./historial_pqr')(sequelize, DataTypes),
@@ -68,14 +74,14 @@ const models = {
   TokenBlacklist: require("./token_blacklist")(sequelize, Sequelize.DataTypes)
 };
 
-// 3. Asociaciones internas de los modelos
+// Asociaciones internas
 Object.values(models).forEach((model) => {
   if (model.associate) model.associate(models);
 });
 
-// 4. Relaciones adicionales (estudiante-acudiente, persona-usuario, etc.)
+// Relaciones adicionales (manteniendo todo como tu original)
 
-// Estudiante <-> Acudiente (Muchos a muchos)
+// Estudiante <-> Acudiente
 models.Estudiante.belongsToMany(models.Acudiente, {
   through: models.EstudianteAcudiente,
   foreignKey: 'id_estudiante',
@@ -88,33 +94,29 @@ models.Acudiente.belongsToMany(models.Estudiante, {
   otherKey: 'id_estudiante',
   as: 'estudiantes_relacionados'
 });
-
-// Relación adicional con id_relacion
 models.RelacionAcudiente.hasMany(models.EstudianteAcudiente, { foreignKey: 'id_relacion' });
 models.EstudianteAcudiente.belongsTo(models.RelacionAcudiente, { foreignKey: 'id_relacion' });
 
-// Persona 1:1 con Funcionario, Estudiante y Acudiente
+// Persona 1:1
 models.Persona.hasOne(models.Funcionario, { foreignKey: 'numero_documento' });
 models.Persona.hasOne(models.Acudiente, { foreignKey: 'numero_documento' });
 models.Persona.hasOne(models.Estudiante, { foreignKey: 'numero_documento' });
-
 models.Funcionario.belongsTo(models.Persona, { foreignKey: 'numero_documento' });
 models.Acudiente.belongsTo(models.Persona, { foreignKey: 'numero_documento' });
 models.Estudiante.belongsTo(models.Persona, { foreignKey: 'numero_documento' });
 
-// Usuario 1:1 Funcionario/Estudiante/Acudiente
+// Usuario 1:1
 models.Usuario.hasOne(models.Funcionario, { foreignKey: 'id_usuario' });
 models.Usuario.hasOne(models.Estudiante, { foreignKey: 'id_usuario' });
 models.Usuario.hasOne(models.Acudiente, { foreignKey: 'id_usuario' });
-
 models.Funcionario.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
 models.Estudiante.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
 models.Acudiente.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
 
-// Usuario pertenece a Persona
+// Usuario -> Persona
 models.Usuario.belongsTo(models.Persona, { foreignKey: 'numero_documento', targetKey: 'numero_documento' });
 
-// Funcionario <-> Grado (Muchos a Muchos)
+// Funcionario <-> Grado
 models.Funcionario.belongsToMany(models.Grado, {
   through: models.FuncionarioGrado,
   foreignKey: 'id_funcionario',
@@ -131,13 +133,10 @@ models.Grado.belongsToMany(models.Funcionario, {
 // Relaciones Observación
 models.Estudiante.hasMany(models.Observacion, { foreignKey: 'id_estudiante' });
 models.Observacion.belongsTo(models.Estudiante, { foreignKey: 'id_estudiante' });
-
 models.Funcionario.hasMany(models.Observacion, { foreignKey: 'id_funcionario' });
 models.Observacion.belongsTo(models.Funcionario, { foreignKey: 'id_funcionario' });
-
 models.CategoriaObservacion.hasMany(models.Observacion, { foreignKey: 'id_categoria' });
 models.Observacion.belongsTo(models.CategoriaObservacion, { foreignKey: 'id_categoria' });
-
 models.HistorialObservacion.belongsTo(models.Observacion, { foreignKey: 'id_observacion' });
 models.Observacion.hasMany(models.HistorialObservacion, { foreignKey: 'id_observacion' });
 
@@ -197,7 +196,7 @@ models.Usuario.belongsTo(models.TipoUsuario, { foreignKey: 'id_tipo_usuario' });
 models.Usuario.hasMany(models.Archivo, { foreignKey: 'id_usuario' });
 models.Archivo.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
 
-// 5. Exportar sequelize + todos los modelos
+// Exportar sequelize + modelos
 module.exports = {
   sequelize,
   ...models,
