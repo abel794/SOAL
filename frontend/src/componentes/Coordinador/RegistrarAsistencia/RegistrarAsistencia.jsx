@@ -74,7 +74,7 @@ const RegistrarAsistencia = () => {
   // 📦 Cargar grados
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/coordinador/grado")
+      .get(`${process.env.REACT_APP_API_URL}/api/coordinador/grado`)
       .then((res) => setGrados(res.data))
       .catch(() => setMensaje({ tipo: "error", texto: "No se pudieron cargar los grados." }));
   }, []);
