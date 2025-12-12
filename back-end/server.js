@@ -11,11 +11,12 @@ const app = express();
 
 // 🌐 Middlewares globales CORS
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3001",
+  "https://soal-sistema-de-observador-para-el-alumnovercel-jfivs1yti.vercel.app",
   "https://soal-ten.vercel.app",
-  "https://soal-sistema-de-observador-para-el-alumnovercel-eu7nirfub.vercel.app"
+  "http://localhost:5173",
+  "http://localhost:3001"
 ];
+
 
 app.use(cors({
   origin: function(origin, callback) {
