@@ -1,32 +1,37 @@
+// db/index.js
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 
-// Detectar si estamos en Render
+// Detectar si estamos en producción (Render)
 const isProduction = process.env.RENDER === 'true';
 
-// Conexión a PlanetScale en producción
+// Configuración de Sequelize
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
   process.env.DATABASE_USERNAME,
   process.env.DATABASE_PASSWORD,
   {
-    host: process.env.DATABASE_HOST,
-    port: 3306, // PlanetScale siempre usa 3306
+    host: isProduction ? process.env.DATABASE_HOST : process.env.LOCAL_DATABASE_HOST,
+    port: isProduction ? 3306 : process.env.LOCAL_DATABASE_PORT || 3306,
     dialect: 'mysql',
     logging: false,
-    dialectOptions: {
-      ssl: {
-        rejectUnauthorized: true, // obligatorio para PlanetScale
-      }
-    }
+    dialectOptions: isProduction
+      ? {
+          ssl: {
+            rejectUnauthorized: true,
+            ca: fs.readFileSync(path.join(__dirname, 'certs/ca-certs.pem')), // tu certificado SSL
+          }
+        }
+      : {}
   }
 );
 
+// Conexión
 sequelize.authenticate()
-  .then(() => console.log('✅ Conectado a PlanetScale'))
+  .then(() => console.log(`✅ Conectado a la base de datos (${isProduction ? 'PlanetScale' : 'local'})`))
   .catch(err => console.error('❌ Error de conexión:', err));
-
-module.exports = { sequelize, DataTypes };
 
 
 sequelize.authenticate()
