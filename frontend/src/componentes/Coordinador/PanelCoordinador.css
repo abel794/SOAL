@@ -1,21 +1,15 @@
 /* 🎨 Estilos generales del panel del coordinador */
 .panel-coordinador {
   display: flex;
+  justify-content: center;
   background-color: #f6f7fb;
   min-height: 100vh;
   overflow-x: hidden;
-  transition: all 0.3s ease;
-}
-
-/* 📱 Bloqueo de scroll cuando el sidebar está abierto en móvil */
-body.sidebar-open {
-  overflow: hidden;
 }
 
 /* 🧭 Contenedor principal del contenido */
 .contenido-principal {
   flex: 1;
-  transition: margin-left 0.18s ease;
   background-color: #f6f7fb;
   min-height: 100vh;
   padding: 20px;
@@ -68,12 +62,7 @@ body.sidebar-open {
   margin-top: 25px;
 }
 
-/* 🖱️ Sidebar transition smoother */
-.sidebar {
-  transition: all 0.2s ease-in-out;
-}
-
-/* 🪟 Modal personalizado (ya está animado en JSX, esto refina el estilo) */
+/* 🪟 Modal personalizado */
 .modal-content {
   border-radius: 12px;
   overflow: hidden;
@@ -114,10 +103,20 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 📦 Contenedor central de tarjetas */
+.cards-panel {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 1200px;
+  width: 95%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin: 0 auto;
+}
+
 /* 📱 Responsividad */
 @media (max-width: 767px) {
   .contenido-principal {
-    margin-left: 0 !important;
     padding: 15px;
   }
 
@@ -135,41 +134,4 @@ html {
   .textopanel h1 {
     font-size: 1.6rem;
   }
-}
-/* Efecto blur para el contenido cuando el sidebar está abierto en móvil */
-.contenido-blur {
-  filter: blur(4px);
-  transition: filter 0.3s ease;
-}
-
-/* Asegurar que el contenido principal tenga la transición adecuada */
-.contenido-principal {
-  transition: margin-left 0.3s ease, filter 0.3s ease;
-}
-
-/* Cuando el sidebar está abierto en móvil, prevenir scroll */
-body.sidebar-open {
-  overflow: hidden;
-}
-
-/* Overlay mejorado para móvil */
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  backdrop-filter: blur(2px);
-}
-.cards-panel {
-  background-color: #ffffff;       /* Fondo blanco */
-  padding: 30px;                   /* Espacio dentro del panel */
-  border-radius: 12px;             /* Bordes redondeados */
-  max-width: 1200px;               /* Máximo ancho */
-  width: 95%;                       /* Ocupa casi todo el ancho */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra sutil */
-  margin-left: auto;                /* Centrar horizontalmente */
-  margin-right: auto;
 }
