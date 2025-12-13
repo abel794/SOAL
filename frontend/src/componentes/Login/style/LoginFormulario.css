@@ -1,77 +1,163 @@
+/* Reset clave */
+* {
+  box-sizing: border-box;
+}
+
+/* CONTENEDOR GENERAL */
 .fondo-login {
-  height: 100vh;
+  min-height: 100dvh; /* mejor que 100vh en móvil */
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
   background-image: url(../../../assets/fondologin.jpg);
-  background-size: cover;       /* Hace que la imagen cubra todo el área */
-  background-position: center;  /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita que se repita */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  padding: 1rem;
 }
 
-
+/* FORMULARIO */
 .formulario-login {
-  background: rgba(228, 9, 9, 0.884);
-  padding: 2rem;
-  border-radius: 10px;
-  width: 480px;
-  box-shadow: 0 10px 25px rgb(123, 122, 122);
+  width: 100%;
+  max-width: 420px;
+
+  max-height: calc(100dvh - 2rem); /* nunca se sale */
+               /* scroll interno */
+
+  background: rgba(228, 9, 9, 0.9);
+  padding: clamp(1rem, 4vw, 2rem);
+  border-radius: 14px;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   text-align: center;
-  z-index: 1;
 }
 
+/* LOGO */
 .logo-login {
-  width: 180px;
+  width: clamp(90px, 30vw, 160px);
   height: auto;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
 }
 
-
-
-.enlace-texto{
-  color: #007bff !important; /* Azul institucional */
-  text-decoration: none;
+/* INPUTS */
+.formulario-login input {
+  width: 100%;
+  padding: clamp(0.65rem, 3vw, 0.85rem);
+  font-size: clamp(0.85rem, 2.8vw, 1rem);
+  border-radius: 8px;
 }
 
-.enlace-texto:hover {
-  color: #0056b3 !important; /* Azul más oscuro al hacer hover */
-  text-decoration: underline;
-}
-
-
-.texto-pequeño {
-  font-size: 0.75rem;
+/* BOTÓN */
+.boton-login {
+  width: 100%;
+  padding: clamp(0.75rem, 3.5vw, 0.95rem);
+  font-size: clamp(0.9rem, 3vw, 1rem);
+  border-radius: 8px;
   margin-top: 1rem;
 }
 
-.texto-pequeño a {
+/* TEXTOS */
+.texto-pequeño {
+  font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+  margin-top: 0.8rem;
+}
+
+/* LINKS */
+.texto-pequeño a,
+.enlace-texto {
   color: #007bff;
   text-decoration: none;
 }
 
-.texto-pequeño a:hover {
+.texto-pequeño a:hover,
+.enlace-texto:hover {
   text-decoration: underline;
 }
 
-.boton-login {
-  background-color: #007bff;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  margin-top: 1rem;
+/* OCULTAR LOGO EN MÓVILES MUY PEQUEÑOS */
+@media (max-height: 600px) {
+  .logo-login {
+    display: none;
+  }
 }
 
-.boton-login:hover {
-  background-color: #007bff;
+/* Overlay suave */
+.overlay-carga {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 14px;
+  z-index: 10;
 }
 
-img{
-  border-radius: 10px;
+/* ICONO PRO */
+.icono-carga {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+
+  animation: girar-pro 0.9s ease-in-out infinite;
+}
+
+/* Texto discreto */
+.overlay-carga span {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #fff;
+  letter-spacing: 0.3px;
+  opacity: 0.9;
+}
+
+/* Animación */
+@keyframes girar-pro {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.formulario-login {
+  position: relative;
+}
+
+/* Overlay limpio */
+.overlay-carga {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 14px;
+  z-index: 20;
+}
+
+/* Icono tipo sistema */
+.icono-carga {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
