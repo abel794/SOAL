@@ -1,591 +1,198 @@
-/* Reset clave */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* CONTENEDOR GENERAL */
+/* ================= FONDO ================= */
 .fondo-login {
-  min-height: 100dvh; /* mejor que 100vh en móvil */
-  width: 100%;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background-image: url(../../../assets/fondologin.jpg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
+  background: url(../../../assets/fondologin.jpg) center / cover no-repeat;
   padding: 1rem;
 }
 
-/* FORMULARIO */
+/* ================= FORMULARIO ================= */
 .formulario-login {
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
+  height: 40rem;
 
-  max-height: calc(100dvh - 2rem); /* nunca se sale */
-               /* scroll interno */
-
-  background: rgba(228, 9, 9, 0.9);
-  padding: clamp(1rem, 4vw, 2rem);
-  border-radius: 14px;
-
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  text-align: center;
-}
-
-/* LOGO */
-.logo-login {
-  width: clamp(90px, 30vw, 160px);
-  height: auto;
-  margin-bottom: clamp(0.5rem, 2vw, 1rem);
-}
-
-/* INPUTS */
-.formulario-login input {
-  width: 100%;
-  padding: clamp(0.65rem, 3vw, 0.85rem);
-  font-size: clamp(0.85rem, 2.8vw, 1rem);
-  border-radius: 8px;
-}
-
-/* BOTÓN */
-.boton-login {
-  width: 100%;
-  padding: clamp(0.75rem, 3.5vw, 0.95rem);
-  font-size: clamp(0.9rem, 3vw, 1rem);
-  border-radius: 8px;
-  margin-top: 1rem;
-}
-
-/* TEXTOS */
-.texto-pequeño {
-  font-size: clamp(0.65rem, 2.5vw, 0.75rem);
-  margin-top: 0.8rem;
-}
-
-/* LINKS */
-.texto-pequeño a,
-.enlace-texto {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.texto-pequeño a:hover,
-.enlace-texto:hover {
-  text-decoration: underline;
-}
-
-/* OCULTAR LOGO EN MÓVILES MUY PEQUEÑOS */
-@media (max-height: 600px) {
-  .logo-login {
-    display: none;
-  }
-}
-
-/* Overlay suave */
-.overlay-carga {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
+  background: rgba(228, 9, 9, 0.92);
+  border-radius: 24px;
+  padding: 2rem;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
 
-  border-radius: 14px;
-  z-index: 10;
-}
-
-/* ICONO PRO */
-.icono-carga {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2.5px solid rgba(255, 255, 255, 0.35);
-  border-top-color: #fff;
-
-  animation: girar-pro 0.9s ease-in-out infinite;
-}
-
-/* Texto discreto */
-.overlay-carga span {
-  margin-top: 14px;
-  font-size: 0.9rem;
-  color: #fff;
-  letter-spacing: 0.3px;
-  opacity: 0.9;
-}
-
-/* Animación */
-@keyframes girar-pro {
-  to {
-    transform: rotate(360deg);
-  }
-}
-.formulario-login {
-  position: relative;
-}
-
-/* Overlay limpio */
-.overlay-carga {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(4px);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 14px;
-  z-index: 20;
-}
-
-/* Icono tipo sistema */
-.icono-carga {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2.5px solid rgba(255, 255, 255, 0.35);
-  border-top-color: #fff;
-
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-/* ====================== BASE ====================== */
-.fondo-login {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 20px;
-  position: fixed; /* Fijo para que el overlay funcione */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
-}
-
-/* REMUEVE ESTA IMAGEN si está causando problemas */
-.fondo-login img {
-  display: none !important;
-}
-
-.formulario-login {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 2.5rem;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-              0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(209, 176, 176, 0.35);
   text-align: center;
-  position: relative;
-  z-index: 10;
-  transition: all 0.3s ease;
 }
 
-.formulario-login.formulario-cargando {
-  opacity: 0.5;
+.formulario-cargando {
   pointer-events: none;
+  opacity: .6;
 }
 
+/* ================= LOGO ================= */
 .logo-login {
-  width: 180px;
-  height: auto;
-  margin: 0 auto 2rem;
-  display: block;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  width: 160px;
+  margin: 0 auto 1rem;
+  margin: -1.5rem auto 1rem;
 }
 
-/* ====================== OVERLAY DE CARGA (IMPORTANTE) ====================== */
-.overlay-carga {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: linear-gradient(135deg, 
-    rgba(228, 9, 9, 0.97) 0%, 
-    rgba(180, 10, 10, 0.97) 100%);
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 9999 !important;
-  animation: fadeInOverlay 0.3s ease !important;
+/* ================= BLOQUES ================= */
+.formulario-top,
+.formulario-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
 }
 
-.overlay-carga.overlay-exito {
-  background: linear-gradient(135deg, 
-    rgba(21, 128, 61, 0.97) 0%, 
-    rgba(22, 163, 74, 0.97) 100%);
+/* ================= INPUTS ================= */
+.formulario-login input {
+  width: 100%;
+  padding: .0rem;
+  border-radius: 8px;
+  font-size: .95rem;
 }
 
-@keyframes fadeInOverlay {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.contenido-carga {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 3rem;
-  border-radius: 24px;
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10000;
-}
-
-@keyframes scaleIn {
-  from { 
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to { 
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Spinner de carga */
-.spinner-carga {
-  width: 60px;
-  height: 60px;
-  border: 4px solid #f0f0f0;
-  border-top: 4px solid #dc2626;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.titulo-carga {
-  color: #1f2937;
-  font-size: 1.5rem;
+/* ================= BOTÓN ================= */
+.boton-login {
+  padding: .0rem;
+  border-radius: 8px;
   font-weight: 600;
-  margin: 0 0 0.5rem;
-}
-
-.texto-carga {
-  color: #6b7280;
-  font-size: 0.95rem;
-  margin: 0 0 1.5rem;
-}
-
-/* Barra de progreso */
-.barra-progreso {
   width: 100%;
-  height: 4px;
-  background: #f0f0f0;
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: 1.5rem;
 }
 
-.progreso {
-  height: 100%;
-  width: 30%;
-  background: linear-gradient(90deg, #dc2626, #ef4444);
-  border-radius: 2px;
-  animation: progress 1.5s ease-in-out infinite;
+/* ================= LINKS ================= */
+.enlace-olvido {
+  font-size: .9rem;
+  color: #cfe3ff;
+  text-decoration: none;
 }
 
-@keyframes progress {
-  0% { 
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% { 
-    transform: translateX(300%);
-    opacity: 0;
-  }
+/* ================= TEXTO ================= */
+.texto-pequeño {
+  font-size: .75rem;
+  color: #000000;
 }
 
-/* Estado de éxito */
-.icono-exito {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin: 0 auto 1.5rem;
-  animation: successPop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.texto-pequeño a {
+  color: #000000;
+  text-decoration: none;
 }
 
-@keyframes successPop {
-  0% { 
-    transform: scale(0);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.1);
-  }
-  100% { 
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.titulo-exito {
-  color: #16a34a;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem;
-}
-
-.texto-exito {
-  color: #6b7280;
-  font-size: 1rem;
-  margin: 0 0 1.5rem;
-}
-
-.loader-exito {
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #16a34a 0%, #22c55e 50%, #16a34a 100%);
-  background-size: 200% 100%;
-  border-radius: 2px;
-  animation: loadingSuccess 1.5s ease-in-out infinite;
-}
-
-@keyframes loadingSuccess {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ====================== MENSAJES DE ERROR ====================== */
+/* ================= ERROR ================= */
 .notificacion-error {
-  background: linear-gradient(135deg, #fff5f5 0%, #ffeaea 100%);
-  border-left: 4px solid #dc2626;
+  background: #fee2e2;
+  color: #7f1d1d;
   border-radius: 12px;
-  padding: 1rem;
-  margin: 0 0 1.5rem;
+  padding: .75rem;
   display: flex;
+  gap: .6rem;
   align-items: flex-start;
-  gap: 12px;
-  text-align: left;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .icono-error {
   background: #dc2626;
-  color: white;
-  width: 24px;
-  height: 24px;
+  color: #fff;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.contenido-error h4 {
-  margin: 0 0 4px;
-  color: #dc2626;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.contenido-error p {
-  margin: 0;
-  color: #7f1d1d;
-  font-size: 0.9rem;
-  opacity: 0.9;
 }
 
 .cerrar-error {
   background: none;
   border: none;
-  color: #dc2626;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
+  margin-left: auto;
+}
+
+/* ================= OVERLAY ================= */
+.overlay-carga {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.overlay-exito {
+  background: rgba(22,163,74,.95);
+}
+
+.contenido-carga {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 24px;
+  text-align: center;
+  width: 90%;
+  max-width: 380px;
+}
+
+.spinner-carga {
+  width: 52px;
+  height: 52px;
+  border: 4px solid #eee;
+  border-top: 4px solid #dc2626;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.barra-progreso {
+  height: 4px;
+  background: #eee;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progreso {
+  width: 30%;
+  height: 100%;
+  background: #dc2626;
+  animation: progress 1.2s infinite;
+}
+
+@keyframes progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+.icono-exito {
+  width: 70px;
+  height: 70px;
+  background: #16a34a;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
-  flex-shrink: 0;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+  margin: 0 auto 1rem;
 }
 
-.cerrar-error:hover {
-  opacity: 1;
+.loader-exito {
+  height: 4px;
+  background: linear-gradient(90deg,#16a34a,#22c55e,#16a34a);
+  background-size: 200%;
+  animation: success 1.4s infinite;
 }
 
-/* ====================== FORMULARIO ====================== */
-.enlace-olvido {
-  display: inline-block;
-  color: #2563eb;
-  text-decoration: none;
-  font-size: 0.9rem;
-  margin: 0.5rem 0 1.5rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.enlace-olvido:hover:not(.enlace-deshabilitado) {
-  background: rgba(37, 99, 235, 0.1);
-  color: #1d4ed8;
-}
-
-.enlace-deshabilitado {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Botón */
-.boton-cargando {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-/* Texto pequeño */
-.texto-pequeño {
-  color: #6b7280;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  margin-top: 1.5rem;
-}
-
-.texto-pequeño a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-  margin: 0 2px;
-}
-
-.texto-pequeño a:hover {
-  text-decoration: underline;
-}
-
-/* ====================== RESPONSIVE ====================== */
-@media (max-width: 640px) {
-  .fondo-login {
-    padding: 16px;
-    align-items: flex-start;
-    padding-top: 40px;
-  }
-
-  .formulario-login {
-    padding: 1.75rem;
-    border-radius: 20px;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .logo-login {
-    width: 150px;
-    margin-bottom: 1.5rem;
-  }
-
-  .contenido-carga {
-    padding: 2rem;
-    width: 95%;
-  }
-
-  .icono-exito {
-    width: 70px;
-    height: 70px;
-    font-size: 2rem;
-  }
-
-  .titulo-carga,
-  .titulo-exito {
-    font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .formulario-login {
-    padding: 1.5rem;
-    border-radius: 16px;
-  }
-
-  .logo-login {
-    width: 130px;
-  }
-
-  .contenido-carga {
-    padding: 1.5rem;
-  }
-
-  .spinner-carga {
-    width: 50px;
-    height: 50px;
-  }
-
-  .icono-exito {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
-  }
-
-  .titulo-carga,
-  .titulo-exito {
-    font-size: 1.2rem;
-  }
-
-  .texto-carga,
-  .texto-exito {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 375px) {
-  .formulario-login {
-    padding: 1.25rem;
-  }
-
-  .logo-login {
-    width: 110px;
-  }
-
-  .contenido-carga {
-    padding: 1.25rem;
-  }
+@keyframes success {
+  to { background-position: -200%; }
 }
