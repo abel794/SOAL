@@ -101,6 +101,13 @@ const LoginFormulario = () => {
           texto={loading ? 'Cargando...' : 'Iniciar sesión'}
           disabled={loading}
         />
+        {loading && (
+          <div className="loader-container">
+            <div className="loader"></div>
+            <p>Verificando credenciales...</p>
+          </div>
+        )}
+
 
         <p className="texto-pequeño">
           Al iniciar sesión, aceptas nuestras
