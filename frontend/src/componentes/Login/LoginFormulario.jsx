@@ -26,22 +26,18 @@ const LoginFormulario = () => {
 
     setLoading(true);
 
-    // Timeout mínimo para evitar parpadeo
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 600));
-
     try {
-      // Usar Promise.all para timeout mínimo
-      const [_, res] = await Promise.all([
-        timeoutPromise,
-        fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: correo,
-            contrasena: clave
-          }),
-        })
-      ]);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: correo,
+          contrasena: clave
+        }),
+      });
+
+      // Pequeña pausa para mostrar el loader mínimo
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const data = await res.json();
 
@@ -49,7 +45,7 @@ const LoginFormulario = () => {
         throw new Error(data.error || 'Credenciales incorrectas');
       }
 
-      // Mostrar éxito antes de redirigir
+      // ✅ ÉXITO - Mostrar feedback positivo
       setSuccess(true);
       
       const tipoUsuario = data.usuario.id_tipo_usuario;
@@ -67,11 +63,11 @@ const LoginFormulario = () => {
       const ruta = rutasPorTipo[tipoUsuario];
 
       if (ruta) {
-        // Esperar 1.5 segundos para mostrar mensaje de éxito
+        // Esperar 1 segundo para mostrar el mensaje de éxito
         setTimeout(() => {
           setLoading(false);
           navigate(ruta);
-        }, 1500);
+        }, 1000);
       } else {
         throw new Error('🔒 Tu rol no tiene acceso a este panel');
       }
@@ -85,7 +81,7 @@ const LoginFormulario = () => {
 
   return (
     <div className="fondo-login">
-      {/* Overlay de carga */}
+      {/* OVERLAY DE CARGA - debe estar aquí, fuera del formulario */}
       {loading && (
         <div className={`overlay-carga ${success ? 'overlay-exito' : ''}`}>
           <div className="contenido-carga">
@@ -100,7 +96,7 @@ const LoginFormulario = () => {
               <>
                 <div className="spinner-carga"></div>
                 <h3 className="titulo-carga">Verificando credenciales</h3>
-                <p className="texto-carga">Estamos validando tu información...</p>
+                <p className="texto-carga">Por favor, espere un momento...</p>
                 <div className="barra-progreso">
                   <div className="progreso"></div>
                 </div>
@@ -117,7 +113,7 @@ const LoginFormulario = () => {
           className="logo-login"
         />
 
-        {/* Mensaje de error */}
+        {/* Mensaje de error - solo si no está cargando */}
         {error && !loading && (
           <div className="notificacion-error">
             <div className="icono-error">✕</div>
@@ -129,6 +125,7 @@ const LoginFormulario = () => {
               className="cerrar-error" 
               onClick={() => setError('')}
               aria-label="Cerrar mensaje"
+              type="button"
             >
               ×
             </button>
@@ -143,7 +140,6 @@ const LoginFormulario = () => {
           onChange={(e) => setCorreo(e.target.value)}
           autoComplete="username"
           disabled={loading}
-          icono="✉️"
         />
 
         <CampoTexto
@@ -155,13 +151,14 @@ const LoginFormulario = () => {
           onChange={(e) => setClave(e.target.value)}
           autoComplete="current-password"
           disabled={loading}
-          icono="🔒"
         />
 
         <a 
           className={`enlace-olvido ${loading ? 'enlace-deshabilitado' : ''}`} 
           href="#"
-          onClick={(e) => loading && e.preventDefault()}
+          onClick={(e) => {
+            if (loading) e.preventDefault();
+          }}
         >
           ¿Olvidaste tu contraseña?
         </a>
@@ -169,37 +166,19 @@ const LoginFormulario = () => {
         <Boton
           texto={loading ? (success ? "Acceso confirmado ✓" : "Procesando...") : "Iniciar sesión"}
           disabled={loading}
-          tipo={success ? "exito" : loading ? "cargando" : "primario"}
-          icono={loading ? (success ? "✓" : "⏳") : "→"}
+          type="submit"
+          className={loading ? "boton-cargando" : ""}
         />
 
-        <div className="separador">
-          <span>o continúa con</span>
-        </div>
+        <p className="texto-pequeño">
+          Al iniciar sesión, aceptas nuestras
+          <a href="#"> Políticas de Privacidad</a> y
+          <a href="#"> Términos de Servicio</a>.
+        </p>
 
-        <div className="redes-sociales">
-          <button type="button" className="boton-social" disabled={loading}>
-            <span className="icono-social">G</span>
-            Google
-          </button>
-          <button type="button" className="boton-social" disabled={loading}>
-            <span className="icono-social">f</span>
-            Facebook
-          </button>
-        </div>
-
-        <div className="terminos-servicio">
-          <p className="texto-legal">
-            Al iniciar sesión, aceptas nuestras
-            <a href="#" className="enlace-legal"> Políticas de Privacidad</a> y
-            <a href="#" className="enlace-legal"> Términos de Servicio</a>.
-          </p>
-
-          <p className="texto-registro">
-            ¿No tienes cuenta? 
-            <a href="#" className="enlace-registro"> Regístrate aquí</a>
-          </p>
-        </div>
+        <p className="texto-pequeño">
+          ¿No tienes cuenta? <a href="#">Regístrate</a>
+        </p>
       </form>
     </div>
   );
