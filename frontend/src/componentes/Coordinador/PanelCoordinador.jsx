@@ -210,7 +210,7 @@ export default function PanelCoordinador() {
       default:
         return (
           <>
-            <UserHeader />
+            <UserHeader onActionSelect={setVista}/>
             <div className="cards-panel mt-4">
               <h1 className="mb-1">Observador estudiantil</h1>
               <h4 className="text-muted mb-3">
