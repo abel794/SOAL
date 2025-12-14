@@ -309,6 +309,7 @@ export default function UserHeader({ onActionSelect }) {
 
   // Manejar acción rápida
   const handleQuickAction = (action) => {
+    console.log("Acción:", action);
     if (onActionSelect) {
       onActionSelect(action);
     }
