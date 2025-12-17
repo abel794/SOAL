@@ -97,10 +97,12 @@ export default function PanelCoordinador() {
   const WIDTH_COLLAPSED = 70;
 
   const contenidoStyle = {
-    marginLeft: esMovil ? 0 : (abierto ? WIDTH_OPEN : WIDTH_COLLAPSED),
-    transition: 'margin-left 0.3s ease',
-    padding: 20
-  };
+  marginLeft: 0,
+  width: '100%',
+  minHeight: '100vh',
+  padding: 20
+};
+
 
   const renderContenido = () => {
     switch (vista) {
@@ -210,7 +212,10 @@ export default function PanelCoordinador() {
       default:
         return (
           <>
-            <UserHeader onActionSelect={setVista}/>
+            <UserHeader 
+              onActionSelect={setVista}
+              onToggleSidebar={toggleMenu}
+            />
             <div className="cards-panel mt-4">
               <h1 className="mb-1">Observador estudiantil</h1>
               <h4 className="text-muted mb-3">
@@ -231,13 +236,14 @@ export default function PanelCoordinador() {
         className="panel-coordinador"
         style={{ minHeight: '100vh', background: '#f6f7fb' }}
       >
+        {/*
         <Sidebar
           abierto={abierto}
           toggleMenu={toggleMenu}
           setVista={setVista}
           onCerrarSesion={handleRequestLogout}
           vistaActual={vista}
-        />
+        />*/}
 
         {/* Añadimos una clase condicional para el efecto blur */}
         <main 
