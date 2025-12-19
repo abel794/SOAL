@@ -16,7 +16,16 @@ import {
   FaExclamationTriangle,
   FaSync,
   FaCheckCircle,
-  FaUserCircle
+  FaUserCircle,
+  FaLevelUpAlt,
+  FaChartBar,
+  FaListOl,
+  FaCalendarCheck,
+  FaUsers,
+  FaChalkboard,
+  FaUserCog,
+
+
 } from "react-icons/fa";
 import "./UserHeader.css";
 import Sidebar from "../Sidebar/Sidebar"
@@ -120,7 +129,8 @@ const LoadingSpinner = ({ size = "medium" }) => {
 /**
  * Componente Principal
  */
-export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpen = false }) {
+export default function UserHeader({ onActionSelect, onCerrarSesion }) {
+
   const [usuario, setUsuario] = useState({ 
     nombre: "", 
     apellido: "", 
@@ -138,14 +148,54 @@ export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpe
 
   const MAX_RETRIES = 3;
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+  setSidebarOpen(prev => !prev);
+};
+
+
   // Opciones rápidas más comunes
   const quickActions = [
+    {
+      label:"Dashboard",
+      icon: <FaCheckCircle />,
+      description: "Ir al panel principal",
+      color: "#34495e",
+      action: "Dashboard"
+    },
     {
       label: "Buscar estudiante",
       icon: <FaSearch />,
       description: "Buscar información de estudiantes",
       color: "#3498db",
       action: "Buscar estudiante"
+    },
+    {label:"Matricular estudiante",
+      icon: <FaGraduationCap />,
+      description: "Nueva matrícula",
+      color: "#2ecc71",
+      action: "Matricular estudiante"
+    },
+    {
+      label:"Grados y estudiantes",
+      icon: <FaUserTie />,
+      description: "Ver grados y estudiantes",
+      color: "#e67e22",
+      action: "Grados y estudiantes"
+    },
+    {
+      label:"Registrar asistencia",
+      icon: <FaClipboardList />,
+      description: "Tomar asistencia",
+      color: "#2980b9",
+      action: "Registrar asistencia"
+    },
+    {
+      label: "Promover Estudiantes",
+      icon: <FaLevelUpAlt />,
+      description: "Promover estudiantes de grado",
+      color: "#8e44ad",
+      action: "Promover Estudiantes"
     },
     {
       label: "Registrar observación",
@@ -155,18 +205,52 @@ export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpe
       action: "Registrar observación"
     },
     {
-      label: "Agendar cita",
+      label: "Historial observaciones",
+      icon: <FaClipboardList />,
+      description: "Ver todas las observaciones",
+      color: "#1abc9c",
+      action: "Historial de Observaciones"
+    },
+    {
+      label: "Casos críticos",
+      icon: <FaExclamationTriangle />,
+      description: "Ver casos críticos",
+      color: "#c0392b",
+      action: "Casos críticos"
+    },
+    {label:"Grado Mas Observaciones",
+      icon: <FaChartBar />,
+      description: "Ver grados con más observaciones",
+      color: "#f1c40f",
+      action: "Grado Mas Observaciones"
+    },
+    {
+      label: "Total Observaciones",
+      icon: <FaListOl />,
+      description: "Ver total de observaciones",
+      color: "#16a085",
+      action: "Total Observaciones"
+    },
+    {
+      label:"Agendar cita con acudiente",
       icon: <FaCalendarAlt />,
       description: "Programar cita con acudiente",
       color: "#9b59b6",
       action: "Agendar cita con acudiente"
     },
     {
-      label: "Matricular estudiante",
-      icon: <FaGraduationCap />,
-      description: "Nueva matrícula",
-      color: "#2ecc71",
-      action: "Matricular estudiante"
+      label: "Ver citas",
+      icon: <FaCalendarCheck />,
+      description: "Revisar citas agendadas",
+      color: "#27ae60",
+      action: "Ver citas"
+    },
+    {
+      label:"Profesores activos",
+      icon: <FaUsers />,
+      description: "Ver lista de profesores",
+      color: "#d35400",
+      action: "Profesores Activos"
     },
     {
       label: "Registrar profesor",
@@ -176,11 +260,60 @@ export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpe
       action: "Registrar profesor"
     },
     {
-      label: "Historial observaciones",
+      label: "Registrar secretaria",
+      icon: <FaUserTie />,
+      description: "Agregar nueva secretaria",
+      color: "#7f8c8d",
+      action: "Registrar secretaria"
+    },
+    {
+      label:"Asignar grado a profesor",
+      icon: <FaChalkboard />,
+      description: "Asignar grados a profesores",
+      color: "#34495e",
+      action: "Asignar grado a profesor"
+    },
+    {
+      label:"Activar o desactivar usuario",
+      icon: <FaUserCog />,
+      description: "Gestionar estado de usuarios",
+      color: "#2c3e50",
+      action: "Activar o desactivar usuario"
+    },
+    {
+      label: "Responder PQR",
       icon: <FaClipboardList />,
-      description: "Ver todas las observaciones",
+      description: "Responder PQR",
       color: "#1abc9c",
-      action: "Historial de Observaciones"
+      action: "comunicacion"
+    },
+    {
+      label: "Notificaciones",
+      icon: <FaBell />,
+      description: "Ver notificaciones",
+      color: "#e67e22",
+      action: "Notificaciones"
+    },
+    {
+      label: "Ver archivos",
+      icon: <FaRegStickyNote />,
+      description: "Acceder a archivos del sistema",
+      color: "#2980b9",
+      action: "Ver archivos"
+    },
+    {
+      label: "Configuración",
+      icon: <FaCog />,
+      description: "Ajustes del sistema",
+      color: "#95a5a6",
+      action: "Configuración"
+    },
+    {
+      label:"Cerrar sesión",
+      icon: <FaUserCircle />,
+      description: "Salir de la cuenta",
+      color: "#c0392b",
+      action: "Cerrar sesión"
     }
   ];
 
@@ -436,12 +569,17 @@ export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpe
 
   // Manejar acción rápida
   const handleQuickAction = (action) => {
-    console.log("Acción seleccionada:", action);
-    if (onActionSelect) {
-      onActionSelect(action);
-    }
-    setShowQuickActions(false);
-  };
+  console.log("Acción seleccionada:", action);
+  
+  // Si es cerrar sesión, ejecutar la función correspondiente
+  if (action === "Cerrar sesión" && onCerrarSesion) {
+    onCerrarSesion();
+  } else if (onActionSelect) {
+    onActionSelect(action);
+  }
+  
+  setShowQuickActions(false);
+};
 
   // Reintentar carga
   const handleRetry = () => {
@@ -464,13 +602,13 @@ export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpe
       <div className="uh-content">
         <button
           className="uh-hamburger"
-          onClick={onToggleSidebar}
-          aria-label="Alternar menú lateral"
-          aria-expanded={sidebarOpen}
-          aria-controls="main-sidebar"
+          onClick={toggleSidebar}
+          aria-label="Abrir menú"
         >
           <FaBars />
+          
         </button>
+
         
         {/* Información de texto */}
         <div className="uh-text" aria-live="polite">
@@ -656,6 +794,7 @@ export default function UserHeader({ onActionSelect, onToggleSidebar, sidebarOpe
           <span>Estás trabajando en modo sin conexión. Algunas funciones pueden estar limitadas.</span>
         </div>
       )}
+      
     </div>
   );
 }

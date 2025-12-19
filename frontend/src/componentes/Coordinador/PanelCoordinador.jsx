@@ -39,7 +39,7 @@ import ProfesoresActivos from './ProfesoresActivos/ProfesoresActivos.jsx';
 
 export default function PanelCoordinador() {
   
-  const [abierto, setAbierto] = useState(true);
+  
   const [vista, setVista] = useState('Dashboard');
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
   const [citaSeleccionada, setCitaSeleccionada] = useState(null);
@@ -61,37 +61,13 @@ export default function PanelCoordinador() {
   // Auto logout por inactividad (10 minutos)
   useAutoLogout(() => cerrarSesion(navigate), 10 * 60 * 1000);
 
-  const toggleMenu = () => setAbierto((v) => !v);
+  
 
   // Detectamos si es móvil
-  const [esMovil, setEsMovil] = useState(() =>
-    window.matchMedia ? window.matchMedia('(max-width: 767px)').matches : false
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    const handler = (e) => setEsMovil(e.matches);
-    if (mq.addEventListener) mq.addEventListener('change', handler);
-    else mq.addListener(handler);
-    return () => {
-      if (mq.removeEventListener) mq.removeEventListener('change', handler);
-      else mq.removeListener(handler);
-    };
-  }, []);
+  
 
   // Bloqueo de scroll y efecto blur cuando sidebar está abierto en móvil
-  useEffect(() => {
-    if (esMovil) {
-      if (abierto) {
-        document.body.classList.add('sidebar-open');
-      } else {
-        document.body.classList.remove('sidebar-open');
-      }
-    } else {
-      document.body.classList.remove('sidebar-open');
-    }
-    return () => document.body.classList.remove('sidebar-open');
-  }, [abierto, esMovil]);
+  
 
   const WIDTH_OPEN = 280;
   const WIDTH_COLLAPSED = 70;
@@ -133,33 +109,47 @@ export default function PanelCoordinador() {
           />
         );
       case 'Total Observaciones':
-        return <TotalObservaciones />;
+        return <TotalObservaciones 
+        setVista={setVista}/>;
       case 'Matricular estudiante':
-        return <MatricularEstudiante />;
+        return <MatricularEstudiante 
+        setVista={setVista}/>;
       case 'Grado Mas Observaciones':
-        return <GradoObservaciones />;
+        return <GradoObservaciones 
+        setVista={setVista}/>;
       case 'Matricular':
-        return <MatricularEstudiante />;
+        return <MatricularEstudiante 
+        setVista={setVista}/>;
       case 'Notificaciones':
-        return <Notificaciones />;
+        return <Notificaciones 
+        setVista={setVista}/>;
       case 'Configuración':
-        return <Configuracion />;
+        return <Configuracion 
+        setVista={setVista}/>;
       case 'Registrar profesor':
-        return <RegistroProfesor />;
+        return <RegistroProfesor 
+        setVista={setVista}/>;
       case 'Registrar secretaria':
-        return <RegistroSecretaria />;
+        return <RegistroSecretaria 
+        setVista={setVista}/>;
       case 'Activar o desactivar usuario':
-        return <DesactivarUsuario />;
+        return <DesactivarUsuario 
+        setVista={setVista}/>;
       case 'Asignar grado a profesor':
-        return <AsignarGradoProfesor />;
+        return <AsignarGradoProfesor 
+        setVista={setVista}/>;
       case 'Registrar asistencia':
-        return <RegistrarAsistencia />;
+        return <RegistrarAsistencia 
+        setVista={setVista}/>;
       case 'Casos críticos':
-        return <CasosCriticos />;
+        return <CasosCriticos 
+        setVista={setVista}/>;
       case 'Grados y estudiantes':
-        return <GradosYEstudiantes />;
+        return <GradosYEstudiantes 
+        setVista={setVista}/>;
       case 'Ver archivos':
-        return <VerArchivos />;
+        return <VerArchivos 
+        setVista={setVista}/>;
       case 'Ver citas':
         return (
           <VerCitas
@@ -168,7 +158,8 @@ export default function PanelCoordinador() {
           />
         );
       case 'Responder PQR':
-        return <ResponderPqr />;
+        return <ResponderPqr 
+        setVista={setVista}/>;
       case 'Detalle de Cita':
         return (
           <div className="container mt-4">
@@ -213,9 +204,10 @@ export default function PanelCoordinador() {
         return (
           <>
             <UserHeader 
-              onActionSelect={setVista}
-              onToggleSidebar={toggleMenu}
+            onActionSelect={setVista} 
+            onCerrarSesion={handleRequestLogout}
             />
+
             <div className="cards-panel mt-4">
               <h1 className="mb-1">Observador estudiantil</h1>
               <h4 className="text-muted mb-3">
@@ -236,20 +228,11 @@ export default function PanelCoordinador() {
         className="panel-coordinador"
         style={{ minHeight: '100vh', background: '#f6f7fb' }}
       >
-        {/*
-        <Sidebar
-          abierto={abierto}
-          toggleMenu={toggleMenu}
-          setVista={setVista}
-          onCerrarSesion={handleRequestLogout}
-          vistaActual={vista}
-        />*/}
+        
 
         {/* Añadimos una clase condicional para el efecto blur */}
-        <main 
-          className={`contenido-principal ${esMovil && abierto ? 'contenido-blur' : ''}`} 
-          style={contenidoStyle}
-        >
+        <main className="contenido-principal" style={contenidoStyle}>
+
           {renderContenido()}
         </main>
       </div>

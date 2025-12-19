@@ -5,6 +5,7 @@ import {
   FaHome,
   FaSearch,
   FaRegStickyNote,
+
   FaClipboardList,
   FaCalendarAlt,
   FaGraduationCap,
@@ -28,7 +29,9 @@ import {
   FaUserPlus,
   FaUserCog,
   FaEnvelopeOpenText,
-  FaFileAlt
+  FaFileAlt,
+  
+
 
 } from "react-icons/fa";
 import "./Sidebar.css";
