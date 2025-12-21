@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FaBars } from "react-icons/fa";
 import axios from "axios";
 import {
@@ -24,11 +24,8 @@ import {
   FaUsers,
   FaChalkboard,
   FaUserCog,
-
-
 } from "react-icons/fa";
 import "./UserHeader.css";
-import Sidebar from "../Sidebar/Sidebar"
 
 /**
  * Utils - Funciones auxiliares
@@ -57,28 +54,22 @@ const buildImgSrc = (foto) => {
   
   const s = foto.trim();
   
-  // Si ya es una data URL, retornar directamente
   if (/^data:image\//i.test(s)) {
-    // Optimizar: si es base64 muy grande, considerar usar placeholder
     if (s.length > 50000) {
       console.warn("Imagen base64 muy grande, considerar optimización");
     }
     return s;
   }
   
-  // Limpiar espacios y verificar si es base64 válido
   const cleaned = s.replace(/\s+/g, "");
   
-  // Verificar si es base64 (caracteres válidos y longitud mínima)
   if (/^[A-Za-z0-9+/=]+$/.test(cleaned) && cleaned.length >= 100) {
-    // Si es muy grande, usar calidad reducida
     if (cleaned.length > 100000) {
       console.warn("Imagen base64 muy pesada para avatar");
     }
     return `data:image/jpeg;base64,${cleaned}`;
   }
   
-  // Si parece una URL, retornarla
   if (s.startsWith('http') || s.startsWith('/')) {
     return s;
   }
@@ -126,6 +117,110 @@ const LoadingSpinner = ({ size = "medium" }) => {
   );
 };
 
+// ✅ CACHE_KEYS fuera del componente - constante estática
+const CACHE_KEYS = {
+  NOMBRE: "user_nombre",
+  APELLIDO: "user_apellido", 
+  FOTO: "user_foto",
+  TIMESTAMP: "user_data_timestamp"
+};
+
+// ✅ Funciones de cache fuera del componente
+const isCacheValid = () => {
+  const timestamp = localStorage.getItem(CACHE_KEYS.TIMESTAMP);
+  if (!timestamp) return false;
+  
+  const now = Date.now();
+  const cacheTime = parseInt(timestamp, 10);
+  return (now - cacheTime) < 5 * 60 * 1000; // 5 minutos
+};
+
+const saveToCache = (data) => {
+  try {
+    localStorage.setItem(CACHE_KEYS.NOMBRE, data.nombre);
+    localStorage.setItem(CACHE_KEYS.APELLIDO, data.apellido);
+    localStorage.setItem(CACHE_KEYS.FOTO, data.foto);
+    localStorage.setItem(CACHE_KEYS.TIMESTAMP, Date.now().toString());
+  } catch (err) {
+    console.warn("Error guardando en cache:", err);
+  }
+};
+
+const getFromCache = () => {
+  try {
+    const nombre = localStorage.getItem(CACHE_KEYS.NOMBRE) || "";
+    const apellido = localStorage.getItem(CACHE_KEYS.APELLIDO) || "";
+    const foto = localStorage.getItem(CACHE_KEYS.FOTO) || "";
+    return { nombre, apellido, foto };
+  } catch (err) {
+    console.warn("Error leyendo cache:", err);
+    return { nombre: "", apellido: "", foto: "" };
+  }
+};
+
+// ✅ Función fetch fuera del componente
+const fetchUsuario = async (token) => {
+  if (!token) {
+    throw new Error("No hay token disponible");
+  }
+
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, {
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      timeout: 10000
+    });
+
+    const data = response.data || {};
+
+    const nom = 
+      data.nombre ??
+      data.Nombre ??
+      data.persona?.nombre ??
+      data.Persona?.nombre ??
+      data.usuario?.persona?.nombre ??
+      null;
+
+    const ape =
+      data.apellido ??
+      data.Apellido ??
+      data.persona?.apellido ??
+      data.Persona?.apellido ??
+      data.usuario?.persona?.apellido ??
+      null;
+
+    const foto =
+      data.foto ??
+      data.Foto ??
+      data.persona?.foto ??
+      data.Persona?.foto ??
+      data.usuario?.persona?.foto ??
+      "";
+
+    return {
+      nombre: normalizeStored(nom) || "",
+      apellido: normalizeStored(ape) || "",
+      foto: foto || ""
+    };
+  } catch (err) {
+    if (err.code === 'ECONNABORTED') {
+      throw new Error("Tiempo de espera agotado");
+    }
+    
+    if (err.response?.status === 401) {
+      throw new Error("Sesión expirada");
+    }
+    
+    if (err.response?.status === 404) {
+      throw new Error("Usuario no encontrado");
+    }
+    
+    throw new Error(err.response?.data?.message || err.message || "Error desconocido");
+  }
+};
+
 /**
  * Componente Principal
  */
@@ -150,11 +245,10 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => {
-  setSidebarOpen(prev => !prev);
-};
+    setSidebarOpen(prev => !prev);
+  };
 
-
-  // Opciones rápidas más comunes
+  // Opciones rápidas
   const quickActions = [
     {
       label:"Dashboard",
@@ -170,7 +264,8 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
       color: "#3498db",
       action: "Buscar estudiante"
     },
-    {label:"Matricular estudiante",
+    {
+      label:"Matricular estudiante",
       icon: <FaGraduationCap />,
       description: "Nueva matrícula",
       color: "#2ecc71",
@@ -218,7 +313,8 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
       color: "#c0392b",
       action: "Casos críticos"
     },
-    {label:"Grado Mas Observaciones",
+    {
+      label:"Grado Mas Observaciones",
       icon: <FaChartBar />,
       description: "Ver grados con más observaciones",
       color: "#f1c40f",
@@ -317,204 +413,119 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
     }
   ];
 
-  // Cache keys
-  const CACHE_KEYS = {
-    NOMBRE: "user_nombre",
-    APELLIDO: "user_apellido", 
-    FOTO: "user_foto",
-    TIMESTAMP: "user_data_timestamp"
-  };
+  // ✅ Efecto principal - SE EJECUTA SOLO UNA VEZ
+  useEffect(() => {
+    mountedRef.current = true;
 
-  // Verificar si el cache es válido (5 minutos)
-  const isCacheValid = useCallback(() => {
-    const timestamp = localStorage.getItem(CACHE_KEYS.TIMESTAMP);
-    if (!timestamp) return false;
-    
-    const now = Date.now();
-    const cacheTime = parseInt(timestamp, 10);
-    return (now - cacheTime) < 5 * 60 * 1000; // 5 minutos
-  }, [CACHE_KEYS.TIMESTAMP]);
+    const initializeUserData = async () => {
+      const token = localStorage.getItem("token");
 
-  // Guardar en cache
-  const saveToCache = useCallback((data) => {
-    try {
-      localStorage.setItem(CACHE_KEYS.NOMBRE, data.nombre);
-      localStorage.setItem(CACHE_KEYS.APELLIDO, data.apellido);
-      localStorage.setItem(CACHE_KEYS.FOTO, data.foto);
-      localStorage.setItem(CACHE_KEYS.TIMESTAMP, Date.now().toString());
-    } catch (err) {
-      console.warn("Error guardando en cache:", err);
-    }
-  }, [CACHE_KEYS]);
-
-  // Obtener del cache
-  const getFromCache = useCallback(() => {
-    try {
-      const nombre = localStorage.getItem(CACHE_KEYS.NOMBRE) || "";
-      const apellido = localStorage.getItem(CACHE_KEYS.APELLIDO) || "";
-      const foto = localStorage.getItem(CACHE_KEYS.FOTO) || "";
-      return { nombre, apellido, foto };
-    } catch (err) {
-      console.warn("Error leyendo cache:", err);
-      return { nombre: "", apellido: "", foto: "" };
-    }
-  }, [CACHE_KEYS]);
-
-  // Fetch datos del usuario
-  const fetchUsuario = useCallback(async (token) => {
-    if (!token) {
-      throw new Error("No hay token disponible");
-    }
-
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuarios/me`, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        timeout: 10000 // 10 segundos timeout
-      });
-
-      const data = response.data || {};
-
-      // Extraer nombre de diferentes estructuras posibles
-      const nom = 
-        data.nombre ??
-        data.Nombre ??
-        data.persona?.nombre ??
-        data.Persona?.nombre ??
-        data.usuario?.persona?.nombre ??
-        null;
-
-      // Extraer apellido de diferentes estructuras posibles  
-      const ape =
-        data.apellido ??
-        data.Apellido ??
-        data.persona?.apellido ??
-        data.Persona?.apellido ??
-        data.usuario?.persona?.apellido ??
-        null;
-
-      // Extraer foto de diferentes estructuras posibles
-      const foto =
-        data.foto ??
-        data.Foto ??
-        data.persona?.foto ??
-        data.Persona?.foto ??
-        data.usuario?.persona?.foto ??
-        "";
-
-      const finalNom = normalizeStored(nom) || "";
-      const finalApe = normalizeStored(ape) || "";
-
-      return {
-        nombre: finalNom,
-        apellido: finalApe,
-        foto: foto || ""
-      };
-    } catch (err) {
-      if (err.code === 'ECONNABORTED') {
-        throw new Error("Tiempo de espera agotado");
-      }
-      
-      if (err.response?.status === 401) {
-        throw new Error("Sesión expirada");
-      }
-      
-      if (err.response?.status === 404) {
-        throw new Error("Usuario no encontrado");
-      }
-      
-      throw new Error(err.response?.data?.message || err.message || "Error desconocido");
-    }
-  }, []);
-
-  // Función para inicializar datos
-  const initializeUserData = useCallback(async () => {
-    const token = localStorage.getItem("token");
-
-    // 1. Intentar usar cache válido primero
-    if (isCacheValid() && retryCount === 0) {
-      const cachedData = getFromCache();
-      if (mountedRef.current) {
-        setUsuario(cachedData);
-        setLoading(false);
-      }
-      return;
-    }
-
-    // 2. Si no hay token, usar valores por defecto
-    if (!token) {
-      if (mountedRef.current) {
-        setUsuario({ 
-          nombre: "Usuario", 
-          apellido: "", 
-          foto: "" 
-        });
-        setLoading(false);
-      }
-      return;
-    }
-
-    // 3. Fetch desde API
-    try {
-      const userData = await fetchUsuario(token);
-      
-      if (mountedRef.current) {
-        setUsuario(userData);
-        saveToCache(userData);
-        setImgError(false);
-        setError(null);
-        setRetryCount(0); // Resetear contador en éxito
-      }
-    } catch (err) {
-      console.error("Error obteniendo datos del usuario:", err.message);
-      
-      if (mountedRef.current) {
-        setError(err.message);
-        
-        // Intentar reintentar si es error de red
-        if (err.message.includes("red") || err.message.includes("tiempo") || err.code === 'ECONNABORTED' || err.message.includes("Network Error")) {
-          if (retryCount < MAX_RETRIES) {
-            setTimeout(() => {
-              if (mountedRef.current) {
-                setRetryCount(prev => prev + 1);
-              }
-            }, 2000 * (retryCount + 1)); // Backoff exponencial
-          }
-        }
-        
-        // En caso de error, intentar usar cache aunque sea viejo
+      // 1. Intentar usar cache válido primero
+      if (isCacheValid() && retryCount === 0) {
         const cachedData = getFromCache();
-        if (cachedData.nombre || cachedData.apellido) {
+        if (mountedRef.current) {
           setUsuario(cachedData);
-        } else {
-          // Datos por defecto si no hay cache
+          setLoading(false);
+        }
+        return;
+      }
+
+      // 2. Si no hay token, usar valores por defecto
+      if (!token) {
+        if (mountedRef.current) {
           setUsuario({ 
             nombre: "Usuario", 
             apellido: "", 
             foto: "" 
           });
+          setLoading(false);
+        }
+        return;
+      }
+
+      // 3. Fetch desde API
+      try {
+        const userData = await fetchUsuario(token);
+        
+        if (mountedRef.current) {
+          setUsuario(userData);
+          saveToCache(userData);
+          setImgError(false);
+          setError(null);
+          setRetryCount(0);
+        }
+      } catch (err) {
+        console.error("Error obteniendo datos del usuario:", err.message);
+        
+        if (mountedRef.current) {
+          setError(err.message);
+          
+          // Intentar reintentar si es error de red
+          if (err.message.includes("red") || err.message.includes("tiempo") || err.code === 'ECONNABORTED' || err.message.includes("Network Error")) {
+            if (retryCount < MAX_RETRIES) {
+              setTimeout(() => {
+                if (mountedRef.current) {
+                  setRetryCount(prev => prev + 1);
+                }
+              }, 2000 * (retryCount + 1));
+            }
+          }
+          
+          // En caso de error, intentar usar cache aunque sea viejo
+          const cachedData = getFromCache();
+          if (cachedData.nombre || cachedData.apellido) {
+            setUsuario(cachedData);
+          } else {
+            setUsuario({ 
+              nombre: "Usuario", 
+              apellido: "", 
+              foto: "" 
+            });
+          }
+        }
+      } finally {
+        if (mountedRef.current) {
+          setLoading(false);
         }
       }
-    } finally {
-      if (mountedRef.current) {
-        setLoading(false);
-      }
-    }
-  }, [isCacheValid, retryCount, getFromCache, fetchUsuario, saveToCache]);
-
-  // Efecto principal para cargar datos
-  useEffect(() => {
-    mountedRef.current = true;
-    setLoading(true);
+    };
 
     initializeUserData();
 
     return () => {
       mountedRef.current = false;
     };
-  }, [initializeUserData]);
+  }, []); // ✅ Array vacío - solo se ejecuta al montar
+
+  // ✅ Efecto para manejar reintentos
+  useEffect(() => {
+    if (retryCount > 0 && retryCount <= MAX_RETRIES) {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      setLoading(true);
+      
+      fetchUsuario(token)
+        .then(userData => {
+          if (mountedRef.current) {
+            setUsuario(userData);
+            saveToCache(userData);
+            setError(null);
+            setRetryCount(0);
+          }
+        })
+        .catch(err => {
+          if (mountedRef.current) {
+            setError(err.message);
+          }
+        })
+        .finally(() => {
+          if (mountedRef.current) {
+            setLoading(false);
+          }
+        });
+    }
+  }, [retryCount]); // ✅ Solo cuando cambia retryCount
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
@@ -554,8 +565,7 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
         
         if (mountedRef.current) {
           setUsuario({ nombre: "", apellido: "", foto: "" });
-          setLoading(true);
-          initializeUserData();
+          setRetryCount(0);
         }
       }
     };
@@ -565,28 +575,25 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, [initializeUserData, CACHE_KEYS]);
+  }, []); // ✅ Array vacío
 
   // Manejar acción rápida
   const handleQuickAction = (action) => {
-  console.log("Acción seleccionada:", action);
-  
-  // Si es cerrar sesión, ejecutar la función correspondiente
-  if (action === "Cerrar sesión" && onCerrarSesion) {
-    onCerrarSesion();
-  } else if (onActionSelect) {
-    onActionSelect(action);
-  }
-  
-  setShowQuickActions(false);
-};
+    console.log("Acción seleccionada:", action);
+    
+    if (action === "Cerrar sesión" && onCerrarSesion) {
+      onCerrarSesion();
+    } else if (onActionSelect) {
+      onActionSelect(action);
+    }
+    
+    setShowQuickActions(false);
+  };
 
   // Reintentar carga
   const handleRetry = () => {
-    setRetryCount(0);
-    setLoading(true);
+    setRetryCount(1); // ✅ Esto activará el efecto de reintento
     setError(null);
-    initializeUserData();
   };
 
   // Datos para mostrar
@@ -606,10 +613,8 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
           aria-label="Abrir menú"
         >
           <FaBars />
-          
         </button>
 
-        
         {/* Información de texto */}
         <div className="uh-text" aria-live="polite">
           {loading ? (
@@ -794,7 +799,6 @@ export default function UserHeader({ onActionSelect, onCerrarSesion }) {
           <span>Estás trabajando en modo sin conexión. Algunas funciones pueden estar limitadas.</span>
         </div>
       )}
-      
     </div>
   );
 }
